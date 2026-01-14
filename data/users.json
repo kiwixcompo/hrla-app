@@ -1,0 +1,96 @@
+[
+  {
+    "id": "1",
+    "email": "talk2char@gmail.com",
+    "password": "Password@123",
+    "isAdmin": true,
+    "firstName": "Super",
+    "lastName": "Admin",
+    "emailVerified": true,
+    "aiProvider": "puter",
+    "createdAt": 1767082422980
+  },
+  {
+    "email": "williamskiwix@gmail.com",
+    "firstName": "Williams",
+    "lastName": "Kiwix",
+    "password": "Password@123",
+    "isAdmin": false,
+    "emailVerified": true,
+    "aiProvider": "puter",
+    "createdAt": 1767083325203,
+    "id": "1767169115073"
+  },
+  {
+    "email": "williamsaonen@gmail.com",
+    "firstName": "Williams",
+    "lastName": "Onen",
+    "password": "Password@123",
+    "isAdmin": false,
+    "emailVerified": true,
+    "aiProvider": "puter",
+    "createdAt": 1767177137931,
+    "id": "1767177212633"
+  },
+  {
+    "email": "james@smith.com",
+    "firstName": "James",
+    "lastName": "Smith",
+    "password": "Password@123",
+    "isAdmin": false,
+    "emailVerified": true,
+    "aiProvider": "puter",
+    "createdAt": 1767887984211,
+    "id": "1767888016275"
+  },
+  {
+    "password": "password123",
+    "emailVerified": true,
+    "createdAt": 1768226163588,
+    "lastName": "Verification",
+    "isAdmin": false,
+    "email": "testverify@example.com",
+    "firstName": "Test",
+    "id": "1768226988509"
+  },
+  {
+    "id": "1768227752502",
+    "firstName": "James",
+    "lastName": "Dung",
+    "email": "james@dung.com",
+    "password": "Password@123",
+    "isAdmin": false,
+    "emailVerified": true,
+    "createdAt": 1768227531861,
+    "trialStarted": 1768227531861,
+    "trialExpiry": 1768313931861,
+    "accessLevel": "trial"
+  },
+  {
+    "id": "user_james_drake_001",
+    "firstName": "James",
+    "lastName": "Drake",
+    "email": "james@drake.com",
+    "password": "password123",
+    "isAdmin": false,
+    "emailVerified": true,
+    "createdAt": 1768227800000,
+    "subscriptionExpiry": 2083587800000,
+    "trialStarted": 1768227800000,
+    "trialExpiry": 1768314200000,
+    "accessLevel": "subscribed"
+  },
+  {
+    "id": "1768339244509",
+    "firstName": "Williams",
+    "lastName": "Kiwix",
+    "email": "williamskiwix@gmail.com",
+    "password": "Password@123",
+    "isAdmin": false,
+    "emailVerified": true,
+    "createdAt": 1768339221573,
+    "trialStarted": 1768339221573,
+    "trialExpiry": 1768425621573,
+    "accessLevel": "trial"
+  }
+]

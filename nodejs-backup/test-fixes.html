@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Fixes</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>HRLA Fixes Test Page</h1>
+    
+    <div class="test-section">
+        <h2>1. Admin Dashboard Stats Test</h2>
+        <p>Expected: Total Users: 7, Verified: 7, Subscribed: 1, Trial: 2</p>
+        <button onclick="testAdminStats()">Test Admin Stats</button>
+        <div id="adminStatsResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. User Access Status Test</h2>
+        <p>Test james@drake.com should show as "Subscribed" (has subscription until 2036)</p>
+        <button onclick="testUserAccess()">Test User Access</button>
+        <div id="userAccessResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Registration Error Handling Test</h2>
+        <p>Test registration with existing email should show proper error message</p>
+        <button onclick="testRegistrationError()">Test Registration Error</button>
+        <div id="registrationErrorResult"></div>
+    </div>
+
+    <script>
+        async function testAdminStats() {
+            const resultDiv = document.getElementById('adminStatsResult');
+            resultDiv.innerHTML = '<p class="info">Testing admin stats...</p>';
+            
+            try {
+                // Login as admin
+                const loginResponse = await fetch('http://localhost:3001/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'talk2char@gmail.com',
+                        password: 'Password@123'
+                    })
+                });
+                
+                const loginData = await loginResponse.json();
+                if (!loginData.success) {
+                    throw new Error('Admin login failed');
+                }
+                
+                // Get admin stats
+                const statsResponse = await fetch('http://localhost:3001/api/admin/stats', {
+                    headers: { 'Authorization': `Bearer ${loginData.sessionToken}` }
+                });
+                
+                const statsData = await statsResponse.json();
+                if (statsData.success) {
+                    const stats = statsData.stats;
+                    const expected = { totalUsers: 7, verifiedUsers: 7, activeSubscriptions: 1, trialUsers: 2 };
+                    
+                    let result = '<h3>Admin Stats Results:</h3>';
+                    result += `<p>Total Users: ${stats.totalUsers} (Expected: ${expected.totalUsers}) ${stats.totalUsers === expected.totalUsers ? '✅' : '❌'}</p>`;
+                    result += `<p>Verified Users: ${stats.verifiedUsers} (Expected: ${expected.verifiedUsers}) ${stats.verifiedUsers === expected.verifiedUsers ? '✅' : '❌'}</p>`;
+                    result += `<p>Subscribed Users: ${stats.activeSubscriptions} (Expected: ${expected.activeSubscriptions}) ${stats.activeSubscriptions === expected.activeSubscriptions ? '✅' : '❌'}</p>`;
+                    result += `<p>Trial Users: ${stats.trialUsers} (Expected: ${expected.trialUsers}) ${stats.trialUsers === expected.trialUsers ? '✅' : '❌'}</p>`;
+                    
+                    const allCorrect = stats.totalUsers === expected.totalUsers && 
+                                     stats.verifiedUsers === expected.verifiedUsers && 
+                                     stats.activeSubscriptions === expected.activeSubscriptions && 
+                                     stats.trialUsers === expected.trialUsers;
+                    
+                    result += `<p class="${allCorrect ? 'success' : 'error'}"><strong>${allCorrect ? 'ALL TESTS PASSED ✅' : 'SOME TESTS FAILED ❌'}</strong></p>`;
+                    resultDiv.innerHTML = result;
+                } else {
+                    throw new Error('Failed to get admin stats');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function testUserAccess() {
+            const resultDiv = document.getElementById('userAccessResult');
+            resultDiv.innerHTML = '<p class="info">Testing user access status...</p>';
+            
+            try {
+                // Login as james@drake.com
+                const loginResponse = await fetch('http://localhost:3001/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'james@drake.com',
+                        password: 'password123'
+                    })
+                });
+                
+                const loginData = await loginResponse.json();
+                if (!loginData.success) {
+                    throw new Error('User login failed');
+                }
+                
+                const user = loginData.user;
+                const now = Date.now();
+                const hasActiveSubscription = user.subscriptionExpiry && user.subscriptionExpiry > now;
+                const subscriptionDate = user.subscriptionExpiry ? new Date(user.subscriptionExpiry).toLocaleDateString() : 'None';
+                
+                let result = '<h3>User Access Status Results:</h3>';
+                result += `<p>User: ${user.email}</p>`;
+                result += `<p>Subscription Expiry: ${subscriptionDate}</p>`;
+                result += `<p>Has Active Subscription: ${hasActiveSubscription ? 'Yes' : 'No'} ${hasActiveSubscription ? '✅' : '❌'}</p>`;
+                result += `<p>Expected Status: Subscribed ${hasActiveSubscription ? '✅' : '❌'}</p>`;
+                
+                result += `<p class="${hasActiveSubscription ? 'success' : 'error'}"><strong>${hasActiveSubscription ? 'USER ACCESS TEST PASSED ✅' : 'USER ACCESS TEST FAILED ❌'}</strong></p>`;
+                resultDiv.innerHTML = result;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function testRegistrationError() {
+            const resultDiv = document.getElementById('registrationErrorResult');
+            resultDiv.innerHTML = '<p class="info">Testing registration error handling...</p>';
+            
+            try {
+                // Try to register with existing email
+                const response = await fetch('http://localhost:3001/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'james@drake.com', // Existing email
+                        firstName: 'Test',
+                        lastName: 'User',
+                        password: 'testpassword123'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                let result = '<h3>Registration Error Test Results:</h3>';
+                result += `<p>Response Status: ${response.status}</p>`;
+                result += `<p>Error Message: "${data.error || data.message || 'No error message'}"</p>`;
+                
+                const hasProperError = response.status === 400 && 
+                                     (data.error || data.message) && 
+                                     (data.error || data.message).includes('already registered');
+                
+                result += `<p>Contains 'already registered': ${hasProperError ? 'Yes' : 'No'} ${hasProperError ? '✅' : '❌'}</p>`;
+                result += `<p class="${hasProperError ? 'success' : 'error'}"><strong>${hasProperError ? 'ERROR HANDLING TEST PASSED ✅' : 'ERROR HANDLING TEST FAILED ❌'}</strong></p>`;
+                
+                resultDiv.innerHTML = result;
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

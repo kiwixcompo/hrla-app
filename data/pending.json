@@ -1,0 +1,70 @@
+[
+  {
+    "token": "0dmh92zbmkrrmkb8n9y5",
+    "userData": {
+      "id": "user_1768226907677",
+      "firstName": "Test",
+      "lastName": "Verify",
+      "email": "testverify@example.com",
+      "password": "password123",
+      "isAdmin": false,
+      "emailVerified": false,
+      "createdAt": 1768226907677,
+      "trialStarted": 1768226907677,
+      "trialExpiry": 1768313307677,
+      "accessLevel": "trial"
+    },
+    "createdAt": 1768226907678
+  },
+  {
+    "token": "xv8mtoc4tzmkb8rtob",
+    "userData": {
+      "id": "user_1768227119867",
+      "firstName": "New",
+      "lastName": "Test",
+      "email": "newtest@example.com",
+      "password": "password123",
+      "isAdmin": false,
+      "emailVerified": false,
+      "createdAt": 1768227119867,
+      "trialStarted": 1768227119867,
+      "trialExpiry": 1768313519867,
+      "accessLevel": "trial"
+    },
+    "createdAt": 1768227119868
+  },
+  {
+    "token": "u44qp5sl2xkmkb8sa0z",
+    "userData": {
+      "id": "user_1768227141059",
+      "firstName": "New",
+      "lastName": "Test",
+      "email": "newtest@example.com",
+      "password": "password123",
+      "isAdmin": false,
+      "emailVerified": false,
+      "createdAt": 1768227141059,
+      "trialStarted": 1768227141059,
+      "trialExpiry": 1768313541059,
+      "accessLevel": "trial"
+    },
+    "createdAt": 1768227141059
+  },
+  {
+    "token": "fkhewzcf2cmkbmee0l",
+    "userData": {
+      "id": "user_1768250007669",
+      "firstName": "Test",
+      "lastName": "Fix",
+      "email": "testfix@example.com",
+      "password": "password123",
+      "isAdmin": false,
+      "emailVerified": false,
+      "createdAt": 1768250007669,
+      "trialStarted": 1768250007669,
+      "trialExpiry": 1770842007669,
+      "accessLevel": "extended"
+    },
+    "createdAt": 1768250007669
+  }
+]
