@@ -314,7 +314,9 @@ class Database {
             $adminExists = $this->fetch("SELECT id FROM users WHERE email = ?", ['talk2char@gmail.com']);
             
             if (!$adminExists) {
-                $passwordHash = password_hash('Password@123', PASSWORD_DEFAULT);
+                // Use default password from local config if available
+                $defaultPassword = defined('DEFAULT_ADMIN_PASSWORD') ? DEFAULT_ADMIN_PASSWORD : 'ChangeMe123!';
+                $passwordHash = password_hash($defaultPassword, PASSWORD_DEFAULT);
                 $trialExpiry = date('Y-m-d H:i:s', strtotime('+100 years'));
                 
                 $sql = "INSERT INTO users (email, password_hash, first_name, last_name, is_admin, email_verified, trial_started, trial_expiry, access_level) 

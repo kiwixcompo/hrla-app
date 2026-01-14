@@ -52,7 +52,13 @@ define('OPENAI_TEMPERATURE', 0.3);
 define('SMTP_HOST', $_ENV['SMTP_HOST'] ?? 'mail.hrleaveassist.com');
 define('SMTP_PORT', $_ENV['SMTP_PORT'] ?? 587);
 define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? 'askhrla@hrleaveassist.com');
-define('SMTP_PASSWORD', $_ENV['SMTP_PASSWORD'] ?? ''); // Set via environment variable or cPanel
+
+// Load local config if it exists (not in git)
+if (file_exists(__DIR__ . '/local.php')) {
+    require_once __DIR__ . '/local.php';
+}
+
+define('SMTP_PASSWORD', $_ENV['SMTP_PASSWORD'] ?? (defined('SMTP_PASSWORD_LOCAL') ? SMTP_PASSWORD_LOCAL : ''));
 define('SMTP_ENCRYPTION', 'tls');
 
 // File upload settings
