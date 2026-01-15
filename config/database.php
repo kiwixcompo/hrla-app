@@ -121,9 +121,23 @@ class Database {
      * Check if table exists
      */
     public function tableExists($tableName) {
-        $sql = "SHOW TABLES LIKE ?";
-        $stmt = $this->query($sql, [$tableName]);
-        return $stmt->rowCount() > 0;
+        try {
+            $sql = "SHOW TABLES LIKE :tableName";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':tableName' => $tableName]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            // Alternative method using information_schema
+            $sql = "SELECT COUNT(*) as count FROM information_schema.tables 
+                    WHERE table_schema = :dbname AND table_name = :tablename";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                ':dbname' => $this->dbname,
+                ':tablename' => $tableName
+            ]);
+            $result = $stmt->fetch();
+            return $result['count'] > 0;
+        }
     }
 
     /**
