@@ -380,8 +380,16 @@ function timeAgo($datetime) {
 // Load database configuration
 require_once CONFIG_PATH . '/database.php';
 
-// Initialize database on first load
-if (!$isProduction || (isset($_GET['init_db']) && $_GET['init_db'] === '1')) {
-    initializeDatabase();
+// Auto-initialize database if tables don't exist
+try {
+    $db = getDB();
+    // Check if users table exists - if not, initialize
+    if (!$db->tableExists('users')) {
+        error_log("Database tables not found - auto-initializing...");
+        initializeDatabase();
+    }
+} catch (Exception $e) {
+    error_log("Database check failed: " . $e->getMessage());
+    // Don't show error to user, just log it
 }
 ?>

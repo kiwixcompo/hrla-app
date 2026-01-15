@@ -15,9 +15,9 @@ class Database {
     public function __construct() {
         // Load configuration from environment or defaults
         $this->host = $_ENV['DB_HOST'] ?? 'localhost';
-        $this->dbname = $_ENV['DB_NAME'] ?? 'hrla_database';
-        $this->username = $_ENV['DB_USER'] ?? 'root';
-        $this->password = $_ENV['DB_PASS'] ?? '';
+        $this->dbname = $_ENV['DB_NAME'] ?? 'hrledkhw_hrla_database';
+        $this->username = $_ENV['DB_USER'] ?? 'hrledkhw_charlotte';
+        $this->password = $_ENV['DB_PASS'] ?? 'KrFM2.v4O5qu';
         
         $this->connect();
     }
