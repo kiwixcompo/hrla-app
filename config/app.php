@@ -379,6 +379,7 @@ function timeAgo($datetime) {
 
 // Load database configuration
 require_once CONFIG_PATH . '/database.php';
+require_once CONFIG_PATH . '/site-settings.php';
 
 // Auto-initialize database if tables don't exist
 try {
@@ -387,6 +388,13 @@ try {
     if (!$db->tableExists('users')) {
         error_log("Database tables not found - auto-initializing...");
         initializeDatabase();
+    }
+    
+    // Check if site_settings table exists - if not, create it
+    if (!$db->tableExists('site_settings')) {
+        error_log("Site settings table not found - creating...");
+        createSiteSettingsTable($db);
+        initializeSiteSettings($db);
     }
 } catch (Exception $e) {
     error_log("Database check failed: " . $e->getMessage());
