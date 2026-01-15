@@ -104,6 +104,10 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                     <i class="fas fa-robot"></i>
                     <span>AI Instructions</span>
                 </a>
+                <a href="#" class="nav-item" data-section="site-settings">
+                    <i class="fas fa-paint-brush"></i>
+                    <span>Site Settings</span>
+                </a>
                 <a href="#" class="nav-item" data-section="storage">
                     <i class="fas fa-database"></i>
                     <span>Storage</span>
@@ -633,6 +637,11 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                         </div>
                     </div>
                 </div>
+                
+                <?php 
+                // Include Site Settings Section
+                require_once 'site-settings-section.php'; 
+                ?>
                 
                 <!-- Storage Management Section -->
                 <div id="storageSection" class="content-section">
