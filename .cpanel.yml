@@ -3,4 +3,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/kiwixcom/public_html/
     - /bin/cp -R * $DEPLOYPATH
-    - /bin/cp -R .htaccess $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp .cpanel.yml $DEPLOYPATH 2>/dev/null || true
