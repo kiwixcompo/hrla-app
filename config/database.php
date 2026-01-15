@@ -13,11 +13,25 @@ class Database {
     private $error;
 
     public function __construct() {
-        // Load configuration from environment or defaults
-        $this->host = $_ENV['DB_HOST'] ?? 'localhost';
-        $this->dbname = $_ENV['DB_NAME'] ?? 'hrledkhw_hrla_database';
-        $this->username = $_ENV['DB_USER'] ?? 'hrledkhw_charlotte';
-        $this->password = $_ENV['DB_PASS'] ?? 'KrFM2.v4O5qu';
+        // Detect environment
+        $isLocal = ($_SERVER['HTTP_HOST'] ?? '') === 'localhost' || 
+                   strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false ||
+                   strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false;
+        
+        // Load configuration from environment or defaults based on environment
+        if ($isLocal) {
+            // Local development settings
+            $this->host = $_ENV['DB_HOST'] ?? 'localhost';
+            $this->dbname = $_ENV['DB_NAME'] ?? 'hrla_database';
+            $this->username = $_ENV['DB_USER'] ?? 'root';
+            $this->password = $_ENV['DB_PASS'] ?? '';
+        } else {
+            // Production server settings
+            $this->host = $_ENV['DB_HOST'] ?? 'localhost';
+            $this->dbname = $_ENV['DB_NAME'] ?? 'hrledkhw_hrla_database';
+            $this->username = $_ENV['DB_USER'] ?? 'hrledkhw_charlotte';
+            $this->password = $_ENV['DB_PASS'] ?? 'KrFM2.v4O5qu';
+        }
         
         $this->connect();
     }

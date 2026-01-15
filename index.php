@@ -5,6 +5,7 @@
  */
 
 require_once 'config/app.php';
+require_once 'config/site-settings.php';
 require_once 'includes/auth.php';
 
 $auth = getAuth();
@@ -60,6 +61,7 @@ $pageTitle = 'HRLA - HR Leave Assist | Professional Leave Management';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="styles.css?v=1.2">
+    <link rel="stylesheet" href="assets/css/custom.php?v=<?php echo time(); ?>">
 </head>
 <body>
     <!-- Skip Links for Accessibility -->
@@ -94,35 +96,36 @@ $pageTitle = 'HRLA - HR Leave Assist | Professional Leave Management';
             <div class="hero-container">
                 <div class="hero-content">
                     <h1 class="hero-title">
-                        Answer Employee Leave Questions <span class="hero-highlight">accurately and consistently</span>
+                        <?php echo htmlspecialchars(getSiteSetting('hero_title', 'Answer Employee Leave Questions')); ?> 
+                        <span class="hero-highlight"><?php echo htmlspecialchars(getSiteSetting('hero_highlight', 'accurately and consistently')); ?></span>
                     </h1>
                     <p class="hero-subtitle">
-                        Designed for compliant HR Leave Decision-Making
+                        <?php echo htmlspecialchars(getSiteSetting('hero_subtitle', 'Designed for compliant HR Leave Decision-Making')); ?>
                     </p>
                     <div class="hero-features">
                         <div class="hero-feature">
                             <i class="fas fa-check"></i>
-                            <span>Built by HR for HR professionals. Aligned with FMLA, PDL, ADA, & CFRA</span>
+                            <span><?php echo htmlspecialchars(getSiteSetting('hero_feature_1', 'Built by HR for HR professionals. Aligned with FMLA, PDL, ADA, & CFRA')); ?></span>
                         </div>
                         <div class="hero-feature">
                             <i class="fas fa-check"></i>
-                            <span>Respond to employee leave questions clearly and consistently</span>
+                            <span><?php echo htmlspecialchars(getSiteSetting('hero_feature_2', 'Respond to employee leave questions clearly and consistently')); ?></span>
                         </div>
                         <div class="hero-feature">
                             <i class="fas fa-check"></i>
-                            <span>Align responses with applicable federal and state leave requirements</span>
+                            <span><?php echo htmlspecialchars(getSiteSetting('hero_feature_3', 'Align responses with applicable federal and state leave requirements')); ?></span>
                         </div>
                         <div class="hero-feature">
                             <i class="fas fa-check"></i>
-                            <span>Reduce compliance risk and unnecessary rework</span>
+                            <span><?php echo htmlspecialchars(getSiteSetting('hero_feature_4', 'Reduce compliance risk and unnecessary rework')); ?></span>
                         </div>
                     </div>
                     <div class="hero-actions">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-large">
-                            Try HR Leave Assist
+                            <?php echo htmlspecialchars(getSiteSetting('hero_cta_primary', 'Try HR Leave Assist')); ?>
                         </a>
                         <a href="#how-it-works" class="btn btn-success btn-large">
-                            Watch Demo
+                            <?php echo htmlspecialchars(getSiteSetting('hero_cta_secondary', 'Watch Demo')); ?>
                         </a>
                     </div>
                 </div>
@@ -155,28 +158,28 @@ $pageTitle = 'HRLA - HR Leave Assist | Professional Leave Management';
         <section id="features" class="features-section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">How HR Leave Assist Supports Your Leave Process</h2>
+                    <h2 class="section-title"><?php echo htmlspecialchars(getSiteSetting('features_title', 'How HR Leave Assist Supports Your Leave Process')); ?></h2>
                 </div>
                 <div class="features-checklist">
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Built to Support Leave Compliance</h3>
+                        <h3><?php echo htmlspecialchars(getSiteSetting('feature_1_title', 'Built to Support Leave Compliance')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Respond to Leave Questions Faster</h3>
+                        <h3><?php echo htmlspecialchars(getSiteSetting('feature_2_title', 'Respond to Leave Questions Faster')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Navigate Federal & California Leave Laws</h3>
+                        <h3><?php echo htmlspecialchars(getSiteSetting('feature_3_title', 'Navigate Federal & California Leave Laws')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Designed for Busy HR Teams</h3>
+                        <h3><?php echo htmlspecialchars(getSiteSetting('feature_4_title', 'Designed for Busy HR Teams')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Empowers HR-Led Decision-Making</h3>
+                        <h3><?php echo htmlspecialchars(getSiteSetting('feature_5_title', 'Empowers HR-Led Decision-Making')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
