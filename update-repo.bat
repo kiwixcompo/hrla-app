@@ -1,67 +1,85 @@
 @echo off
 echo ========================================
-echo  HRLA - HR Leave Assistant
-echo  Git Repository Update Script
+echo  HRLA - Git Repository Update Script
 echo ========================================
 echo.
 
-echo [1/6] Checking git status...
+REM Check if we're in a git repository
+if not exist ".git" (
+    echo ERROR: Not a git repository!
+    echo.
+    echo Please initialize git first:
+    echo   git init
+    echo   git remote add origin YOUR_GITHUB_URL
+    echo.
+    pause
+    exit /b 1
+)
+
+echo [1/5] Checking git status...
 git status
-
-echo.
-echo [2/6] Adding all changes to staging...
-git add .
-
-echo.
-echo [3/6] Committing changes...
-set /p commit_message="Enter commit message (or press Enter for default): "
-if "%commit_message%"=="" set commit_message=Update application files
-
-git commit -m "%commit_message%"
-
-echo.
-echo [4/6] Checking for sensitive data...
-echo NOTE: If push fails due to secret detection, sensitive data has been removed.
-echo You may need to use: git push --no-verify origin main (use with caution)
-
-echo.
-echo [5/6] Pushing to GitHub repository...
-git push origin main
-
 if errorlevel 1 (
-    echo.
-    echo ========================================
-    echo  PUSH FAILED - Possible Solutions:
-    echo ========================================
-    echo.
-    echo 1. GitHub detected secrets in your code
-    echo 2. Sensitive data has been removed from config/app.php
-    echo 3. You need to remove the commit with secrets from history
-    echo.
-    echo To fix this, run these commands:
-    echo.
-    echo   git reset --soft HEAD~1
-    echo   git add .
-    echo   git commit -m "Update application without secrets"
-    echo   git push origin main
-    echo.
-    echo Or to force push (removes secret from history):
-    echo   git push --force origin main
-    echo.
-    echo ========================================
+    echo ERROR: Git status failed
     pause
     exit /b 1
 )
 
 echo.
-echo [6/6] Repository update complete!
-echo.
-echo ========================================
-echo  Summary:
-echo  - All local changes have been committed
-echo  - Changes pushed to GitHub repository
-echo  - Repository is now up to date
-echo ========================================
-echo.
+echo [2/5] Adding all changes to staging...
+git add .
+if errorlevel 1 (
+    echo ERROR: Git add failed
+    pause
+    exit /b 1
+)
 
+echo.
+echo [3/5] Committing changes...
+set /p commit_message="Enter commit message (or press Enter for default): "
+if "%commit_message%"=="" set commit_message=Update application files
+
+git commit -m "%commit_message%"
+if errorlevel 1 (
+    echo.
+    echo NOTE: Nothing to commit or commit failed
+    echo This is normal if there are no changes
+    echo.
+)
+
+echo.
+echo [4/5] Pushing to GitHub repository...
+git push origin main
+if errorlevel 1 (
+    echo.
+    echo Push to 'main' failed, trying 'master'...
+    git push origin master
+    if errorlevel 1 (
+        echo.
+        echo ========================================
+        echo  PUSH FAILED
+        echo ========================================
+        echo.
+        echo Possible reasons:
+        echo 1. No remote repository configured
+        echo 2. Authentication failed
+        echo 3. Branch name is different
+        echo 4. Network issues
+        echo.
+        echo Check your remote with: git remote -v
+        echo Check your branch with: git branch
+        echo.
+        pause
+        exit /b 1
+    )
+)
+
+echo.
+echo [5/5] Repository update complete!
+echo.
+echo ========================================
+echo  SUCCESS!
+echo ========================================
+echo.
+echo Your changes have been pushed to GitHub.
+echo.
 pause
