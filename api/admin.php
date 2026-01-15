@@ -163,8 +163,8 @@ function saveApiKey($db, $user) {
     $apiKey = $_POST['openai_key'] ?? '';
     
     if (empty($apiKey) || $apiKey === '••••••••••••••••') {
-        header('Location: ' . appUrl('admin/index.php?tab=api-settings&error=invalid_key'));
-        exit;
+        echo json_encode(['success' => false, 'error' => 'Invalid API key']);
+        return;
     }
     
     try {
@@ -181,11 +181,9 @@ function saveApiKey($db, $user) {
                 [$apiKey, $user['id']]);
         }
         
-        header('Location: ' . appUrl('admin/index.php?tab=api-settings&success=key_saved'));
-        exit;
+        echo json_encode(['success' => true, 'message' => 'API key saved successfully']);
     } catch (Exception $e) {
-        header('Location: ' . appUrl('admin/index.php?tab=api-settings&error=failed_to_save'));
-        exit;
+        echo json_encode(['success' => false, 'error' => 'Failed to save API key: ' . $e->getMessage()]);
     }
 }
 
