@@ -399,3 +399,91 @@
     color: #6b7280;
     margin-bottom: 1.5rem;
 }
+
+
+/* Admin Notification System */
+.admin-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 10000;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+}
+
+.admin-notification.show {
+    transform: translateX(0);
+}
+
+.admin-notification i:first-child {
+    font-size: 1.5rem;
+}
+
+.admin-notification span {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #6c757d;
+    transition: color 0.2s;
+}
+
+.notification-close:hover {
+    color: #333;
+}
+
+.notification-success {
+    border-left: 4px solid #4FCD1A;
+}
+
+.notification-success i:first-child {
+    color: #4FCD1A;
+}
+
+.notification-error {
+    border-left: 4px solid #dc3545;
+}
+
+.notification-error i:first-child {
+    color: #dc3545;
+}
+
+.notification-warning {
+    border-left: 4px solid #ffc107;
+}
+
+.notification-warning i:first-child {
+    color: #ffc107;
+}
+
+.notification-info {
+    border-left: 4px solid #0023F5;
+}
+
+.notification-info i:first-child {
+    color: #0023F5;
+}
+
+@media (max-width: 768px) {
+    .admin-notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+    }
+}

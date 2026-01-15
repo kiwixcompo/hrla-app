@@ -735,6 +735,45 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
 
 
     <script>
+        // Notification System
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.admin-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `admin-notification notification-${type}`;
+            
+            // Set icon based on type
+            let icon = 'fa-info-circle';
+            if (type === 'success') icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            if (type === 'warning') icon = 'fa-exclamation-triangle';
+            
+            notification.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span>${message}</span>
+                <button class="notification-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Trigger animation
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        
         // Sidebar Navigation
         const navItems = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('.content-section');
