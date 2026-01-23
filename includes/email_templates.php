@@ -182,8 +182,7 @@ class EmailTemplates {
             <div class='preheader'>Complete your HR Leave Assistant registration by verifying your email address. This helps us ensure account security.</div>
             <div class='container'>
                 <div class='header'>
-                    <div class='logo'>🏛️ HR Leave Assistant</div>
-                    <p style='margin: 0; font-size: 16px;'>Professional HR Compliance Tool</p>
+                    <div class='logo'>HR Leave Assistant</div>
                     <p style='margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;'>hrleaveassist.com</p>
                 </div>
                 <div class='content'>
@@ -204,11 +203,6 @@ class EmailTemplates {
                     <div class='support'>
                         <p style='margin: 0 0 10px 0;'><strong>Need assistance?</strong></p>
                         <p style='margin: 0;'>Our support team is here to help. Contact us at <a href='mailto:{$this->replyTo}'>{$this->replyTo}</a> for any questions about your account or our services.</p>
-                    </div>
-                    
-                    <div class='company-info'>
-                        <p style='margin: 0;'><strong>About HR Leave Assistant:</strong></p>
-                        <p style='margin: 5px 0 0 0;'>We provide professional HR compliance tools to help organizations manage Federal FMLA and California leave laws effectively. Our platform ensures accurate, compliant responses to employee leave requests.</p>
                     </div>
                 </div>
                 <div class='footer'>
@@ -251,9 +245,6 @@ Copy and paste the link above into your web browser to verify your account.
 
 NEED ASSISTANCE?
 Our support team is here to help. Contact us at {$this->replyTo} for any questions about your account or our services.
-
-ABOUT HR LEAVE ASSISTANT:
-We provide professional HR compliance tools to help organizations manage Federal FMLA and California leave laws effectively. Our platform ensures accurate, compliant responses to employee leave requests.
 
 ---
 This email was sent by HR Leave Assistant

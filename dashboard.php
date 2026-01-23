@@ -53,6 +53,78 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
     
     <link rel="stylesheet" href="styles.css?v=1.2">
     <link rel="icon" type="image/png" href="hrla_logo.png">
+    
+    <style>
+        :root {
+            --hrla-blue: #0322D8;
+            --hrla-green: #3DB20B;
+        }
+        
+        /* Change trial timer background to blue */
+        .trial-badge {
+            background-color: var(--hrla-blue) !important;
+            color: white !important;
+        }
+        
+        /* Dashboard logo styling - make it bigger */
+        .nav-logo {
+            max-height: 100px !important;
+            width: auto !important;
+            height: 100px !important;
+        }
+        
+        /* Simple button styling for tool selection */
+        .tools-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .tool-section {
+            flex: 1;
+        }
+        
+        .tool-button {
+            display: block;
+            padding: 20px 30px;
+            border: 2px solid var(--hrla-blue);
+            border-radius: 8px;
+            background: white;
+            color: var(--hrla-blue);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .tool-button:hover {
+            background: var(--hrla-blue);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .limitation-text {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .limitation-text strong {
+            color: #333;
+        }
+        
+        /* Responsive design for mobile */
+        @media (max-width: 768px) {
+            .tools-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Dashboard -->
@@ -60,8 +132,7 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
         <nav class="app-nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <img src="hrla_logo.png" alt="HRLA" class="nav-logo">
-                    <span class="nav-title">Leave Assistant</span>
+                    <img src="dashboard_logo.png" alt="HRLA Dashboard" class="nav-logo">
                 </div>
                 <div class="nav-menu">
                     <?php if ($user['is_admin']): ?>
@@ -101,39 +172,39 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
             </div>
             
             <div class="tools-grid">
-                <a href="<?php echo appUrl('federal.php'); ?>" class="tool-card" id="federalTool">
-                    <div class="tool-icon federal">
-                        <i class="fas fa-flag-usa"></i>
+                <div class="tool-section">
+                    <a href="<?php echo appUrl('federal.php'); ?>" class="tool-button" id="federalTool">
+                        Federal Leave Assistant
+                    </a>
+                    <div class="limitation-text">
+                        <strong>Federal-Specific Limitations</strong><br>
+                        Focuses employment laws, including but not limited to the Family and Medical Leave Act (FMLA) and the Americans with Disabilities Act (ADA), and to state regulations are not covered within this version. Responses are limited to federal law.
+                        <br><br>
+                        <strong>HRLA:</strong><br>
+                        • Does not account for state or local leave laws that may provide additional or different protections<br>
+                        • Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices<br>
+                        • Does not implement and act upon legal advice such as the ADA interactive process or individualized eligibility determinations<br>
+                        <br>
+                        Users are responsible for confirming current federal requirements and seeking legal advice when appropriate.
                     </div>
-                    <div class="tool-content">
-                        <h3>Federal FMLA</h3>
-                        <p>Generate compliant responses for Federal Family & Medical Leave Act inquiries and requests.</p>
-                        <div class="tool-features">
-                            <span class="feature-tag">FMLA Compliant</span>
-                            <span class="feature-tag">AI Powered</span>
-                        </div>
-                    </div>
-                    <div class="tool-action">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
+                </div>
                 
-                <a href="<?php echo appUrl('california.php'); ?>" class="tool-card" id="californiaTool">
-                    <div class="tool-icon california">
-                        <i class="fas fa-sun"></i>
+                <div class="tool-section">
+                    <a href="<?php echo appUrl('california.php'); ?>" class="tool-button" id="californiaTool">
+                        California Leave Assistant
+                    </a>
+                    <div class="limitation-text">
+                        <strong>California-Specific Limitations</strong><br>
+                        California employment laws, including but not limited to the California Family Rights Act (CFRA), Pregnancy Disability Leave (PDL), and related state-specific employment and housing Act (FEHA), and related regulations are not covered within this version. Responses are limited to California law.
+                        <br><br>
+                        <strong>HRLA:</strong><br>
+                        • Does not account for local city/county leave laws, announcement provisions, or other local provisions<br>
+                        • Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices<br>
+                        • Does not implement required employee obligations such as the interactive process<br>
+                        <br>
+                        Users are responsible for confirming current legal requirements and seeking legal advice when appropriate.
                     </div>
-                    <div class="tool-content">
-                        <h3>California Leaves</h3>
-                        <p>Navigate CFRA, PDL, and FMLA interactions specifically for California employees.</p>
-                        <div class="tool-features">
-                            <span class="feature-tag">Multi-Law</span>
-                            <span class="feature-tag">CA Specific</span>
-                        </div>
-                    </div>
-                    <div class="tool-action">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
     </div>

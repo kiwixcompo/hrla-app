@@ -32,14 +32,112 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
     <link rel="stylesheet" href="styles.css?v=1.3">
     <link rel="stylesheet" href="mobile-responsive.css?v=1.0">
     <link rel="icon" type="image/png" href="hrla_logo.png">
+    
+    <style>
+        /* Pricing card styling to match detailed pricing page */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .pricing-card.featured {
+            border-color: #0322D8;
+            transform: scale(1.05);
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0322D8;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 15px;
+        }
+        
+        .pricing-description p {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+        
+        .pricing-features ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        
+        .pricing-features li {
+            padding: 8px 0;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        
+        .pricing-best-for {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+            text-align: left;
+        }
+        
+        .pricing-best-for strong {
+            color: #000;
+        }
+        
+        .pricing-save {
+            color: #3DB20B;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 0 20px;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="subscription" class="page">
         <nav class="app-nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <img src="hrla_logo.png" alt="HRLA" class="nav-logo">
-                    <span class="nav-title">Upgrade Your Plan</span>
+                    <img src="subscription_logo.png" alt="HRLA Subscription" class="nav-logo">
                 </div>
                 <div class="nav-menu">
                     <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
@@ -57,30 +155,60 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
         <div class="subscription-container">
             <div class="subscription-header">
                 <h1>Choose Your Plan</h1>
-                <p>Select the perfect plan for your HR compliance needs</p>
+                <p>Select the perfect plan for your HR leave compliance needs</p>
             </div>
             
             <!-- Pricing Cards -->
             <div class="pricing-grid">
+                <!-- Free Trial -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Free Trial — $0</h3>
+                    </div>
+                    <div class="pricing-description">
+                        <p>Evaluate how HR Leave Assist supports your individual HR workflow</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li>• Trial access to HR Leave Assist</li>
+                            <li>• Guidance aligned to laws</li>
+                            <li>• AI-assisted draft responses</li>
+                            <li>• Up to 20 questions in trial</li>
+                            <li>• No payment required</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-best-for">
+                        <strong>Best for:</strong><br>
+                        HR professionals who want to test the tool with real-world scenarios.
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="selectPlan('trial', 0)">
+                        Start Free Trial
+                    </button>
+                </div>
+                
                 <!-- Monthly Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Monthly</h3>
-                        <div class="pricing-amount">
-                            <span class="currency">$</span>
-                            <span class="price">29</span>
-                            <span class="period">/month</span>
-                        </div>
+                        <h3>Monthly — $29</h3>
                     </div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Federal FMLA Assistant</li>
-                        <li><i class="fas fa-check"></i> California Leave Assistant</li>
-                        <li><i class="fas fa-check"></i> Unlimited Requests</li>
-                        <li><i class="fas fa-check"></i> AI-Powered Responses</li>
-                        <li><i class="fas fa-check"></i> Email Support</li>
-                    </ul>
+                    <div class="pricing-description">
+                        <p>For individual HR professionals managing ongoing leave questions</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li>• Full individual access</li>
+                            <li>• Federal & California laws</li>
+                            <li>• Draft clear responses</li>
+                            <li>• Unlimited questions</li>
+                            <li>• Cancel anytime</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-best-for">
+                        <strong>Best for:</strong><br>
+                        Individual HR professionals who regularly respond to leave inquiries.
+                    </div>
                     <button class="btn btn-primary btn-block" onclick="selectPlan('monthly', 29)">
-                        Subscribe Now
+                        Subscribe Monthly
                     </button>
                 </div>
                 
@@ -88,48 +216,51 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                 <div class="pricing-card featured">
                     <div class="pricing-badge">Most Popular</div>
                     <div class="pricing-header">
-                        <h3>Annual</h3>
-                        <div class="pricing-amount">
-                            <span class="currency">$</span>
-                            <span class="price">290</span>
-                            <span class="period">/year</span>
-                        </div>
-                        <div class="pricing-save">Save $58 (2 months free)</div>
+                        <h3>Annual — $290</h3>
+                        <div class="pricing-save">(2 months free)</div>
                     </div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Federal FMLA Assistant</li>
-                        <li><i class="fas fa-check"></i> California Leave Assistant</li>
-                        <li><i class="fas fa-check"></i> Unlimited Requests</li>
-                        <li><i class="fas fa-check"></i> AI-Powered Responses</li>
-                        <li><i class="fas fa-check"></i> Priority Email Support</li>
-                        <li><i class="fas fa-check"></i> 2 Months Free</li>
-                    </ul>
+                    <div class="pricing-description">
+                        <p>Consistent, uninterrupted access for individual professional use</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li>• Everything in Monthly</li>
+                            <li>• 12 months continuous access</li>
+                            <li>• Unlimited questions</li>
+                            <li>• Predictable annual billing</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-best-for">
+                        <strong>Best for:</strong><br>
+                        HR professionals who rely on HR Leave Assist as part of their regular workflow.
+                    </div>
                     <button class="btn btn-primary btn-block" onclick="selectPlan('annual', 290)">
-                        Subscribe Now
+                        Subscribe Annually
                     </button>
                 </div>
                 
                 <!-- Organization Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Organization</h3>
-                        <div class="pricing-amount">
-                            <span class="currency">$</span>
-                            <span class="price">99</span>
-                            <span class="period">/month</span>
-                        </div>
+                        <h3>Org — $580</h3>
                     </div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Up to 10 Users</li>
-                        <li><i class="fas fa-check"></i> Federal FMLA Assistant</li>
-                        <li><i class="fas fa-check"></i> California Leave Assistant</li>
-                        <li><i class="fas fa-check"></i> Unlimited Requests</li>
-                        <li><i class="fas fa-check"></i> AI-Powered Responses</li>
-                        <li><i class="fas fa-check"></i> Priority Support</li>
-                        <li><i class="fas fa-check"></i> Team Management</li>
-                    </ul>
-                    <button class="btn btn-primary btn-block" onclick="selectPlan('organization', 99)">
-                        Subscribe Now
+                    <div class="pricing-description">
+                        <p>Shared annual access for up to 5 HR professionals</p>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li>• Up to <strong>5 named HR users</strong></li>
+                            <li>• 12 months access per user</li>
+                            <li>• Unlimited questions per user</li>
+                            <li>• Centralized annual billing</li>
+                        </ul>
+                    </div>
+                    <div class="pricing-best-for">
+                        <strong>Best for:</strong><br>
+                        Small HR teams (2-5) who regularly respond to leave questions.
+                    </div>
+                    <button class="btn btn-primary btn-block" onclick="selectPlan('organization', 580)">
+                        Subscribe Organization
                     </button>
                 </div>
             </div>
@@ -221,6 +352,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
             selectedAmount = amount;
             
             const planNames = {
+                'trial': 'Free Trial',
                 'monthly': 'Monthly Plan',
                 'annual': 'Annual Plan',
                 'organization': 'Organization Plan'
