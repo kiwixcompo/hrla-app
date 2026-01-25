@@ -72,8 +72,58 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         }
 
         /* --- NAVIGATION --- */
+        .landing-nav {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
         .nav-brand { display: flex; align-items: center; }
         .nav-logo-img { max-height: 45px; width: auto; display: block; }
+        
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--hrla-blue);
+        }
+        
+        .nav-link.active {
+            color: var(--hrla-blue);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--hrla-blue);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
 
         /* --- HERO SECTION --- */
         .hero-section { background-color: #f2f4fe; padding: 80px 0; }
@@ -354,6 +404,67 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             .about-logo { width: 30%; }
             .about-text { width: 70%; }
         }
+        
+        /* Mobile Navigation Fixes */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block !important;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--hrla-blue);
+                cursor: pointer;
+                padding: 0.5rem;
+                z-index: 1001;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                border-bottom: 1px solid #e0e0e0;
+                padding: 1rem 1.5rem;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 1000;
+            }
+            
+            .nav-menu.mobile-open {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-menu .nav-link,
+            .nav-menu .btn {
+                margin: 0.5rem 0;
+                text-align: center;
+                display: block;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border-radius: 6px;
+            }
+            
+            .nav-menu .btn-outline {
+                border: 2px solid var(--hrla-blue);
+                color: var(--hrla-blue);
+                background: white;
+            }
+            
+            .nav-menu .btn-primary {
+                background: var(--hrla-blue);
+                color: white;
+                border: 2px solid var(--hrla-blue);
+            }
+        }
     </style>
 </head>
 <body>
@@ -569,16 +680,16 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         <section id="pricing" class="pricing-section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Pricing</h2>
+                    <h2 class="section-title"><?php echo htmlspecialchars(getContent('pricing_title', 'Pricing')); ?></h2>
                 </div>
                 <div class="pricing-grid-minified">
                     <div class="pricing-card-minified">
                         <div class="pricing-header-mini">
-                            <h3>Free Trial — $0</h3>
+                            <h3><?php echo htmlspecialchars(getContent('pricing_free_title', 'Free Trial — $0')); ?></h3>
                         </div>
                         <div class="pricing-best-for-mini">
                             <strong>Best for:</strong>
-                            HR professionals who want to test the tool with real-world scenarios before subscribing.
+                            <?php echo htmlspecialchars(getContent('pricing_free_description', 'HR professionals who want to test the tool with real-world scenarios before subscribing.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -589,11 +700,11 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                     
                     <div class="pricing-card-minified">
                         <div class="pricing-header-mini">
-                            <h3>Monthly — $29</h3>
+                            <h3><?php echo htmlspecialchars(getContent('pricing_monthly_title', 'Monthly — $29')); ?></h3>
                         </div>
                         <div class="pricing-best-for-mini">
                             <strong>Best for:</strong>
-                            Individual HR professionals who regularly respond to employee leave inquiries.
+                            <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -605,12 +716,12 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                     <div class="pricing-card-minified featured">
                         <div class="pricing-badge">Most Popular</div>
                         <div class="pricing-header-mini">
-                            <h3>Annual — $290</h3>
-                            <div class="pricing-sub">(2 months free)</div>
+                            <h3><?php echo htmlspecialchars(getContent('pricing_annual_title', 'Annual — $290')); ?></h3>
+                            <div class="pricing-sub"><?php echo htmlspecialchars(getContent('pricing_annual_subtitle', '(2 months free)')); ?></div>
                         </div>
                         <div class="pricing-best-for-mini">
                             <strong>Best for:</strong>
-                            Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.
+                            <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -621,11 +732,11 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                     
                     <div class="pricing-card-minified">
                         <div class="pricing-header-mini">
-                            <h3>Organization — $580 / yr</h3>
+                            <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
                         </div>
                         <div class="pricing-best-for-mini">
                             <strong>Best for:</strong>
-                            Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.
+                            <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -708,12 +819,63 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
     </div>
 
     <script>
-        document.getElementById('mobileMenuToggle')?.addEventListener('click', function() {
+        // Mobile menu toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const navMenu = document.querySelector('.nav-menu');
-            navMenu.classList.toggle('mobile-open');
-            this.setAttribute('aria-expanded', navMenu.classList.contains('mobile-open'));
+            
+            if (mobileMenuToggle && navMenu) {
+                mobileMenuToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isOpen = navMenu.classList.contains('mobile-open');
+                    
+                    if (isOpen) {
+                        navMenu.classList.remove('mobile-open');
+                        this.setAttribute('aria-expanded', 'false');
+                        this.innerHTML = '<i class="fas fa-bars"></i>';
+                    } else {
+                        navMenu.classList.add('mobile-open');
+                        this.setAttribute('aria-expanded', 'true');
+                        this.innerHTML = '<i class="fas fa-times"></i>';
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                        navMenu.classList.remove('mobile-open');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                        mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+                
+                // Close menu when clicking on a link
+                const navLinks = navMenu.querySelectorAll('.nav-link, .btn');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('mobile-open');
+                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                        mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    });
+                });
+            }
         });
-        // Modals functionality implied here...
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>

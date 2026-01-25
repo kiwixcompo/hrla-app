@@ -2736,13 +2736,17 @@ body {
 }
 
 @media (max-width: 768px) {
+    .mobile-menu-toggle {
+        display: block !important;
+    }
+    
     .nav-menu {
         position: fixed;
-        top: 4rem;
+        top: 70px;
         left: 0;
         right: 0;
         background: white;
-        border-bottom: 1px solid var(--gray-200);
+        border-bottom: 1px solid #e0e0e0;
         padding: 1rem 1.5rem;
         flex-direction: column;
         align-items: stretch;
@@ -2751,6 +2755,8 @@ body {
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 1000;
     }
     
     .nav-menu.mobile-open {
@@ -2759,8 +2765,14 @@ body {
         visibility: visible;
     }
     
-    .mobile-menu-toggle {
+    .nav-menu .nav-link,
+    .nav-menu .btn {
+        margin: 0.5rem 0;
+        text-align: center;
         display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
     }
     
     .hero-section {
@@ -3827,37 +3839,6 @@ body {
     
     .brand-logo {
         height: 2rem;
-    }
-    
-    .nav-menu {
-        display: none;
-    }
-    
-    .mobile-menu-toggle {
-        display: block;
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.5rem;
-        cursor: pointer;
-    }
-    
-    .nav-menu.mobile-open {
-        display: flex;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--primary-blue);
-        flex-direction: column;
-        padding: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .nav-menu.mobile-open .nav-link,
-    .nav-menu.mobile-open .btn {
-        margin: 0.5rem 0;
-        text-align: center;
     }
 }
 
