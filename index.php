@@ -423,7 +423,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                 top: 70px;
                 left: 0;
                 right: 0;
-                background: white;
+                background: white !important;
                 border-bottom: 1px solid #e0e0e0;
                 padding: 1rem 1.5rem;
                 flex-direction: column;
@@ -441,9 +441,27 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                 transform: translateY(0);
                 opacity: 1;
                 visibility: visible;
+                background: white !important;
             }
             
-            .nav-menu .nav-link,
+            .nav-menu .nav-link {
+                margin: 0.5rem 0;
+                text-align: center;
+                display: block;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border-radius: 6px;
+                color: #666 !important;
+                text-decoration: none;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+            
+            .nav-menu .nav-link:hover {
+                color: var(--hrla-blue) !important;
+                background: #f8f9fa;
+            }
+            
             .nav-menu .btn {
                 margin: 0.5rem 0;
                 text-align: center;
@@ -451,18 +469,30 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                 width: 100%;
                 padding: 0.75rem 1rem;
                 border-radius: 6px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.2s ease;
             }
             
             .nav-menu .btn-outline {
-                border: 2px solid var(--hrla-blue);
-                color: var(--hrla-blue);
-                background: white;
+                border: 2px solid var(--hrla-blue) !important;
+                color: var(--hrla-blue) !important;
+                background: white !important;
+            }
+            
+            .nav-menu .btn-outline:hover {
+                background: #f8f9fa !important;
             }
             
             .nav-menu .btn-primary {
-                background: var(--hrla-blue);
-                color: white;
-                border: 2px solid var(--hrla-blue);
+                background: var(--hrla-blue) !important;
+                color: white !important;
+                border: 2px solid var(--hrla-blue) !important;
+            }
+            
+            .nav-menu .btn-primary:hover {
+                background: var(--hrla-dark-blue) !important;
+                border-color: var(--hrla-dark-blue) !important;
             }
         }
     </style>
@@ -818,51 +848,8 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         </footer>
     </div>
 
+    <script src="assets/js/mobile-menu.js"></script>
     <script>
-        // Mobile menu toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const navMenu = document.querySelector('.nav-menu');
-            
-            if (mobileMenuToggle && navMenu) {
-                mobileMenuToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const isOpen = navMenu.classList.contains('mobile-open');
-                    
-                    if (isOpen) {
-                        navMenu.classList.remove('mobile-open');
-                        this.setAttribute('aria-expanded', 'false');
-                        this.innerHTML = '<i class="fas fa-bars"></i>';
-                    } else {
-                        navMenu.classList.add('mobile-open');
-                        this.setAttribute('aria-expanded', 'true');
-                        this.innerHTML = '<i class="fas fa-times"></i>';
-                    }
-                });
-                
-                // Close menu when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
-                        navMenu.classList.remove('mobile-open');
-                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                        mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                    }
-                });
-                
-                // Close menu when clicking on a link
-                const navLinks = navMenu.querySelectorAll('.nav-link, .btn');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        navMenu.classList.remove('mobile-open');
-                        mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                        mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                    });
-                });
-            }
-        });
-        
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {

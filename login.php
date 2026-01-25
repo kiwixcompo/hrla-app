@@ -144,6 +144,9 @@ $pageTitle = 'Login - HR Leave Assistant';
                 <a href="<?php echo appUrl('login.php'); ?>" class="btn btn-outline">Sign In</a>
                 <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary">Get started for free</a>
             </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
@@ -222,5 +225,7 @@ $pageTitle = 'Login - HR Leave Assistant';
             </div>
         </div>
     </div>
+    
+    <script src="assets/js/mobile-menu.js"></script>
 </body>
 </html>
