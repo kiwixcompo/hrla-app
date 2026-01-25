@@ -61,6 +61,10 @@ if ($requestMethod === 'POST') {
     }
     
     switch ($action) {
+        case 'save_content':
+            saveContent($db, $input, $user);
+            break;
+            
         case 'save_ai_instructions':
             saveAIInstructions($db, $input, $user);
             break;
@@ -307,6 +311,88 @@ function exportData($db) {
         
         echo json_encode($data, JSON_PRETTY_PRINT);
         exit;
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+}
+
+/**
+ * Save Content
+ */
+function saveContent($db, $input, $user) {
+    try {
+        $category = $input['category'] ?? '';
+        
+        if (empty($category)) {
+            echo json_encode(['success' => false, 'error' => 'Category is required']);
+            return;
+        }
+        
+        // Create content table if it doesn't exist
+        $createTableSql = "CREATE TABLE IF NOT EXISTS site_content (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            content_key VARCHAR(100) UNIQUE NOT NULL,
+            content_value TEXT NOT NULL,
+            content_type ENUM('text', 'textarea', 'url', 'number', 'color') DEFAULT 'text',
+            category VARCHAR(50) NOT NULL,
+            label VARCHAR(255) NOT NULL,
+            description TEXT,
+            sort_order INT DEFAULT 0,
+            is_active TINYINT(1) DEFAULT 1,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            updated_by INT,
+            INDEX idx_category (category),
+            INDEX idx_content_key (content_key),
+            INDEX idx_is_active (is_active)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+        
+        $db->query($createTableSql);
+        
+        // Process each field in the input
+        foreach ($input as $key => $value) {
+            if (in_array($key, ['action', 'category', 'csrf_token'])) {
+                continue; // Skip system fields
+            }
+            
+            // Determine content type
+            $contentType = 'text';
+            if (strpos($key, 'description') !== false || strpos($key, 'paragraph') !== false || strpos($key, 'subtitle') !== false) {
+                $contentType = 'textarea';
+            } elseif (strpos($key, 'url') !== false) {
+                $contentType = 'url';
+            } elseif (strpos($key, 'color') !== false) {
+                $contentType = 'color';
+            }
+            
+            // Generate label from key
+            $label = ucwords(str_replace('_', ' ', $key));
+            
+            // Check if content exists
+            $existing = $db->fetch("SELECT id FROM site_content WHERE content_key = ?", [$key]);
+            
+            if ($existing) {
+                // Update existing
+                $sql = "UPDATE site_content 
+                        SET content_value = ?, 
+                            content_type = ?,
+                            category = ?,
+                            label = ?,
+                            updated_by = ?,
+                            updated_at = NOW()
+                        WHERE content_key = ?";
+                
+                $db->query($sql, [$value, $contentType, $category, $label, $user['id'], $key]);
+            } else {
+                // Insert new
+                $sql = "INSERT INTO site_content (content_key, content_value, content_type, category, label, updated_by) 
+                        VALUES (?, ?, ?, ?, ?, ?)";
+                
+                $db->query($sql, [$key, $value, $contentType, $category, $label, $user['id']]);
+            }
+        }
+        
+        echo json_encode(['success' => true, 'message' => 'Content saved successfully']);
+        
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     }

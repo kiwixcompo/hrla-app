@@ -44,6 +44,213 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
     <link rel="stylesheet" href="../assets/css/admin.css?v=2.0">
     <link rel="stylesheet" href="../assets/css/admin-sidebar.css?v=1.0">
     <link rel="icon" type="image/png" href="../hrla_logo.png">
+    
+    <style>
+        /* Content Management Styles */
+        .content-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e9ecef;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+
+        .content-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .content-tab:hover {
+            color: #0023F5;
+            background: #f8f9fa;
+        }
+
+        .content-tab.active {
+            color: #0023F5;
+            border-bottom-color: #0023F5;
+        }
+
+        .content-tab i {
+            margin-right: 0.5rem;
+        }
+
+        .content-tab-content {
+            display: none;
+        }
+
+        .content-tab-content.active {
+            display: block;
+        }
+
+        .content-form {
+            max-width: 800px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0023F5;
+            box-shadow: 0 0 0 3px rgba(0, 35, 245, 0.1);
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 0.5rem;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .char-count {
+            font-weight: 600;
+            color: #0023F5;
+        }
+
+        .feature-inputs input,
+        .feature-items input {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .step-group,
+        .plan-group,
+        .faq-card-group {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-group h4,
+        .plan-group h4,
+        .faq-card-group h4 {
+            margin-bottom: 1rem;
+            color: #0023F5;
+            font-size: 1.1rem;
+        }
+
+        .color-picker-group {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .color-input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .color-input {
+            width: 80px;
+            height: 50px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .color-text-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .btn-reset-color {
+            padding: 0.75rem 1rem;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-reset-color:hover {
+            background: #5a6268;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .video-preview {
+            margin-top: 2rem;
+        }
+
+        .video-embed {
+            max-width: 560px;
+            margin-top: 1rem;
+        }
+
+        .video-embed iframe {
+            width: 100%;
+            height: 315px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .content-tabs {
+                overflow-x: auto;
+            }
+            
+            .content-tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+                white-space: nowrap;
+            }
+            
+            .color-input-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .video-embed iframe {
+                height: 200px;
+            }
+        }
+    </style>
 </head>
 <body class="admin-body">
     <!-- Sidebar Overlay for Mobile -->
@@ -103,6 +310,10 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                 <a href="#" class="nav-item" data-section="ai-instructions">
                     <i class="fas fa-robot"></i>
                     <span>AI Instructions</span>
+                </a>
+                <a href="#" class="nav-item" data-section="content-management">
+                    <i class="fas fa-edit"></i>
+                    <span>Content Management</span>
                 </a>
                 <a href="#" class="nav-item" data-section="site-settings">
                     <i class="fas fa-paint-brush"></i>
@@ -638,6 +849,533 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                     </div>
                 </div>
                 
+                
+                <!-- Content Management Section -->
+                <div id="content-managementSection" class="content-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-edit"></i> Content Management</h2>
+                        <p>Edit all website content including text, images, and video links</p>
+                    </div>
+
+                    <!-- Content Management Tabs -->
+                    <div class="content-tabs">
+                        <button class="content-tab active" data-tab="hero">
+                            <i class="fas fa-home"></i> Hero Section
+                        </button>
+                        <button class="content-tab" data-tab="video">
+                            <i class="fas fa-video"></i> Video Settings
+                        </button>
+                        <button class="content-tab" data-tab="features">
+                            <i class="fas fa-star"></i> Features
+                        </button>
+                        <button class="content-tab" data-tab="how_it_works">
+                            <i class="fas fa-cogs"></i> How It Works
+                        </button>
+                        <button class="content-tab" data-tab="about">
+                            <i class="fas fa-info-circle"></i> About
+                        </button>
+                        <button class="content-tab" data-tab="pricing">
+                            <i class="fas fa-dollar-sign"></i> Pricing
+                        </button>
+                        <button class="content-tab" data-tab="faq">
+                            <i class="fas fa-question-circle"></i> FAQ
+                        </button>
+                        <button class="content-tab" data-tab="cta">
+                            <i class="fas fa-bullhorn"></i> Call to Action
+                        </button>
+                        <button class="content-tab" data-tab="footer">
+                            <i class="fas fa-align-center"></i> Footer
+                        </button>
+                        <button class="content-tab" data-tab="colors">
+                            <i class="fas fa-palette"></i> Colors
+                        </button>
+                    </div>
+
+                    <!-- Hero Content Tab -->
+                    <div class="content-tab-content active" id="heroContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Hero Section Content</h3>
+                                <p>Edit the main headline and features on your homepage</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="heroContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="hero_title">Hero Title</label>
+                                        <textarea id="hero_title" name="hero_title" rows="3" class="form-control" placeholder="Main headline on homepage">Answer Employee Leave Questions With Consistent Compliance Information</textarea>
+                                        <small class="form-text">Character count: <span class="char-count">0</span></small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="hero_subtitle">Hero Subtitle</label>
+                                        <textarea id="hero_subtitle" name="hero_subtitle" rows="3" class="form-control" placeholder="Subtitle text below main headline">AI-powered HR leave response generator for federal and California leave questions. Draft clear, compliant employee communications aligned with FMLA, CFRA, PDL, and ADA.</textarea>
+                                        <small class="form-text">Character count: <span class="char-count">0</span></small>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Feature Bullet Points</label>
+                                        <div class="feature-inputs">
+                                            <input type="text" name="hero_feature_1" class="form-control mb-2" placeholder="Feature 1" value="Built by HR for HR professionals">
+                                            <input type="text" name="hero_feature_2" class="form-control mb-2" placeholder="Feature 2" value="Drafts employee-ready responses">
+                                            <input type="text" name="hero_feature_3" class="form-control mb-2" placeholder="Feature 3" value="Aligned with FMLA, PDL, ADA, and CFRA">
+                                            <input type="text" name="hero_feature_4" class="form-control mb-2" placeholder="Feature 4" value="Supports consistent HR decision-making">
+                                            <input type="text" name="hero_feature_5" class="form-control mb-2" placeholder="Feature 5" value="Helps reduce compliance risk">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="hero_cta_primary">Primary Button Text</label>
+                                        <input type="text" id="hero_cta_primary" name="hero_cta_primary" class="form-control" value="Try HR Leave Assist">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="hero_cta_secondary">Secondary Button Text</label>
+                                        <input type="text" id="hero_cta_secondary" name="hero_cta_secondary" class="form-control" value="See How It Works">
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Hero Content
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" onclick="previewChanges('hero')">
+                                            <i class="fas fa-eye"></i> Preview Changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Settings Tab -->
+                    <div class="content-tab-content" id="videoContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Video Settings</h3>
+                                <p>Manage the YouTube video that plays in the "How It Works" modal</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="videoContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="video_url">YouTube Video URL</label>
+                                        <input type="url" id="video_url" name="video_url" class="form-control" value="https://youtu.be/mCncgWhvKnQ" placeholder="https://youtu.be/VIDEO_ID">
+                                        <small class="form-text">Enter the full YouTube URL (e.g., https://youtu.be/mCncgWhvKnQ)</small>
+                                    </div>
+                                    
+                                    <div class="video-preview">
+                                        <h4>Current Video Preview</h4>
+                                        <div class="video-embed">
+                                            <iframe width="100%" height="315" src="https://www.youtube.com/embed/mCncgWhvKnQ" frameborder="0" allowfullscreen></iframe>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Video Settings
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" onclick="updateVideoPreview()">
+                                            <i class="fas fa-refresh"></i> Update Preview
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features Tab -->
+                    <div class="content-tab-content" id="featuresContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Features Section</h3>
+                                <p>Edit the features displayed on your homepage</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="featuresContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="features_title">Features Section Title</label>
+                                        <input type="text" id="features_title" name="features_title" class="form-control" value="Supporting Your Leave Process">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="features_subtitle">Features Section Subtitle</label>
+                                        <input type="text" id="features_subtitle" name="features_subtitle" class="form-control" value="Every Step of the Way">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Feature Items</label>
+                                        <div class="feature-items">
+                                            <input type="text" name="feature_1" class="form-control mb-2" value="Built to Support Leave Compliance">
+                                            <input type="text" name="feature_2" class="form-control mb-2" value="Respond to Leave Questions Faster">
+                                            <input type="text" name="feature_3" class="form-control mb-2" value="Navigate Federal & California Leave Laws">
+                                            <input type="text" name="feature_4" class="form-control mb-2" value="Designed for Busy HR Teams">
+                                            <input type="text" name="feature_5" class="form-control mb-2" value="Empowers HR-Led Decision-Making">
+                                            <input type="text" name="feature_6" class="form-control mb-2" value="Supports Consistent Leave Administration">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Features
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- How It Works Tab -->
+                    <div class="content-tab-content" id="how_it_worksContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>How It Works Section</h3>
+                                <p>Edit the step-by-step process explanation</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="howItWorksContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="how_it_works_title">Section Title</label>
+                                        <input type="text" id="how_it_works_title" name="how_it_works_title" class="form-control" value="How HR Leave Assist Works">
+                                    </div>
+                                    
+                                    <div class="steps-editor">
+                                        <div class="step-group">
+                                            <h4>Step 1</h4>
+                                            <div class="form-group">
+                                                <label for="step_1_title">Step 1 Title</label>
+                                                <input type="text" id="step_1_title" name="step_1_title" class="form-control" value="Paste Employee Question or Email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="step_1_description">Step 1 Description</label>
+                                                <textarea id="step_1_description" name="step_1_description" rows="2" class="form-control">Copy and paste the employee's leave question or email into the system.</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="step-group">
+                                            <h4>Step 2</h4>
+                                            <div class="form-group">
+                                                <label for="step_2_title">Step 2 Title</label>
+                                                <input type="text" id="step_2_title" name="step_2_title" class="form-control" value="Analysis & Draft Response">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="step_2_description">Step 2 Description</label>
+                                                <textarea id="step_2_description" name="step_2_description" rows="2" class="form-control">The tool analyzes the email and prepares an employee-ready draft aligned with applicable leave requirements.</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="step-group">
+                                            <h4>Step 3</h4>
+                                            <div class="form-group">
+                                                <label for="step_3_title">Step 3 Title</label>
+                                                <input type="text" id="step_3_title" name="step_3_title" class="form-control" value="Review Generated Response & Send">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="step_3_description">Step 3 Description</label>
+                                                <textarea id="step_3_description" name="step_3_description" rows="2" class="form-control">Review, edit as needed, and send the response to your employee.</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save How It Works
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- About Tab -->
+                    <div class="content-tab-content" id="aboutContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>About Section</h3>
+                                <p>Edit your about section content</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="aboutContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="about_title">About Section Title</label>
+                                        <input type="text" id="about_title" name="about_title" class="form-control" value="HR Leave Assist">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="about_paragraph_1">First Paragraph</label>
+                                        <textarea id="about_paragraph_1" name="about_paragraph_1" rows="4" class="form-control">HR Leave Assist (HRLA) is a support tool built for HR professionals who answer employee leave questions every day — especially those involving FMLA, CFRA, PDL, and ADA considerations.</textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="about_paragraph_2">Second Paragraph</label>
+                                        <textarea id="about_paragraph_2" name="about_paragraph_2" rows="4" class="form-control">Leave situations are rarely straightforward. They often involve overlapping leave laws, internal requirements, and personal circumstances—under real-time pressure. HRLA helps streamline that complexity by organizing applicable leave considerations and drafting clear, employee-ready responses, without starting from scratch.</textarea>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="about_paragraph_3">Third Paragraph</label>
+                                        <textarea id="about_paragraph_3" name="about_paragraph_3" rows="4" class="form-control">Built by an HR professional with over 25 years of experience, HRLA is designed to support your judgment—not replace it. The tool reinforces consistency, reduces missed steps, and helps you respond with care, efficiency, and confidence.</textarea>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save About Content
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pricing Tab -->
+                    <div class="content-tab-content" id="pricingContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Pricing Section</h3>
+                                <p>Edit pricing plans and descriptions</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="pricingContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="pricing_title">Pricing Section Title</label>
+                                        <input type="text" id="pricing_title" name="pricing_title" class="form-control" value="Pricing">
+                                    </div>
+                                    
+                                    <div class="pricing-plans">
+                                        <div class="plan-group">
+                                            <h4>Free Trial Plan</h4>
+                                            <div class="form-group">
+                                                <label for="pricing_free_title">Plan Title</label>
+                                                <input type="text" id="pricing_free_title" name="pricing_free_title" class="form-control" value="Free Trial — $0">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pricing_free_description">Plan Description</label>
+                                                <textarea id="pricing_free_description" name="pricing_free_description" rows="2" class="form-control">HR professionals who want to test the tool with real-world scenarios before subscribing.</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="plan-group">
+                                            <h4>Monthly Plan</h4>
+                                            <div class="form-group">
+                                                <label for="pricing_monthly_title">Plan Title</label>
+                                                <input type="text" id="pricing_monthly_title" name="pricing_monthly_title" class="form-control" value="Monthly — $29">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pricing_monthly_description">Plan Description</label>
+                                                <textarea id="pricing_monthly_description" name="pricing_monthly_description" rows="2" class="form-control">Individual HR professionals who regularly respond to employee leave inquiries.</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="plan-group">
+                                            <h4>Annual Plan</h4>
+                                            <div class="form-group">
+                                                <label for="pricing_annual_title">Plan Title</label>
+                                                <input type="text" id="pricing_annual_title" name="pricing_annual_title" class="form-control" value="Annual — $290">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pricing_annual_subtitle">Plan Subtitle</label>
+                                                <input type="text" id="pricing_annual_subtitle" name="pricing_annual_subtitle" class="form-control" value="(2 months free)">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pricing_annual_description">Plan Description</label>
+                                                <textarea id="pricing_annual_description" name="pricing_annual_description" rows="2" class="form-control">Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="plan-group">
+                                            <h4>Organization Plan</h4>
+                                            <div class="form-group">
+                                                <label for="pricing_org_title">Plan Title</label>
+                                                <input type="text" id="pricing_org_title" name="pricing_org_title" class="form-control" value="Organization — $580 / yr">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pricing_org_description">Plan Description</label>
+                                                <textarea id="pricing_org_description" name="pricing_org_description" rows="2" class="form-control">Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Pricing Content
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Tab -->
+                    <div class="content-tab-content" id="faqContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>FAQ Section</h3>
+                                <p>Edit FAQ section titles and descriptions</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="faqContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="faq_title">FAQ Section Title</label>
+                                        <input type="text" id="faq_title" name="faq_title" class="form-control" value="Frequently Asked Questions">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="faq_subtitle">FAQ Section Subtitle</label>
+                                        <input type="text" id="faq_subtitle" name="faq_subtitle" class="form-control" value="Select a category to find answers about leave laws and regulations">
+                                    </div>
+                                    
+                                    <div class="faq-cards">
+                                        <div class="faq-card-group">
+                                            <h4>FMLA FAQ Card</h4>
+                                            <div class="form-group">
+                                                <label for="faq_fmla_title">FMLA Card Title</label>
+                                                <input type="text" id="faq_fmla_title" name="faq_fmla_title" class="form-control" value="FMLA FAQs">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="faq_fmla_description">FMLA Card Description</label>
+                                                <textarea id="faq_fmla_description" name="faq_fmla_description" rows="2" class="form-control">Family and Medical Leave Act questions covering federal leave requirements, eligibility, and job protection.</textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="faq-card-group">
+                                            <h4>CFRA FAQ Card</h4>
+                                            <div class="form-group">
+                                                <label for="faq_cfra_title">CFRA Card Title</label>
+                                                <input type="text" id="faq_cfra_title" name="faq_cfra_title" class="form-control" value="CFRA FAQs">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="faq_cfra_description">CFRA Card Description</label>
+                                                <textarea id="faq_cfra_description" name="faq_cfra_description" rows="2" class="form-control">California Family Rights Act questions covering state-specific leave laws, benefits, and requirements.</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save FAQ Content
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Tab -->
+                    <div class="content-tab-content" id="ctaContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Call to Action Section</h3>
+                                <p>Edit the final call-to-action section</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="ctaContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="cta_title">CTA Title</label>
+                                        <input type="text" id="cta_title" name="cta_title" class="form-control" value="Simple to Start - Easy to Use">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cta_button_text">CTA Button Text</label>
+                                        <input type="text" id="cta_button_text" name="cta_button_text" class="form-control" value="Get Started Now">
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save CTA Content
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Tab -->
+                    <div class="content-tab-content" id="footerContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Footer Content</h3>
+                                <p>Edit footer description text</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="footerContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="footer_description">Footer Description</label>
+                                        <textarea id="footer_description" name="footer_description" rows="3" class="form-control">A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.</textarea>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Footer Content
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Colors Tab -->
+                    <div class="content-tab-content" id="colorsContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Website Colors</h3>
+                                <p>Customize your website's color scheme</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="colorsContentForm" class="content-form">
+                                    <div class="color-picker-group">
+                                        <label for="color_primary">Primary Blue</label>
+                                        <div class="color-input-wrapper">
+                                            <input type="color" id="color_primary" name="color_primary" value="#0322D8" class="color-input">
+                                            <input type="text" value="#0322D8" class="color-text-input" readonly>
+                                            <button type="button" class="btn-reset-color" data-default="#0322D8">
+                                                <i class="fas fa-undo"></i> Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="color-picker-group">
+                                        <label for="color_secondary">Secondary Green</label>
+                                        <div class="color-input-wrapper">
+                                            <input type="color" id="color_secondary" name="color_secondary" value="#3DB20B" class="color-input">
+                                            <input type="text" value="#3DB20B" class="color-text-input" readonly>
+                                            <button type="button" class="btn-reset-color" data-default="#3DB20B">
+                                                <i class="fas fa-undo"></i> Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="color-picker-group">
+                                        <label for="color_dark_blue">Dark Blue</label>
+                                        <div class="color-input-wrapper">
+                                            <input type="color" id="color_dark_blue" name="color_dark_blue" value="#1800AD" class="color-input">
+                                            <input type="text" value="#1800AD" class="color-text-input" readonly>
+                                            <button type="button" class="btn-reset-color" data-default="#1800AD">
+                                                <i class="fas fa-undo"></i> Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="color-picker-group">
+                                        <label for="color_red">Red (CTA Section)</label>
+                                        <div class="color-input-wrapper">
+                                            <input type="color" id="color_red" name="color_red" value="#FF0000" class="color-input">
+                                            <input type="text" value="#FF0000" class="color-text-input" readonly>
+                                            <button type="button" class="btn-reset-color" data-default="#FF0000">
+                                                <i class="fas fa-undo"></i> Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Colors
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" onclick="previewColors()">
+                                            <i class="fas fa-eye"></i> Preview Colors
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <?php 
                 // Include Site Settings Section
                 require_once 'site-settings-section.php'; 
@@ -1193,6 +1931,153 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                 alert('Error: ' + error.message);
             });
         });
+
+        // Content Management System JavaScript
+        
+        // Content tabs functionality
+        document.querySelectorAll('.content-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.content-tab-content').forEach(c => c.classList.remove('active'));
+                const targetContent = document.getElementById(tabName + 'Content');
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+
+        // Character count for textareas
+        document.querySelectorAll('.content-form textarea, .content-form input[type="text"]').forEach(input => {
+            const updateCount = () => {
+                const counter = input.parentElement.querySelector('.char-count');
+                if (counter) {
+                    counter.textContent = input.value.length;
+                }
+            };
+            
+            updateCount();
+            input.addEventListener('input', updateCount);
+        });
+
+        // Color picker sync
+        document.querySelectorAll('.color-input').forEach(input => {
+            input.addEventListener('input', function() {
+                const textInput = this.parentElement.querySelector('.color-text-input');
+                textInput.value = this.value.toUpperCase();
+            });
+        });
+
+        // Reset color buttons
+        document.querySelectorAll('.btn-reset-color').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const defaultColor = this.dataset.default;
+                const colorInput = this.parentElement.querySelector('.color-input');
+                const textInput = this.parentElement.querySelector('.color-text-input');
+                
+                colorInput.value = defaultColor;
+                textInput.value = defaultColor;
+            });
+        });
+
+        // Content form submissions
+        const contentForms = [
+            'heroContentForm', 'videoContentForm', 'featuresContentForm', 
+            'howItWorksContentForm', 'aboutContentForm', 'pricingContentForm',
+            'faqContentForm', 'ctaContentForm', 'footerContentForm', 'colorsContentForm'
+        ];
+
+        contentForms.forEach(formId => {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const data = Object.fromEntries(formData);
+                    
+                    // Add action and category
+                    data.action = 'save_content';
+                    data.category = formId.replace('ContentForm', '').replace('_', '');
+                    data.csrf_token = '<?php echo generateCSRFToken(); ?>';
+                    
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                    
+                    try {
+                        const response = await fetch('<?php echo appUrl('api/admin.php'); ?>', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            showNotification('Content saved successfully!', 'success');
+                        } else {
+                            showNotification(result.error || 'Failed to save content', 'error');
+                        }
+                    } catch (error) {
+                        showNotification('Error saving content: ' + error.message, 'error');
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                });
+            }
+        });
+
+        // Video preview update
+        function updateVideoPreview() {
+            const videoUrl = document.getElementById('video_url').value;
+            const iframe = document.querySelector('.video-embed iframe');
+            
+            if (videoUrl && iframe) {
+                // Extract video ID from YouTube URL
+                let videoId = '';
+                if (videoUrl.includes('youtu.be/')) {
+                    videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+                } else if (videoUrl.includes('youtube.com/watch?v=')) {
+                    videoId = videoUrl.split('v=')[1].split('&')[0];
+                }
+                
+                if (videoId) {
+                    iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                    showNotification('Video preview updated!', 'success');
+                } else {
+                    showNotification('Invalid YouTube URL format', 'error');
+                }
+            }
+        }
+
+        // Preview changes function
+        function previewChanges(section) {
+            showNotification('Preview functionality will be available after saving changes', 'info');
+        }
+
+        // Preview colors function
+        function previewColors() {
+            const form = document.getElementById('colorsContentForm');
+            const formData = new FormData(form);
+            
+            // Apply colors temporarily to admin panel
+            document.documentElement.style.setProperty('--color-primary', formData.get('color_primary'));
+            document.documentElement.style.setProperty('--color-secondary', formData.get('color_secondary'));
+            document.documentElement.style.setProperty('--color-dark-blue', formData.get('color_dark_blue'));
+            document.documentElement.style.setProperty('--color-red', formData.get('color_red'));
+            
+            showNotification('Color preview applied! Save to make permanent.', 'info');
+        }
     </script>
 </body>
 </html>

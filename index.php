@@ -7,6 +7,10 @@
 require_once 'config/app.php';
 require_once 'config/site-settings.php';
 require_once 'includes/auth.php';
+require_once 'includes/content.php';
+
+// Initialize content system
+initContentSystem();
 
 $auth = getAuth();
 
@@ -60,11 +64,11 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
     <style>
         /* --- EXACT COLOR VARIABLES --- */
         :root {
-            --hrla-blue: #0322D8;
-            --hrla-dark-blue: #1800AD;
-            --hrla-green: #3DB20B;
+            --hrla-blue: <?php echo getContent('color_primary', '#0322D8'); ?>;
+            --hrla-dark-blue: <?php echo getContent('color_dark_blue', '#1800AD'); ?>;
+            --hrla-green: <?php echo getContent('color_secondary', '#3DB20B'); ?>;
             --hrla-black: #000000;
-            --hrla-red: #FF0000; /* Standard Red */
+            --hrla-red: <?php echo getContent('color_red', '#FF0000'); ?>; /* Standard Red */
         }
 
         /* --- NAVIGATION --- */
@@ -260,21 +264,21 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         <span class="text-blue">HR LEAVE</span> <span class="text-green">ASSIST</span>
                     </div>
                     <h1 class="hero-title-custom">
-                        Answer Employee Leave Questions With Consistent Compliance Information
+                        <?php echo htmlspecialchars(getContent('hero_title', 'Answer Employee Leave Questions With Consistent Compliance Information')); ?>
                     </h1>
                     <ul class="feature-list-custom">
-                        <li><span class="checkmark-custom">✔</span> Built by HR for HR professionals</li>
-                        <li><span class="checkmark-custom">✔</span> Drafts employee-ready responses</li>
-                        <li><span class="checkmark-custom">✔</span> Aligned with FMLA, PDL, ADA, and CFRA</li>
-                        <li><span class="checkmark-custom">✔</span> Supports consistent HR decision-making</li>
-                        <li><span class="checkmark-custom">✔</span> Helps reduce compliance risk</li>
+                        <li><span class="checkmark-custom">✔</span> <?php echo htmlspecialchars(getContent('hero_feature_1', 'Built by HR for HR professionals')); ?></li>
+                        <li><span class="checkmark-custom">✔</span> <?php echo htmlspecialchars(getContent('hero_feature_2', 'Drafts employee-ready responses')); ?></li>
+                        <li><span class="checkmark-custom">✔</span> <?php echo htmlspecialchars(getContent('hero_feature_3', 'Aligned with FMLA, PDL, ADA, and CFRA')); ?></li>
+                        <li><span class="checkmark-custom">✔</span> <?php echo htmlspecialchars(getContent('hero_feature_4', 'Supports consistent HR decision-making')); ?></li>
+                        <li><span class="checkmark-custom">✔</span> <?php echo htmlspecialchars(getContent('hero_feature_5', 'Helps reduce compliance risk')); ?></li>
                     </ul>
                     <div class="button-group-custom">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn-primary-custom">
-                            Try HR Leave Assist
+                            <?php echo htmlspecialchars(getContent('hero_cta_primary', 'Try HR Leave Assist')); ?>
                         </a>
-                        <a href="#how-it-works" class="btn-secondary-custom">
-                            See How It Works
+                        <a href="#how-it-works" class="btn-secondary-custom" onclick="openVideoModal(); return false;">
+                            <?php echo htmlspecialchars(getContent('hero_cta_secondary', 'See How It Works')); ?>
                         </a>
                     </div>
                 </div>
@@ -312,33 +316,33 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         <section id="features" class="features-section">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Supporting Your Leave Process</h2>
-                    <h3 class="section-subtitle">Every Step of the Way</h3>
+                    <h2 class="section-title"><?php echo htmlspecialchars(getContent('features_title', 'Supporting Your Leave Process')); ?></h2>
+                    <h3 class="section-subtitle"><?php echo htmlspecialchars(getContent('features_subtitle', 'Every Step of the Way')); ?></h3>
                 </div>
                 <div class="features-checklist">
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Built to Support Leave Compliance</h3>
+                        <h3><?php echo htmlspecialchars(getContent('feature_1', 'Built to Support Leave Compliance')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Respond to Leave Questions Faster</h3>
+                        <h3><?php echo htmlspecialchars(getContent('feature_2', 'Respond to Leave Questions Faster')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Navigate Federal & California Leave Laws</h3>
+                        <h3><?php echo htmlspecialchars(getContent('feature_3', 'Navigate Federal & California Leave Laws')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Designed for Busy HR Teams</h3>
+                        <h3><?php echo htmlspecialchars(getContent('feature_4', 'Designed for Busy HR Teams')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Empowers HR-Led Decision-Making</h3>
+                        <h3><?php echo htmlspecialchars(getContent('feature_5', 'Empowers HR-Led Decision-Making')); ?></h3>
                     </div>
                     <div class="checklist-item">
                         <i class="fas fa-check-circle"></i>
-                        <h3>Supports Consistent Leave Administration</h3>
+                        <h3><?php echo htmlspecialchars(getContent('feature_6', 'Supports Consistent Leave Administration')); ?></h3>
                     </div>
                 </div>
             </div>
@@ -513,7 +517,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         <div class="footer-logo-text">
                             <span class="footer-hr">HR</span><span class="footer-la">LA</span>
                         </div>
-                        <p>A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.</p>
+                        <p><?php echo htmlspecialchars(getContent('footer_description', 'A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.')); ?></p>
                     </div>
                     
                     <div class="footer-legal-links">
@@ -533,6 +537,98 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             </div>
         </footer>
     </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal" style="display: none;">
+        <div class="video-modal-content">
+            <span class="video-modal-close" onclick="closeVideoModal()">&times;</span>
+            <div class="video-container">
+                <iframe id="videoFrame" width="100%" height="100%" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Video Modal Styles */
+        .video-modal {
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            height: 60vh;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .video-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+        
+        .video-modal-close:hover {
+            opacity: 0.7;
+        }
+        
+        .video-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .video-modal-content {
+                width: 95%;
+                height: 50vh;
+            }
+        }
+    </style>
+
+    <script>
+        function openVideoModal() {
+            const videoUrl = '<?php echo getYouTubeEmbedUrl(getContent('video_url', 'https://youtu.be/mCncgWhvKnQ')); ?>?autoplay=1';
+            document.getElementById('videoFrame').src = videoUrl;
+            document.getElementById('videoModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeVideoModal() {
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('videoFrame').src = '';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+    </script>
 
     <script>
         document.getElementById('mobileMenuToggle')?.addEventListener('click', function() {
