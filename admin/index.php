@@ -951,10 +951,16 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                         <div class="card">
                             <div class="card-header">
                                 <h3>Video Settings</h3>
-                                <p>Manage the YouTube video that plays in the "How It Works" modal</p>
+                                <p>Manage the YouTube video that appears in the "What Is HR Leave Assist?" section</p>
                             </div>
                             <div class="card-body">
                                 <form id="videoContentForm" class="content-form">
+                                    <div class="form-group">
+                                        <label for="video_section_title">Video Section Title</label>
+                                        <input type="text" id="video_section_title" name="video_section_title" class="form-control" value="What Is HR Leave Assist?" placeholder="Section title">
+                                        <small class="form-text">Title that appears above the video</small>
+                                    </div>
+                                    
                                     <div class="form-group">
                                         <label for="video_url">YouTube Video URL</label>
                                         <input type="url" id="video_url" name="video_url" class="form-control" value="https://youtu.be/mCncgWhvKnQ" placeholder="https://youtu.be/VIDEO_ID">

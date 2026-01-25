@@ -7,6 +7,10 @@
 require_once 'config/app.php';
 require_once 'config/site-settings.php';
 require_once 'includes/auth.php';
+require_once 'includes/content.php';
+
+// Initialize content system
+initContentSystem();
 
 $auth = getAuth();
 
@@ -39,9 +43,9 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
 
     <style>
         :root {
-            --hrla-blue: #0322D8;
-            --hrla-dark-blue: #1800AD;
-            --hrla-green: #3DB20B;
+            --hrla-blue: <?php echo getContent('color_primary', '#0322D8'); ?>;
+            --hrla-dark-blue: <?php echo getContent('color_dark_blue', '#1800AD'); ?>;
+            --hrla-green: <?php echo getContent('color_secondary', '#3DB20B'); ?>;
             --hrla-black: #000000;
         }
 
@@ -218,14 +222,14 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
     <div class="pricing-page pricing-section">
         <div class="container">
             <div class="pricing-page-header">
-                <h1>Pricing Plans</h1>
+                <h1><?php echo htmlspecialchars(getContent('pricing_title', 'Pricing Plans')); ?></h1>
                 <p>Choose the plan that works best for your HR team</p>
             </div>
 
             <div class="pricing-grid-detailed">
                 <div class="pricing-card-detailed">
                     <div class="pricing-header">
-                        <h3>Free Trial — $0</h3>
+                        <h3><?php echo htmlspecialchars(getContent('pricing_free_title', 'Free Trial — $0')); ?></h3>
                     </div>
                     <div class="pricing-description">
                         <p>Evaluate how HR Leave Assist supports your individual HR workflow</p>
@@ -241,7 +245,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                     </div>
                     <div class="pricing-best-for">
                         <strong>Best for:</strong><br>
-                        HR professionals who want to test the tool with real-world scenarios.
+                        <?php echo htmlspecialchars(getContent('pricing_free_description', 'HR professionals who want to test the tool with real-world scenarios before subscribing.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -253,7 +257,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                 <div class="pricing-card-detailed featured">
                     <div class="pricing-badge">Most Popular</div>
                     <div class="pricing-header">
-                        <h3>Monthly — $29</h3>
+                        <h3><?php echo htmlspecialchars(getContent('pricing_monthly_title', 'Monthly — $29')); ?></h3>
                     </div>
                     <div class="pricing-description">
                         <p>For individual HR professionals managing ongoing leave questions</p>
@@ -269,7 +273,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                     </div>
                     <div class="pricing-best-for">
                         <strong>Best for:</strong><br>
-                        Individual HR professionals who regularly respond to leave inquiries.
+                        <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -280,8 +284,8 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                 
                 <div class="pricing-card-detailed">
                     <div class="pricing-header">
-                        <h3>Annual — $290</h3>
-                        <div style="color: var(--hrla-green); font-size: 0.9rem; font-weight: bold;">(2 months free)</div>
+                        <h3><?php echo htmlspecialchars(getContent('pricing_annual_title', 'Annual — $290')); ?></h3>
+                        <div style="color: var(--hrla-green); font-size: 0.9rem; font-weight: bold;"><?php echo htmlspecialchars(getContent('pricing_annual_subtitle', '(2 months free)')); ?></div>
                     </div>
                     <div class="pricing-description">
                         <p>Consistent, uninterrupted access for individual professional use</p>
@@ -296,7 +300,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                     </div>
                     <div class="pricing-best-for">
                         <strong>Best for:</strong><br>
-                        HR professionals who rely on HR Leave Assist as part of their regular workflow.
+                        <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -307,7 +311,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                 
                 <div class="pricing-card-detailed">
                     <div class="pricing-header">
-                        <h3>Org — $580 / yr</h3>
+                        <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
                     </div>
                     <div class="pricing-description">
                         <p>Shared annual access for up to 5 HR professionals</p>
@@ -322,7 +326,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                     </div>
                     <div class="pricing-best-for">
                         <strong>Best for:</strong><br>
-                        Small HR teams (2-5) who regularly respond to leave questions.
+                        <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -339,7 +343,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
             <div class="footer-content">
                 <div class="footer-brand">
                     <img src="footer_logo.png" alt="HRLA Logo" class="footer-logo-img">
-                    <p>A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.</p>
+                    <p><?php echo htmlspecialchars(getContent('footer_description', 'A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.')); ?></p>
                 </div>
                 
                 <div class="footer-legal-links">

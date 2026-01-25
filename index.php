@@ -113,6 +113,132 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         .demo-note i { color: var(--hrla-green); margin-right: 10px; font-size: 1.3rem; }
         .demo-note em { font-style: normal; }
 
+        /* --- WHAT IS HR LEAVE ASSIST SECTION --- */
+        .what-is-section { 
+            padding: 80px 0; 
+            background: #fff; 
+        }
+        
+        .video-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Mobile video section inside hero */
+        .what-is-mobile {
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .mobile-video-header {
+            margin-bottom: 30px;
+        }
+        
+        .mobile-video-header .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--hrla-black);
+            margin: 0;
+        }
+        
+        /* Mobile video section as separate section */
+        .what-is-mobile-section {
+            padding: 60px 0;
+            background: #f8f9fa;
+            text-align: center;
+        }
+        
+        .what-is-mobile-section .mobile-video-header {
+            margin-bottom: 40px;
+        }
+        
+        .what-is-mobile-section .mobile-video-header .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--hrla-black);
+            margin: 0;
+        }
+        
+        /* Responsive visibility */
+        .desktop-only {
+            display: block;
+        }
+        
+        .mobile-only {
+            display: none;
+        }
+        
+        @media (max-width: 991px) {
+            .desktop-only {
+                display: none;
+            }
+            
+            .mobile-only {
+                display: block;
+            }
+            
+            .what-is-mobile .video-content {
+                max-width: 100%;
+                padding: 0 20px;
+            }
+            
+            .what-is-mobile-section .video-content {
+                max-width: 100%;
+                padding: 0 20px;
+            }
+            
+            .mobile-video-header .section-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .what-is-section {
+                padding: 60px 0;
+            }
+            
+            .what-is-mobile {
+                padding: 30px 0;
+            }
+            
+            .what-is-mobile-section {
+                padding: 40px 0;
+            }
+            
+            .what-is-mobile .video-content {
+                padding: 0 15px;
+            }
+            
+            .what-is-mobile-section .video-content {
+                padding: 0 15px;
+            }
+            
+            .mobile-video-header .section-title {
+                font-size: 1.6rem;
+            }
+        }
+
         /* --- ABOUT SECTION --- */
         .about-section { padding: 80px 0; background: #fff; }
         .about-main { display: flex; flex-direction: column; gap: 40px; }
@@ -277,11 +403,12 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn-primary-custom">
                             <?php echo htmlspecialchars(getContent('hero_cta_primary', 'Try HR Leave Assist')); ?>
                         </a>
-                        <a href="#how-it-works" class="btn-secondary-custom" onclick="openVideoModal(); return false;">
+                        <a href="#how-it-works" class="btn-secondary-custom">
                             <?php echo htmlspecialchars(getContent('hero_cta_secondary', 'See How It Works')); ?>
                         </a>
                     </div>
                 </div>
+                
                 <div class="hero-visual">
                     <div class="hero-card" role="img" aria-label="HRLA Response Generator Demo">
                         <div class="card-header">
@@ -308,6 +435,48 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                                 <em>All responses are reviewed and finalized by HR Professional</em>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What Is HR Leave Assist Section - Mobile Only -->
+        <section class="what-is-mobile-section mobile-only">
+            <div class="container">
+                <div class="mobile-video-header">
+                    <h2 class="section-title"><?php echo htmlspecialchars(getContent('video_section_title', 'What Is HR Leave Assist?')); ?></h2>
+                </div>
+                <div class="video-content">
+                    <div class="video-wrapper">
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            src="<?php echo getYouTubeEmbedUrl(getContent('video_url', 'https://youtu.be/mCncgWhvKnQ')); ?>" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What Is HR Leave Assist Section - Desktop -->
+        <section id="what-is-hrla" class="what-is-section desktop-only">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><?php echo htmlspecialchars(getContent('video_section_title', 'What Is HR Leave Assist?')); ?></h2>
+                </div>
+                <div class="video-content">
+                    <div class="video-wrapper">
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            src="<?php echo getYouTubeEmbedUrl(getContent('video_url', 'https://youtu.be/mCncgWhvKnQ')); ?>" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -537,98 +706,6 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             </div>
         </footer>
     </div>
-
-    <!-- Video Modal -->
-    <div id="videoModal" class="video-modal" style="display: none;">
-        <div class="video-modal-content">
-            <span class="video-modal-close" onclick="closeVideoModal()">&times;</span>
-            <div class="video-container">
-                <iframe id="videoFrame" width="100%" height="100%" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        /* Video Modal Styles */
-        .video-modal {
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .video-modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            height: 60vh;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .video-modal-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            color: white;
-            font-size: 35px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 10000;
-        }
-        
-        .video-modal-close:hover {
-            opacity: 0.7;
-        }
-        
-        .video-container {
-            width: 100%;
-            height: 100%;
-        }
-        
-        @media (max-width: 768px) {
-            .video-modal-content {
-                width: 95%;
-                height: 50vh;
-            }
-        }
-    </style>
-
-    <script>
-        function openVideoModal() {
-            const videoUrl = '<?php echo getYouTubeEmbedUrl(getContent('video_url', 'https://youtu.be/mCncgWhvKnQ')); ?>?autoplay=1';
-            document.getElementById('videoFrame').src = videoUrl;
-            document.getElementById('videoModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeVideoModal() {
-            document.getElementById('videoModal').style.display = 'none';
-            document.getElementById('videoFrame').src = '';
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Close modal when clicking outside
-        document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeVideoModal();
-            }
-        });
-        
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeVideoModal();
-            }
-        });
-    </script>
 
     <script>
         document.getElementById('mobileMenuToggle')?.addEventListener('click', function() {

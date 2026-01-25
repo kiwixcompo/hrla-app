@@ -14,7 +14,64 @@ function getContent($key, $default = '') {
         return $result ? $result['content_value'] : $default;
     } catch (Exception $e) {
         error_log("Error getting content for key '$key': " . $e->getMessage());
+        
+        // Try file-based fallback
+        $fileContent = getContentFromFile($key, $default);
+        if ($fileContent !== $default) {
+            return $fileContent;
+        }
+        
         return $default;
+    }
+}
+
+/**
+ * File-based content fallback
+ */
+function getContentFromFile($key, $default = '') {
+    $contentFile = __DIR__ . '/../data/content.json';
+    
+    if (file_exists($contentFile)) {
+        try {
+            $content = json_decode(file_get_contents($contentFile), true);
+            return $content[$key] ?? $default;
+        } catch (Exception $e) {
+            error_log("Error reading content file: " . $e->getMessage());
+        }
+    }
+    
+    return $default;
+}
+
+/**
+ * Save content to file (fallback)
+ */
+function saveContentToFile($key, $value) {
+    $contentFile = __DIR__ . '/../data/content.json';
+    $content = [];
+    
+    // Load existing content
+    if (file_exists($contentFile)) {
+        try {
+            $content = json_decode(file_get_contents($contentFile), true) ?: [];
+        } catch (Exception $e) {
+            error_log("Error reading existing content file: " . $e->getMessage());
+        }
+    }
+    
+    // Update content
+    $content[$key] = $value;
+    
+    // Save content
+    try {
+        if (!is_dir(dirname($contentFile))) {
+            mkdir(dirname($contentFile), 0755, true);
+        }
+        file_put_contents($contentFile, json_encode($content, JSON_PRETTY_PRINT));
+        return true;
+    } catch (Exception $e) {
+        error_log("Error saving content to file: " . $e->getMessage());
+        return false;
     }
 }
 
@@ -76,7 +133,8 @@ function ensureContentTable() {
         return true;
     } catch (Exception $e) {
         error_log("Error ensuring content table: " . $e->getMessage());
-        return false;
+        // Don't fail if database is not available - file system will work
+        return true;
     }
 }
 
@@ -152,6 +210,12 @@ function getYouTubeEmbedUrl($url) {
  * Initialize content system
  */
 function initContentSystem() {
-    return ensureContentTable();
+    try {
+        return ensureContentTable();
+    } catch (Exception $e) {
+        error_log("Content system initialization failed: " . $e->getMessage());
+        // Even if database fails, we can still use file-based system
+        return true;
+    }
 }
 ?>

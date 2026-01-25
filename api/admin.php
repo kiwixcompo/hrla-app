@@ -394,7 +394,39 @@ function saveContent($db, $input, $user) {
         echo json_encode(['success' => true, 'message' => 'Content saved successfully']);
         
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        // Try file-based fallback
+        error_log("Database save failed, trying file backup: " . $e->getMessage());
+        
+        try {
+            $contentFile = '../data/content.json';
+            $content = [];
+            
+            // Load existing content
+            if (file_exists($contentFile)) {
+                $content = json_decode(file_get_contents($contentFile), true) ?: [];
+            }
+            
+            // Update content
+            foreach ($input as $key => $value) {
+                if (in_array($key, ['action', 'category', 'csrf_token'])) {
+                    continue;
+                }
+                $content[$key] = $value;
+            }
+            
+            // Ensure data directory exists
+            if (!is_dir('../data')) {
+                mkdir('../data', 0755, true);
+            }
+            
+            // Save content
+            file_put_contents($contentFile, json_encode($content, JSON_PRETTY_PRINT));
+            
+            echo json_encode(['success' => true, 'message' => 'Content saved successfully (file backup used)']);
+            
+        } catch (Exception $fileError) {
+            echo json_encode(['success' => false, 'error' => 'Failed to save content: ' . $fileError->getMessage()]);
+        }
     }
 }
 

@@ -6,6 +6,10 @@
 
 require_once 'config/app.php';
 require_once 'includes/auth.php';
+require_once 'includes/content.php';
+
+// Initialize content system
+initContentSystem();
 
 $auth = getAuth();
 $auth->requireAuth();
@@ -189,7 +193,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                 <!-- Monthly Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Monthly — $29</h3>
+                        <h3><?php echo htmlspecialchars(getContent('pricing_monthly_title', 'Monthly — $29')); ?></h3>
                     </div>
                     <div class="pricing-description">
                         <p>For individual HR professionals managing ongoing leave questions</p>
@@ -205,7 +209,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                     </div>
                     <div class="pricing-best-for">
                         <strong>Best for:</strong><br>
-                        Individual HR professionals who regularly respond to leave inquiries.
+                        <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
                     </div>
                     <button class="btn btn-primary btn-block" onclick="selectPlan('monthly', 29)">
                         Subscribe Monthly
@@ -216,8 +220,8 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                 <div class="pricing-card featured">
                     <div class="pricing-badge">Most Popular</div>
                     <div class="pricing-header">
-                        <h3>Annual — $290</h3>
-                        <div class="pricing-save">(2 months free)</div>
+                        <h3><?php echo htmlspecialchars(getContent('pricing_annual_title', 'Annual — $290')); ?></h3>
+                        <div class="pricing-save"><?php echo htmlspecialchars(getContent('pricing_annual_subtitle', '(2 months free)')); ?></div>
                     </div>
                     <div class="pricing-description">
                         <p>Consistent, uninterrupted access for individual professional use</p>
@@ -232,7 +236,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                     </div>
                     <div class="pricing-best-for">
                         <strong>Best for:</strong><br>
-                        HR professionals who rely on HR Leave Assist as part of their regular workflow.
+                        <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
                     </div>
                     <button class="btn btn-primary btn-block" onclick="selectPlan('annual', 290)">
                         Subscribe Annually
@@ -242,7 +246,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                 <!-- Organization Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3>Org — $580</h3>
+                        <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
                     </div>
                     <div class="pricing-description">
                         <p>Shared annual access for up to 5 HR professionals</p>
@@ -257,7 +261,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                     </div>
                     <div class="pricing-best-for">
                         <strong>Best for:</strong><br>
-                        Small HR teams (2-5) who regularly respond to leave questions.
+                        <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                     </div>
                     <button class="btn btn-primary btn-block" onclick="selectPlan('organization', 580)">
                         Subscribe Organization
