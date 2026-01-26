@@ -144,7 +144,7 @@ function ensureContentTable() {
 function insertDefaultContent($db) {
     $defaultContent = [
         // Hero Section
-        ['hero_title', 'Answer Employee Leave Questions With Consistent Compliance Information', 'textarea', 'hero', 'Hero Title', 'Main headline on homepage', 1],
+        ['hero_title', 'Generates HR-Ready Responses To Employee Leave Questions', 'textarea', 'hero', 'Hero Title', 'Main headline on homepage', 1],
         ['hero_subtitle', 'AI-powered HR leave response generator for federal and California leave questions. Draft clear, compliant employee communications aligned with FMLA, CFRA, PDL, and ADA.', 'textarea', 'hero', 'Hero Subtitle', 'Subtitle text below main headline', 2],
         ['hero_feature_1', 'Built by HR for HR professionals', 'text', 'hero', 'Feature 1', 'First feature bullet point', 3],
         ['hero_feature_2', 'Drafts employee-ready responses', 'text', 'hero', 'Feature 2', 'Second feature bullet point', 4],

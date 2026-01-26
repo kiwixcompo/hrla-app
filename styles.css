@@ -256,10 +256,17 @@ body {
     display: none;
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: #0322D8;
     cursor: pointer;
     padding: 0.5rem;
+    line-height: 1;
+}
+
+.hamburger-icon {
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    display: inline-block;
 }
 
 /* Mobile Navigation Styles - Global */

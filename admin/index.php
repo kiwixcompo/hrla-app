@@ -902,7 +902,7 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                                 <form id="heroContentForm" class="content-form">
                                     <div class="form-group">
                                         <label for="hero_title">Hero Title</label>
-                                        <textarea id="hero_title" name="hero_title" rows="3" class="form-control" placeholder="Main headline on homepage">Answer Employee Leave Questions With Consistent Compliance Information</textarea>
+                                        <textarea id="hero_title" name="hero_title" rows="3" class="form-control" placeholder="Main headline on homepage">Generates HR-Ready Responses To Employee Leave Questions</textarea>
                                         <small class="form-text">Character count: <span class="char-count">0</span></small>
                                     </div>
                                     

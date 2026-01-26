@@ -91,7 +91,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         }
         
         .nav-brand { display: flex; align-items: center; }
-        .nav-logo-img { max-height: 45px; width: auto; display: block; }
+        .nav-logo-img { max-height: 35px; width: auto; display: block; }
         
         .nav-menu {
             display: flex;
@@ -127,15 +127,15 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
 
         /* --- HERO SECTION --- */
         .hero-section { background-color: #f2f4fe; padding: 80px 0; }
-        .hero-brand-text { font-size: 3rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; letter-spacing: -1px; line-height: 1; }
+        .hero-brand-text { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 2px; line-height: 1; }
         .text-blue { color: var(--hrla-blue); }
         .text-green { color: var(--hrla-green); }
         
-        .hero-title-custom { font-size: 2.5rem; line-height: 1.2; font-weight: 800; color: var(--hrla-black); margin-bottom: 30px; max-width: 100%; }
+        .hero-title-custom { font-size: 2rem; line-height: 1.2; font-weight: 400; color: var(--hrla-black); margin-bottom: 30px; max-width: 100%; }
         
         .feature-list-custom { list-style: none; padding: 0; margin: 0 0 40px 0; display: block; text-align: left; }
         .feature-list-custom li { font-size: 1.15rem; color: #333; margin-bottom: 15px; display: flex; align-items: flex-start; font-weight: 400; }
-        .checkmark-custom { color: var(--hrla-green); font-weight: bold; font-size: 1.4rem; margin-right: 15px; line-height: 1; }
+        .checkmark-custom { color: var(--hrla-green) !important; font-weight: bold; font-size: 1.4rem; margin-right: 15px; line-height: 1; }
 
         /* General Buttons */
         .btn-primary-custom { background-color: var(--hrla-blue); color: white; border: 2px solid var(--hrla-blue); padding: 16px 32px; font-weight: 700; font-size: 1.1rem; border-radius: 6px; text-decoration: none; display: inline-block; transition: all 0.2s; }
@@ -147,7 +147,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         /* --- HERO CARD --- */
         .hero-visual { display: flex; justify-content: center; align-items: center; }
         .hero-card { background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; max-width: 500px; width: 100%; }
-        .card-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; }
+        .card-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: center; }
         .card-dots { display: flex; gap: 6px; margin-right: 15px; }
         .dot { width: 10px; height: 10px; border-radius: 50%; }
         .dot.red { background: #ff5f56; }
@@ -364,6 +364,72 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             color: #ffffff;
         }
 
+        /* --- CONTACT SECTION --- */
+        .contact-section { 
+            padding: 80px 0; 
+            background-color: #f8f9fa; 
+        }
+        
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--hrla-black);
+            margin-bottom: 20px;
+        }
+        
+        .contact-info p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        
+        .contact-method i {
+            color: var(--hrla-blue);
+            font-size: 1.3rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-section {
+                padding: 60px 0;
+            }
+            
+            .contact-info h3 {
+                font-size: 1.3rem;
+            }
+            
+            .contact-info p {
+                font-size: 1rem;
+            }
+            
+            .contact-method {
+                font-size: 1rem;
+            }
+        }
+
         /* --- FOOTER --- */
         .landing-footer { background-color: #1a1a1a; color: #fff; padding: 60px 0 30px; }
         .footer-content { display: flex; justify-content: space-between; align-items: flex-start; gap: 60px; margin-bottom: 40px; }
@@ -516,10 +582,10 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                     <a href="<?php echo appUrl('index.php#faqs'); ?>" class="nav-link" role="menuitem">FAQs</a>
                     <a href="<?php echo appUrl('index.php#contact'); ?>" class="nav-link" role="menuitem">Contact</a>
                     <a href="<?php echo appUrl('login.php'); ?>" class="btn btn-outline">Sign In</a>
-                    <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary">Get started for free</a>
+                    <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary">GET STARTED FOR FREE</a>
                 </div>
                 <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu" aria-expanded="false">
-                    <i class="fas fa-bars"></i>
+                    <span class="hamburger-icon">≡</span>
                 </button>
             </div>
         </nav>
@@ -816,6 +882,31 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                     <a href="<?php echo appUrl('register.php'); ?>" class="btn-cta-blue">
                         Get Started Now
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Contact Us</h2>
+                    <p class="section-subtitle">Have questions? We're here to help.</p>
+                </div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Get in Touch</h3>
+                        <p>For questions about HR Leave Assist, pricing, or technical support, please reach out to us.</p>
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <i class="fas fa-envelope"></i>
+                                <span>support@hrleaveassist.com</span>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fas fa-clock"></i>
+                                <span>Response within 24 hours</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

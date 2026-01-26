@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isOpen) {
                 navMenu.classList.remove('mobile-open');
                 this.setAttribute('aria-expanded', 'false');
-                this.innerHTML = '<i class="fas fa-bars"></i>';
+                this.innerHTML = '<span class="hamburger-icon">≡</span>';
             } else {
                 navMenu.classList.add('mobile-open');
                 this.setAttribute('aria-expanded', 'true');
-                this.innerHTML = '<i class="fas fa-times"></i>';
+                this.innerHTML = '<span class="hamburger-icon">✕</span>';
             }
         });
         
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!navMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
                 navMenu.classList.remove('mobile-open');
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                mobileMenuToggle.innerHTML = '<span class="hamburger-icon">≡</span>';
             }
         });
         
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
             link.addEventListener('click', function() {
                 navMenu.classList.remove('mobile-open');
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                mobileMenuToggle.innerHTML = '<span class="hamburger-icon">≡</span>';
             });
         });
         
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.innerWidth > 768) {
                 navMenu.classList.remove('mobile-open');
                 mobileMenuToggle.setAttribute('aria-expanded', 'false');
-                mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                mobileMenuToggle.innerHTML = '<span class="hamburger-icon">≡</span>';
             }
         });
     }
