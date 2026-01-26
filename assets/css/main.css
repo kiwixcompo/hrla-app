@@ -2001,6 +2001,14 @@ a:hover {
     font-size: 2rem;
 }
 
+.faq-card-icon img {
+    width: 45px;
+    height: 35px;
+    object-fit: contain;
+    border-radius: 6px;
+    filter: brightness(1.1) contrast(1.1);
+}
+
 .faq-selection-card h3 {
     color: #000000;
     font-size: 1.5rem;
@@ -2039,6 +2047,11 @@ a:hover {
     
     .faq-card-icon i {
         font-size: 1.5rem;
+    }
+    
+    .faq-card-icon img {
+        width: 32px;
+        height: 25px;
     }
     
     .faq-selection-header .section-title {

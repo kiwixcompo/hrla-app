@@ -325,6 +325,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         .faq-selection-header { text-align: center; margin-bottom: 50px; }
         .faq-selection-header .section-subtitle { font-size: 1.4rem !important; color: #666; }
         .faq-selection-grid { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        
         .faq-selection-card { 
             background: white; 
             padding: 40px 30px; 
@@ -337,7 +338,16 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .faq-selection-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .faq-card-icon { font-size: 3rem; color: var(--hrla-blue); margin-bottom: 20px; }
+        
+        /* Updated Image Sizing */
+        .faq-card-icon { margin-bottom: 20px; display: flex; justify-content: center; }
+        .faq-card-icon img {
+            max-width: 100%; /* Ensure it never overflows width */
+            height: auto;    /* Maintain aspect ratio */
+            max-height: 80px; /* Restrict height so it doesn't dominate */
+            object-fit: contain; /* Ensure image fits nicely */
+        }
+
         .faq-selection-card h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; color: #111; }
         .faq-selection-card p { color: #666; margin-bottom: 30px; line-height: 1.5; }
 
@@ -655,7 +665,6 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             </div>
         </section>
 
-        <!-- What Is HR Leave Assist Section - Mobile Only -->
         <section class="what-is-mobile-section mobile-only">
             <div class="container">
                 <div class="mobile-video-header">
@@ -676,7 +685,6 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             </div>
         </section>
 
-        <!-- What Is HR Leave Assist Section - Desktop -->
         <section id="what-is-hrla" class="what-is-section desktop-only">
             <div class="container">
                 <div class="section-header">
@@ -856,8 +864,8 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                 </div>
                 <div class="faq-selection-grid">
                     <div class="faq-selection-card">
-                        <div class="faq-card-icon" style="color: var(--hrla-green);">
-                            <i class="fas fa-map-marked-alt"></i>
+                        <div class="faq-card-icon">
+                            <img src="usa_map.png" alt="USA Map">
                         </div>
                         <h3>FMLA FAQs</h3>
                         <p>Family and Medical Leave Act questions covering federal leave requirements, eligibility, and job protection.</p>
@@ -866,8 +874,8 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         </a>
                     </div>
                     <div class="faq-selection-card">
-                        <div class="faq-card-icon" style="color: var(--hrla-green);">
-                            <i class="fas fa-map"></i>
+                        <div class="faq-card-icon">
+                            <img src="california_map.png" alt="California Map">
                         </div>
                         <h3>CFRA FAQs</h3>
                         <p>California Family Rights Act questions covering state-specific leave laws, benefits, and requirements.</p>
