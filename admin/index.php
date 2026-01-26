@@ -1302,7 +1302,7 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                                 <form id="footerContentForm" class="content-form">
                                     <div class="form-group">
                                         <label for="footer_description">Footer Description</label>
-                                        <textarea id="footer_description" name="footer_description" rows="3" class="form-control">A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.</textarea>
+                                        <textarea id="footer_description" name="footer_description" rows="3" class="form-control">A leave-support tool built by HR for HR to help apply consistent compliance-aligned responses to employee leave questions.</textarea>
                                     </div>
                                     
                                     <div class="form-actions">

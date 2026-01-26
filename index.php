@@ -922,7 +922,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         <a href="#main-content" class="footer-logo-text" style="text-decoration: none;">
                             <span class="footer-hr">HR</span><span class="footer-la">LA</span>
                         </a>
-                        <p><?php echo htmlspecialchars(getContent('footer_description', 'A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.')); ?></p>
+                        <p><?php echo htmlspecialchars(getContent('footer_description', 'A leave-support tool built by HR for HR to help apply consistent compliance-aligned responses to employee leave questions.')); ?></p>
                     </div>
                     
                     <div class="footer-legal-links">

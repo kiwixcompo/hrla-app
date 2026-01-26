@@ -445,7 +445,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
             <div class="footer-content">
                 <div class="footer-brand">
                     <img src="footer_logo.png" alt="HRLA Logo" class="footer-logo-img">
-                    <p><?php echo htmlspecialchars(getContent('footer_description', 'A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.')); ?></p>
+                    <p><?php echo htmlspecialchars(getContent('footer_description', 'A leave-support tool built by HR for HR to help apply consistent compliance-aligned responses to employee leave questions.')); ?></p>
                 </div>
                 
                 <div class="footer-legal-links">
