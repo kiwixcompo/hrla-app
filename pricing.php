@@ -164,6 +164,12 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
             margin-bottom: 20px;
             margin-top: auto;
         }
+        
+        .pricing-best-for strong {
+            display: inline;
+            margin-bottom: 0;
+            color: #000;
+        }
 
         .btn-primary {
             background-color: var(--hrla-blue);
@@ -344,8 +350,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                         </ul>
                     </div>
                     <div class="pricing-best-for">
-                        <strong>Best for:</strong><br>
-                        <?php echo htmlspecialchars(getContent('pricing_free_description', 'HR professionals who want to test the tool with real-world scenarios before subscribing.')); ?>
+                        <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_free_description', 'HR professionals who want to test the tool with real-world scenarios before subscribing.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -372,8 +377,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                         </ul>
                     </div>
                     <div class="pricing-best-for">
-                        <strong>Best for:</strong><br>
-                        <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
+                        <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -399,8 +403,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                         </ul>
                     </div>
                     <div class="pricing-best-for">
-                        <strong>Best for:</strong><br>
-                        <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
+                        <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -425,8 +428,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                         </ul>
                     </div>
                     <div class="pricing-best-for">
-                        <strong>Best for:</strong><br>
-                        <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
+                        <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -447,10 +449,10 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                 </div>
                 
                 <div class="footer-legal-links">
-                    <a href="#" data-modal="termsModal">Terms of Use</a>
+                    <a href="product-scope.php">Terms of Use</a>
                     <a href="privacy-policy.php">Privacy Policy</a>
-                    <a href="#" data-modal="refundModal">Cancellation & Refund Policy</a>
-                    <a href="#" data-modal="licensingModal">User Access & Licensing</a>
+                    <a href="product-scope.php">Cancellation & Refund Policy</a>
+                    <a href="product-scope.php">User Access & Licensing</a>
                     <a href="product-scope.php">Product Scope & Use</a>
                 </div>
             </div>

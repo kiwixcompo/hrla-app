@@ -108,8 +108,140 @@ class Auth {
     }
     
     /**
-     * Verify email address
+     * Request password reset
      */
+    public function requestPasswordReset($email) {
+        try {
+            // Check if user exists and is verified
+            $user = $this->getUserByEmail($email);
+            
+            if (!$user) {
+                // Don't reveal if email exists or not for security
+                return ['success' => true, 'message' => 'If this email is registered, you will receive a password reset link.'];
+            }
+            
+            if (!$user['email_verified']) {
+                return ['success' => false, 'error' => 'Please verify your email address first before resetting your password.'];
+            }
+            
+            // Check for existing reset requests (rate limiting)
+            $existingReset = $this->db->fetch(
+                "SELECT * FROM password_resets WHERE email = ? AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1",
+                [$email]
+            );
+            
+            if ($existingReset) {
+                $timeLeft = strtotime($existingReset['expires_at']) - time();
+                if ($timeLeft > 3300) { // More than 55 minutes left (allow new request in last 5 minutes)
+                    return ['success' => false, 'error' => 'A password reset email was already sent. Please check your email or wait before requesting another.'];
+                }
+            }
+            
+            // Generate reset token
+            $resetToken = generateRandomString(64);
+            $expiresAt = date('Y-m-d H:i:s', time() + 3600); // 1 hour
+            
+            // Store reset request
+            $sql = "INSERT INTO password_resets (email, reset_token, expires_at) VALUES (?, ?, ?) 
+                    ON DUPLICATE KEY UPDATE reset_token = VALUES(reset_token), expires_at = VALUES(expires_at), created_at = NOW()";
+            
+            $this->db->query($sql, [$email, $resetToken, $expiresAt]);
+            
+            // Send reset email
+            $this->sendPasswordResetEmail($email, $user['first_name'], $resetToken);
+            
+            logMessage("Password reset requested", 'info', [
+                'email' => $email,
+                'user_id' => $user['id']
+            ]);
+            
+            return [
+                'success' => true,
+                'message' => 'Password reset instructions have been sent to your email address.'
+            ];
+            
+        } catch (Exception $e) {
+            logMessage("Password reset request failed: " . $e->getMessage(), 'error', ['email' => $email]);
+            return ['success' => false, 'error' => 'Unable to process password reset request. Please try again.'];
+        }
+    }
+    
+    /**
+     * Reset password with token
+     */
+    public function resetPassword($token, $newPassword) {
+        try {
+            // Validate new password
+            if (strlen($newPassword) < 8) {
+                return ['success' => false, 'error' => 'Password must be at least 8 characters long'];
+            }
+            
+            // Get reset request
+            $sql = "SELECT * FROM password_resets WHERE reset_token = ? AND expires_at > NOW() AND used_at IS NULL";
+            $resetRequest = $this->db->fetch($sql, [$token]);
+            
+            if (!$resetRequest) {
+                return ['success' => false, 'error' => 'Invalid or expired password reset token'];
+            }
+            
+            // Get user
+            $user = $this->getUserByEmail($resetRequest['email']);
+            if (!$user) {
+                return ['success' => false, 'error' => 'User account not found'];
+            }
+            
+            $this->db->beginTransaction();
+            
+            // Update password
+            $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+            $this->db->query("UPDATE users SET password_hash = ?, updated_at = NOW() WHERE id = ?", [$passwordHash, $user['id']]);
+            
+            // Mark reset token as used
+            $this->db->query("UPDATE password_resets SET used_at = NOW() WHERE id = ?", [$resetRequest['id']]);
+            
+            // Invalidate all existing sessions for security
+            $this->db->query("DELETE FROM user_sessions WHERE user_id = ?", [$user['id']]);
+            
+            $this->db->commit();
+            
+            logMessage("Password reset completed", 'info', [
+                'email' => $resetRequest['email'],
+                'user_id' => $user['id']
+            ]);
+            
+            return [
+                'success' => true,
+                'message' => 'Password reset successfully. You can now login with your new password.',
+                'email' => $resetRequest['email']
+            ];
+            
+        } catch (Exception $e) {
+            $this->db->rollback();
+            logMessage("Password reset failed: " . $e->getMessage(), 'error', ['token' => $token]);
+            return ['success' => false, 'error' => 'Password reset failed. Please try again.'];
+        }
+    }
+    
+    /**
+     * Send password reset email
+     */
+    private function sendPasswordResetEmail($email, $firstName, $resetToken) {
+        try {
+            require_once __DIR__ . '/email_templates.php';
+            $emailTemplates = new EmailTemplates();
+            
+            $resetLink = appUrl("reset-password.php?token=" . urlencode($resetToken));
+            
+            return $emailTemplates->sendPasswordResetEmail($email, $firstName, $resetLink);
+            
+        } catch (Exception $e) {
+            logMessage("Failed to send password reset email: " . $e->getMessage(), 'error', [
+                'email' => $email,
+                'token' => $resetToken
+            ]);
+            return false;
+        }
+    }
     public function verifyEmail($token) {
         try {
             // Get pending verification

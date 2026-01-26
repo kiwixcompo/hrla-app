@@ -72,7 +72,7 @@ $pageTitle = 'CFRA FAQs - HRLA | HR Leave Assist';
     <div class="faq-page">
         <div class="container">
             <div class="faq-page-header">
-                <h1>CFRA FAQs</h1>
+                <h1 style="color: var(--hrla-blue);">CFRA Questions & Answers</h1>
                 <p>Frequently Asked Questions about the California Family Rights Act</p>
             </div>
 

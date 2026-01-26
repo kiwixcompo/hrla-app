@@ -1,0 +1,157 @@
+<?php
+/**
+ * Forgot Password Page
+ * HR Leave Assistant - PHP/MySQL Version
+ */
+
+require_once 'config/app.php';
+require_once 'includes/auth.php';
+
+$auth = getAuth();
+$error = '';
+$success = '';
+
+// Redirect if already logged in
+if ($auth->isAuthenticated()) {
+    redirect(appUrl('dashboard.php'));
+}
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error = 'Invalid request. Please try again.';
+    } else {
+        $email = trim($_POST['email'] ?? '');
+        
+        if (empty($email)) {
+            $error = 'Please enter your email address.';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Please enter a valid email address.';
+        } else {
+            $result = $auth->requestPasswordReset($email);
+            
+            if ($result['success']) {
+                $success = $result['message'];
+            } else {
+                $error = $result['error'];
+            }
+        }
+    }
+}
+
+$pageTitle = 'Forgot Password - HRLA | HR Leave Assist';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $pageTitle; ?></title>
+    
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Reset your HR Leave Assistant password. Enter your email to receive password reset instructions.">
+    <meta name="keywords" content="password reset, forgot password, HR Leave Assistant">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="hrla-logo-new-fixed.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css?v=1.2">
+    <link rel="stylesheet" href="assets/css/main.css?v=<?php echo time(); ?>">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="landing-nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="<?php echo appUrl('index.php'); ?>">
+                    <div class="nav-logo-symbol">
+                        <span class="nav-hr">HR</span><span class="nav-la">LA</span>
+                    </div>
+                </a>
+            </div>
+            <div class="nav-menu" role="menubar">
+                <a href="quick-start.php" class="nav-link" role="menuitem">Quick Start Guide</a>
+                <a href="<?php echo appUrl('index.php#how-it-works'); ?>" class="nav-link" role="menuitem">How it Works</a>
+                <a href="pricing.php" class="nav-link" role="menuitem">Pricing</a>
+                <a href="<?php echo appUrl('index.php#faqs'); ?>" class="nav-link" role="menuitem">FAQs</a>
+                <a href="<?php echo appUrl('index.php#contact'); ?>" class="nav-link" role="menuitem">Contact</a>
+                <a href="<?php echo appUrl('login.php'); ?>" class="btn btn-outline">Sign In</a>
+                <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary">GET STARTED FOR FREE</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <span class="hamburger-icon">≡</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="forgotPasswordPage" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Reset Your Password</h2>
+                    <p>Enter your email address and we'll send you a link to reset your password.</p>
+                </div>
+                
+                <?php if ($error): ?>
+                    <div class="alert alert-error" style="background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border-left: 4px solid #dc2626;">
+                        <span class="alert-icon">❌</span>
+                        <?php echo htmlspecialchars($error); ?>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if ($success): ?>
+                    <div class="alert alert-success" style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border-left: 4px solid #10b981;">
+                        <span class="alert-icon">✅</span>
+                        <?php echo htmlspecialchars($success); ?>
+                    </div>
+                    <div class="auth-footer">
+                        <p><a href="<?php echo appUrl('login.php'); ?>">← Back to Login</a></p>
+                        <p><a href="<?php echo appUrl('index.php'); ?>">← Back to Homepage</a></p>
+                    </div>
+                <?php else: ?>
+                    <form method="POST" class="auth-form" id="forgotPasswordForm">
+                        <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+                        
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"
+                                required 
+                                autocomplete="email"
+                                placeholder="Enter your email address"
+                            >
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block" id="resetBtn">
+                            Send Reset Instructions
+                        </button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <p>Remember your password? <a href="<?php echo appUrl('login.php'); ?>">Sign in</a></p>
+                        <p><a href="<?php echo appUrl('index.php'); ?>">← Back to Homepage</a></p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    
+    <script src="assets/js/mobile-menu.js"></script>
+</body>
+</html>

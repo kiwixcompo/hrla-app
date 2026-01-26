@@ -154,15 +154,7 @@ $pageTitle = 'Login - HR Leave Assistant';
         <div class="auth-container">
             <div class="auth-card">
                 <div class="auth-header">
-                    <!-- Image logo placeholder -->
-                    <img src="login_logo.png" alt="HRLA" class="auth-logo" onload="this.style.display='block'; document.querySelector('.login-logo-text').style.display='none';" onerror="this.style.display='none'; document.querySelector('.login-logo-text').style.display='block';">
-                    
-                    <!-- CSS text logo (fallback and default) -->
-                    <div class="login-logo-text">
-                        <span class="login-hr">HR</span><span class="login-la">LA</span>
-                    </div>
-                    
-                    <h2>Welcome back</h2>
+                    <h2>Welcome Back</h2>
                     <p>Sign in to your HRLA account</p>
                 </div>
                 
@@ -219,6 +211,7 @@ $pageTitle = 'Login - HR Leave Assistant';
                 </form>
                 
                 <div class="auth-footer">
+                    <p><a href="<?php echo appUrl('forgot-password.php'); ?>" id="forgotPassword">Forgot your password?</a></p>
                     <p>Don't have an account? <a href="<?php echo appUrl('register.php'); ?>" id="showRegister">Sign up for free</a></p>
                     <p><a href="<?php echo appUrl('index.php'); ?>" id="backToHomepageFromLogin">← Back to Homepage</a></p>
                 </div>

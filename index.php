@@ -160,7 +160,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         .demo-text, .demo-response { font-size: 0.9rem; color: #666; margin-bottom: 8px; font-style: italic; border-left: none; padding-left: 0; }
         .demo-input, .demo-output { background: #f2f4fe; padding: 15px; border-radius: 0 8px 8px 0; font-size: 0.95rem; line-height: 1.5; color: #333; border-left: 4px solid var(--hrla-blue); }
         .demo-note { display: flex; align-items: center; justify-content: center; margin-top: 20px; font-size: 0.95rem; color: var(--hrla-blue); font-weight: 700; }
-        .demo-note i { color: var(--hrla-green); margin-right: 10px; font-size: 1.3rem; }
+        .demo-note i { color: var(--hrla-green); margin-right: 8px; font-size: 1.3rem; }
         .demo-note em { font-style: normal; }
 
         /* --- WHAT IS HR LEAVE ASSIST SECTION --- */
@@ -297,6 +297,13 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         .about-logo-text { font-family: 'Inter', sans-serif; font-size: 2rem; font-weight: 800; color: var(--hrla-blue); margin: 0; line-height: 1.2; }
         .about-text { font-size: 1.1rem; line-height: 1.6; color: #333; }
         .about-text p { margin-bottom: 20px; }
+        
+        /* Features section subtitle */
+        .features-section .section-subtitle {
+            font-size: 1.8rem !important;
+            font-weight: 600;
+            color: #333;
+        }
 
         /* --- PRICING SECTION (MINIFIED) --- */
         .pricing-section { padding: 80px 0; background-color: #ffffff; }
@@ -310,12 +317,13 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
         .pricing-header-mini h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; color: #111; }
         .pricing-sub { font-size: 0.85rem; font-weight: 700; color: #111; }
         .pricing-best-for-mini { background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 0.85rem; line-height: 1.4; color: #444; margin-bottom: 20px; flex-grow: 1; }
-        .pricing-best-for-mini strong { display: block; margin-bottom: 5px; color: #000; }
+        .pricing-best-for-mini strong { display: inline; margin-bottom: 0; color: #000; }
         .btn-block { display: block; width: 100%; text-align: center; }
 
         /* --- FAQ SELECTION SECTION --- */
         .faq-selection-section { padding: 80px 0; background-color: #f2f4fe; }
         .faq-selection-header { text-align: center; margin-bottom: 50px; }
+        .faq-selection-header .section-subtitle { font-size: 1.4rem !important; color: #666; }
         .faq-selection-grid { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
         .faq-selection-card { 
             background: white; 
@@ -689,6 +697,37 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             </div>
         </section>
 
+        <section id="how-it-works" class="how-it-works-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">How HR Leave Assist Works</h2>
+                </div>
+                <div class="steps-container">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Paste Employee Question or Email</h3>
+                            <p>Copy and paste the employee's leave question or email into the system.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Analysis & Draft Response</h3>
+                            <p>The tool analyzes the email and prepares an employee-ready draft aligned with applicable leave requirements.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Review Generated Response & Send</h3>
+                            <p>Review, edit as needed, and send the response to your employee.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="features" class="features-section">
             <div class="container">
                 <div class="section-header">
@@ -724,37 +763,6 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             </div>
         </section>
 
-        <section id="how-it-works" class="how-it-works-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">How HR Leave Assist Works</h2>
-                </div>
-                <div class="steps-container">
-                    <div class="step-item">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>Paste Employee Question or Email</h3>
-                            <p>Copy and paste the employee's leave question or email into the system.</p>
-                        </div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>Analysis & Draft Response</h3>
-                            <p>The tool analyzes the email and prepares an employee-ready draft aligned with applicable leave requirements.</p>
-                        </div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>Review Generated Response & Send</h3>
-                            <p>Review, edit as needed, and send the response to your employee.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section class="about-section">
             <div class="container">
                 <div class="about-content">
@@ -784,8 +792,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                             <h3><?php echo htmlspecialchars(getContent('pricing_free_title', 'Free Trial — $0')); ?></h3>
                         </div>
                         <div class="pricing-best-for-mini">
-                            <strong>Best for:</strong>
-                            <?php echo htmlspecialchars(getContent('pricing_free_description', 'HR professionals who want to test the tool with real-world scenarios before subscribing.')); ?>
+                            <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_free_description', 'HR professionals who want to test the tool with real-world scenarios before subscribing.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -799,8 +806,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                             <h3><?php echo htmlspecialchars(getContent('pricing_monthly_title', 'Monthly — $29')); ?></h3>
                         </div>
                         <div class="pricing-best-for-mini">
-                            <strong>Best for:</strong>
-                            <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
+                            <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -816,8 +822,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                             <div class="pricing-sub"><?php echo htmlspecialchars(getContent('pricing_annual_subtitle', '(2 months free)')); ?></div>
                         </div>
                         <div class="pricing-best-for-mini">
-                            <strong>Best for:</strong>
-                            <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
+                            <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -831,8 +836,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                             <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
                         </div>
                         <div class="pricing-best-for-mini">
-                            <strong>Best for:</strong>
-                            <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
+                            <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
@@ -852,8 +856,8 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                 </div>
                 <div class="faq-selection-grid">
                     <div class="faq-selection-card">
-                        <div class="faq-card-icon">
-                            <i class="fas fa-flag-usa"></i>
+                        <div class="faq-card-icon" style="color: var(--hrla-green);">
+                            <i class="fas fa-map-marked-alt"></i>
                         </div>
                         <h3>FMLA FAQs</h3>
                         <p>Family and Medical Leave Act questions covering federal leave requirements, eligibility, and job protection.</p>
@@ -862,8 +866,8 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         </a>
                     </div>
                     <div class="faq-selection-card">
-                        <div class="faq-card-icon">
-                            <i class="fas fa-map-marker-alt"></i>
+                        <div class="faq-card-icon" style="color: var(--hrla-green);">
+                            <i class="fas fa-map"></i>
                         </div>
                         <h3>CFRA FAQs</h3>
                         <p>California Family Rights Act questions covering state-specific leave laws, benefits, and requirements.</p>
@@ -915,17 +919,17 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             <div class="container">
                 <div class="footer-content">
                     <div class="footer-brand">
-                        <div class="footer-logo-text">
+                        <a href="#main-content" class="footer-logo-text" style="text-decoration: none;">
                             <span class="footer-hr">HR</span><span class="footer-la">LA</span>
-                        </div>
+                        </a>
                         <p><?php echo htmlspecialchars(getContent('footer_description', 'A leave-support tool built by HR, for HR, to help apply consistent, compliance-aligned responses to employee leave questions.')); ?></p>
                     </div>
                     
                     <div class="footer-legal-links">
-                        <a href="#" data-modal="termsModal">Terms of Use</a>
+                        <a href="product-scope.php">Terms of Use</a>
                         <a href="privacy-policy.php">Privacy Policy</a>
-                        <a href="#" data-modal="refundModal">Cancellation & Refund Policy</a>
-                        <a href="#" data-modal="licensingModal">User Access & Licensing</a>
+                        <a href="product-scope.php">Cancellation & Refund Policy</a>
+                        <a href="product-scope.php">User Access & Licensing</a>
                         <a href="product-scope.php">Product Scope & Use</a>
                     </div>
                 </div>

@@ -60,8 +60,11 @@ $pageTitle = 'Privacy Policy - HRLA | HR Leave Assist';
                 <a href="<?php echo appUrl('index.php#faqs'); ?>" class="nav-link" role="menuitem">FAQs</a>
                 <a href="<?php echo appUrl('index.php#contact'); ?>" class="nav-link" role="menuitem">Contact</a>
                 <a href="<?php echo appUrl('login.php'); ?>" class="btn btn-outline">Sign In</a>
-                <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary">Get started for free</a>
+                <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary">GET STARTED FOR FREE</a>
             </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <span class="hamburger-icon">≡</span>
+            </button>
         </div>
     </nav>
 
@@ -199,5 +202,7 @@ $pageTitle = 'Privacy Policy - HRLA | HR Leave Assist';
             </div>
         </div>
     </footer>
+    
+    <script src="assets/js/mobile-menu.js"></script>
 </body>
 </html>

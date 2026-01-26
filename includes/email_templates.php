@@ -257,7 +257,178 @@ If you did not create this account, please ignore this email or contact us at {$
         ";
     }
     
-    // Additional email template methods would go here...
+    private function getPasswordResetEmailHTML($firstName, $resetLink) {
+        $currentYear = date('Y');
+        
+        return "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Reset Your HR Leave Assistant Password</title>
+            <style>
+                body { 
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif; 
+                    line-height: 1.6; 
+                    color: #333333; 
+                    margin: 0; 
+                    padding: 0; 
+                    background-color: #f8f9fa;
+                }
+                .container { 
+                    max-width: 600px; 
+                    margin: 20px auto; 
+                    padding: 0; 
+                    background-color: #ffffff;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }
+                .header { 
+                    background: linear-gradient(135deg, #0023F5 0%, #0322D8 100%); 
+                    color: white; 
+                    padding: 30px 20px; 
+                    text-align: center; 
+                    border-radius: 8px 8px 0 0; 
+                }
+                .content { 
+                    background: #ffffff; 
+                    padding: 30px 20px; 
+                    border-radius: 0 0 8px 8px; 
+                }
+                .button { 
+                    display: inline-block; 
+                    background: #0023F5; 
+                    color: white !important; 
+                    padding: 15px 30px; 
+                    text-decoration: none; 
+                    border-radius: 5px; 
+                    margin: 20px 0; 
+                    font-weight: bold;
+                    font-size: 16px;
+                    text-align: center;
+                }
+                .footer { 
+                    text-align: center; 
+                    margin-top: 30px; 
+                    padding-top: 20px;
+                    border-top: 1px solid #eee;
+                    font-size: 14px; 
+                    color: #666666; 
+                }
+                .logo { 
+                    font-size: 24px; 
+                    font-weight: bold; 
+                    margin-bottom: 10px;
+                }
+                .support { 
+                    background: #f8f9fa; 
+                    padding: 20px; 
+                    border-radius: 5px; 
+                    margin-top: 20px;
+                    border-left: 4px solid #0023F5;
+                }
+                .reset-code {
+                    background: #e3f2fd;
+                    padding: 15px;
+                    border-radius: 5px;
+                    font-family: monospace;
+                    font-size: 14px;
+                    word-break: break-all;
+                    margin: 15px 0;
+                }
+                .warning {
+                    background: #fff3cd;
+                    padding: 15px;
+                    border-radius: 5px;
+                    border-left: 4px solid #ffc107;
+                    margin: 20px 0;
+                }
+                a { color: #0023F5; }
+                .preheader { display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0; }
+            </style>
+        </head>
+        <body>
+            <div class='preheader'>Reset your HR Leave Assistant password using the secure link provided in this email.</div>
+            <div class='container'>
+                <div class='header'>
+                    <div class='logo'>HR Leave Assistant</div>
+                    <p style='margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;'>hrleaveassist.com</p>
+                </div>
+                <div class='content'>
+                    <h2 style='color: #333; margin-top: 0;'>🔒 Password Reset Request</h2>
+                    <p>Hello $firstName,</p>
+                    <p>We received a request to reset the password for your HR Leave Assistant account. If you made this request, click the button below to create a new password.</p>
+                    
+                    <div style='text-align: center; margin: 30px 0;'>
+                        <a href='$resetLink' class='button' style='color: white;'>Reset My Password</a>
+                    </div>
+                    
+                    <div class='warning'>
+                        <p style='margin: 0 0 10px 0;'><strong>⏰ Important Security Information:</strong></p>
+                        <ul style='margin: 0; padding-left: 20px;'>
+                            <li>This password reset link will expire in 1 hour for security</li>
+                            <li>You can only use this link once</li>
+                            <li>If you didn't request this reset, please ignore this email</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Alternative reset method:</strong></p>
+                    <p>If the button above doesn't work, copy and paste this link into your web browser:</p>
+                    <div class='reset-code'>$resetLink</div>
+                    
+                    <div class='support'>
+                        <p style='margin: 0 0 10px 0;'><strong>Need assistance?</strong></p>
+                        <p style='margin: 0;'>If you're having trouble resetting your password or didn't request this change, contact our support team at <a href='mailto:{$this->replyTo}'>{$this->replyTo}</a></p>
+                    </div>
+                </div>
+                <div class='footer'>
+                    <p style='margin: 0;'>This email was sent by HR Leave Assistant</p>
+                    <p style='margin: 5px 0;'><a href='" . appUrl() . "'>" . config('app.url') . "</a> | <a href='mailto:{$this->replyTo}'>{$this->replyTo}</a></p>
+                    <p style='margin: 10px 0 0 0; font-size: 12px;'>© $currentYear HR Leave Assistant. All rights reserved.</p>
+                    <p style='margin: 5px 0 0 0; font-size: 11px;'>
+                        If you did not request this password reset, please ignore this email or contact us at {$this->replyTo}
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>";
+    }
+    
+    private function getPasswordResetEmailText($firstName, $resetLink) {
+        $currentYear = date('Y');
+        
+        return "
+HR Leave Assistant - Password Reset Request
+
+Hello $firstName,
+
+We received a request to reset the password for your HR Leave Assistant account. If you made this request, use the link below to create a new password.
+
+PASSWORD RESET LINK:
+$resetLink
+
+IMPORTANT SECURITY INFORMATION:
+- This password reset link will expire in 1 hour for security
+- You can only use this link once
+- If you didn't request this reset, please ignore this email
+
+ALTERNATIVE METHOD:
+Copy and paste the link above into your web browser to reset your password.
+
+NEED ASSISTANCE?
+If you're having trouble resetting your password or didn't request this change, contact our support team at {$this->replyTo}
+
+---
+This email was sent by HR Leave Assistant
+Website: " . config('app.url') . "
+Support: {$this->replyTo}
+
+© $currentYear HR Leave Assistant. All rights reserved.
+
+If you did not request this password reset, please ignore this email or contact us at {$this->replyTo}
+        ";
+    }
     
     /**
      * Send email using PHP mail or SMTP

@@ -235,7 +235,7 @@ $pageTitle = 'Register - HR Leave Assistant';
                         
                         <div class="form-check">
                             <input type="checkbox" id="termsAccepted" required>
-                            <label for="termsAccepted">I agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a></label>
+                            <label for="termsAccepted">I agree to the <a href="product-scope.php">Terms of Use</a> and <a href="privacy-policy.php">Privacy Policy</a></label>
                         </div>
                         
                         <button type="submit" class="btn btn-primary btn-block">Create Account</button>

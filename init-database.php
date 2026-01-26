@@ -32,7 +32,7 @@ try {
     echo "<h3>Step 2: Checking Tables</h3>\n";
     
     // Check if tables exist
-    $tables = ['users', 'access_codes', 'api_config', 'user_sessions', 'conversations', 'transactions', 'pending_verifications', 'system_logs'];
+    $tables = ['users', 'access_codes', 'api_config', 'user_sessions', 'conversations', 'transactions', 'pending_verifications', 'password_resets', 'system_logs'];
     $existingTables = [];
     $missingTables = [];
     
