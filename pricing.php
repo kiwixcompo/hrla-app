@@ -27,7 +27,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     
-    <meta name="description" content="HR Leave Assist pricing plans. Choose from Free Trial, Monthly, Annual, or Organization plans for HR leave response generation.">
+    <meta name="description" content="HR Leave Assist pricing plans. Choose from Free Trial, Monthly, Annual, or Teams plans for HR leave response generation.">
     <meta name="keywords" content="HR leave assistant pricing, FMLA compliance pricing, HR tools cost">
     
     <link rel="icon" type="image/svg+xml" href="hrla-logo-new-fixed.svg">
@@ -432,7 +432,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
-                            Subscribe Organization
+                            Subscribe Teams
                         </a>
                     </div>
                 </div>

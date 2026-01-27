@@ -243,7 +243,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                     </button>
                 </div>
                 
-                <!-- Organization Plan -->
+                <!-- Teams Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">
                         <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
@@ -264,7 +264,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                         <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                     </div>
                     <button class="btn btn-primary btn-block" onclick="selectPlan('organization', 580)">
-                        Subscribe Organization
+                        Subscribe Teams
                     </button>
                 </div>
             </div>
@@ -359,7 +359,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                 'trial': 'Free Trial',
                 'monthly': 'Monthly Plan',
                 'annual': 'Annual Plan',
-                'organization': 'Organization Plan'
+                'organization': 'Teams Plan'
             };
             
             document.getElementById('selectedPlanName').textContent = planNames[plan];

@@ -41,6 +41,31 @@ $pageTitle = 'Product Scope & Use - HRLA | HR Leave Assist';
     
     <link rel="stylesheet" href="styles.css?v=1.2">
     <link rel="stylesheet" href="assets/css/main.css?v=<?php echo time(); ?>">
+    
+    <style>
+        /* Custom styling for Product Scope page */
+        .nav-logo-symbol {
+            font-size: 1.4rem !important;
+        }
+        
+        .nav-hr, .nav-la {
+            letter-spacing: 1px;
+        }
+        
+        .nav-container {
+            justify-content: space-between;
+        }
+        
+        .nav-brand {
+            margin-right: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-logo-symbol {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->

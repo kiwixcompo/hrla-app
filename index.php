@@ -480,6 +480,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
             .footer-brand { align-items: center; text-align: center; }
             .footer-legal-links { align-items: center; }
             .footer-logo-text { font-size: 3rem; }
+            .footer-hr, .footer-la { letter-spacing: 2px; }
         }
 
         @media (min-width: 992px) {
@@ -848,7 +849,7 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
-                                Subscribe Organization
+                                Subscribe Teams
                             </a>
                         </div>
                     </div>
@@ -911,11 +912,11 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                         <div class="contact-methods">
                             <div class="contact-method">
                                 <i class="fas fa-envelope"></i>
-                                <span>support@hrleaveassist.com</span>
+                                <span>askhrla@hrleaveassist.com</span>
                             </div>
                             <div class="contact-method">
                                 <i class="fas fa-clock"></i>
-                                <span>Response within 24 hours</span>
+                                <span>Response within 24-48 hours</span>
                             </div>
                         </div>
                     </div>
