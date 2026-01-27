@@ -38,7 +38,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="styles.css?v=1.2">
+    <link rel="stylesheet" href="styles.css?v=1.3">
     <link rel="stylesheet" href="assets/css/main.css?v=<?php echo time(); ?>">
 
     <style>
@@ -414,7 +414,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                 
                 <div class="pricing-card-detailed">
                     <div class="pricing-header">
-                        <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
+                        <h3>Teams — $580 / yr</h3>
                     </div>
                     <div class="pricing-description">
                         <p>Shared annual access for up to 5 HR professionals</p>
@@ -432,7 +432,7 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
                     </div>
                     <div class="pricing-action">
                         <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
-                            Subscribe Teams
+                            Subscribe Annually
                         </a>
                     </div>
                 </div>

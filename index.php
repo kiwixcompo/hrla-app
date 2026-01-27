@@ -842,14 +842,14 @@ $pageTitle = 'HRLA - HR Leave Assist | HR Leave Response Generator';
                     
                     <div class="pricing-card-minified">
                         <div class="pricing-header-mini">
-                            <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
+                            <h3>Teams — $580 / yr</h3>
                         </div>
                         <div class="pricing-best-for-mini">
                             <strong>Best for:</strong> <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                         </div>
                         <div class="pricing-action">
                             <a href="<?php echo appUrl('register.php'); ?>" class="btn btn-primary btn-block">
-                                Subscribe Teams
+                                Subscribe Annually
                             </a>
                         </div>
                     </div>

@@ -246,7 +246,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                 <!-- Teams Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">
-                        <h3><?php echo htmlspecialchars(getContent('pricing_org_title', 'Organization — $580 / yr')); ?></h3>
+                        <h3>Teams — $580 / yr</h3>
                     </div>
                     <div class="pricing-description">
                         <p>Shared annual access for up to 5 HR professionals</p>
@@ -264,7 +264,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                         <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                     </div>
                     <button class="btn btn-primary btn-block" onclick="selectPlan('organization', 580)">
-                        Subscribe Teams
+                        Subscribe Annually
                     </button>
                 </div>
             </div>

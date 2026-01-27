@@ -1185,7 +1185,7 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                                         </div>
                                         
                                         <div class="plan-group">
-                                            <h4>Organization Plan</h4>
+                                            <h4>Teams Plan</h4>
                                             <div class="form-group">
                                                 <label for="pricing_org_title">Plan Title</label>
                                                 <input type="text" id="pricing_org_title" name="pricing_org_title" class="form-control" value="Teams — $580 / yr">
