@@ -58,6 +58,7 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
             margin: 0 auto;
             padding: 40px 20px;
             width: 100%;
+            display: block;
         }
         
         /* Expiration Notice Styling */
@@ -69,10 +70,12 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
             text-align: center;
             margin-bottom: 50px;
             box-shadow: 0 8px 30px rgba(255, 107, 107, 0.25);
-            max-width: 800px;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
-            margin-bottom: 50px;
+            width: 100%;
+            display: block;
+            clear: both;
         }
         
         .expiration-notice .notice-icon {
@@ -106,6 +109,9 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
         .subscription-header {
             text-align: center;
             margin-bottom: 50px;
+            width: 100%;
+            display: block;
+            clear: both;
         }
         
         .subscription-header h1 {
@@ -391,7 +397,11 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                         <strong>Best for:</strong><br>
                         <?php echo htmlspecialchars(getContent('pricing_monthly_description', 'Individual HR professionals who regularly respond to employee leave inquiries.')); ?>
                     </div>
-                    <button class="btn btn-primary btn-block" onclick="selectPlan('monthly', 29)">
+                    <button class="btn btn-primary btn-block" onclick="selectPlan('monthly', <?php 
+                        $monthlyTitle = getContent('pricing_monthly_title', 'Monthly — $29');
+                        preg_match('/\$(\d+)/', $monthlyTitle, $matches);
+                        echo isset($matches[1]) ? $matches[1] : 29;
+                    ?>)">
                         Subscribe Monthly
                     </button>
                 </div>
@@ -418,7 +428,11 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                         <strong>Best for:</strong><br>
                         <?php echo htmlspecialchars(getContent('pricing_annual_description', 'Individual HR professionals who rely on HR Leave Assist as part of their regular, year-round workflow.')); ?>
                     </div>
-                    <button class="btn btn-primary btn-block" onclick="selectPlan('annual', 290)">
+                    <button class="btn btn-primary btn-block" onclick="selectPlan('annual', <?php 
+                        $annualTitle = getContent('pricing_annual_title', 'Annual — $290');
+                        preg_match('/\$(\d+)/', $annualTitle, $matches);
+                        echo isset($matches[1]) ? $matches[1] : 290;
+                    ?>)">
                         Subscribe Annually
                     </button>
                 </div>
@@ -443,7 +457,11 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                         <strong>Best for:</strong><br>
                         <?php echo htmlspecialchars(getContent('pricing_org_description', 'Small HR teams of 2 to 5 who regularly respond to employee leave questions and want consistent, shared access.')); ?>
                     </div>
-                    <button class="btn btn-primary btn-block" onclick="selectPlan('organization', 580)">
+                    <button class="btn btn-primary btn-block" onclick="selectPlan('organization', <?php 
+                        $teamsTitle = getContent('pricing_org_title', 'Teams — $580 / yr');
+                        preg_match('/\$(\d+)/', $teamsTitle, $matches);
+                        echo isset($matches[1]) ? $matches[1] : 580;
+                    ?>)">
                         Subscribe Annually
                     </button>
                 </div>
