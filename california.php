@@ -13,6 +13,26 @@ $auth->requireAuth();
 $user = $auth->getCurrentUser();
 $hasAccess = $auth->hasAccess();
 
+// Check if user has expired access
+$now = time();
+$trialExpiry = $user['trial_expiry'] ? strtotime($user['trial_expiry']) : null;
+$subscriptionExpiry = $user['subscription_expiry'] ? strtotime($user['subscription_expiry']) : null;
+
+$isExpired = true;
+if ($user['is_admin']) {
+    $isExpired = false;
+} elseif ($subscriptionExpiry && $subscriptionExpiry > $now) {
+    $isExpired = false;
+} elseif ($trialExpiry && $trialExpiry > $now) {
+    $isExpired = false;
+}
+
+// Redirect expired users to subscription page
+if ($isExpired) {
+    header('Location: ' . appUrl('subscription.php?expired=1'));
+    exit;
+}
+
 $pageTitle = 'California Leave Assistant - HR Leave Assistant';
 ?>
 <!DOCTYPE html>

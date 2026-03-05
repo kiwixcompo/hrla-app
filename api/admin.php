@@ -4,21 +4,43 @@
  * HR Leave Assistant - PHP/MySQL Version
  */
 
+// Set error handling to return JSON
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
+// Catch any errors and return as JSON
+set_error_handler(function($errno, $errstr, $errfile, $errline) {
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'error' => "Error: $errstr in $errfile on line $errline"]);
+    exit;
+});
+
 require_once '../config/app.php';
 require_once '../includes/auth.php';
 
 header('Content-Type: application/json');
 
-$auth = getAuth();
-
-// Check if user is authenticated and is admin
-if (!$auth->isAuthenticated() || !$auth->getCurrentUser()['is_admin']) {
-    http_response_code(403);
-    echo json_encode(['success' => false, 'error' => 'Unauthorized access']);
+try {
+    $auth = getAuth();
+    
+    // Check if user is authenticated and is admin
+    if (!$auth->isAuthenticated() || !$auth->getCurrentUser()['is_admin']) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'error' => 'Unauthorized access']);
+        exit;
+    }
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'error' => 'Authentication error: ' . $e->getMessage()]);
     exit;
 }
 
-$db = getDB();
+try {
+    $db = getDB();
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'error' => 'Database connection failed: ' . $e->getMessage()]);
+    exit;
+}
+
 $user = $auth->getCurrentUser();
 
 // Get request data
@@ -132,12 +154,16 @@ function generateAccessCode($db, $user) {
                 VALUES (?, ?, ?, ?, ?, ?)";
         $db->query($sql, [$code, $description, $duration, $durationType, $user['id'], $expiresAt]);
         
-        // Redirect back to admin page
-        header('Location: ' . appUrl('admin/index.php?tab=access-codes&success=code_generated'));
-        exit;
+        echo json_encode([
+            'success' => true, 
+            'message' => 'Access code generated successfully',
+            'code' => $code,
+            'duration' => $duration,
+            'duration_type' => $durationType,
+            'expires_at' => $expiresAt
+        ]);
     } catch (Exception $e) {
-        header('Location: ' . appUrl('admin/index.php?tab=access-codes&error=failed_to_generate'));
-        exit;
+        echo json_encode(['success' => false, 'error' => 'Failed to generate access code: ' . $e->getMessage()]);
     }
 }
 

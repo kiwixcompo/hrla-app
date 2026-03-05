@@ -34,6 +34,12 @@ if ($user['is_admin']) {
     $timeRemaining = $trialExpiry - $now;
 }
 
+// Redirect expired users to subscription page
+if ($accessStatus === 'expired' && !$user['is_admin']) {
+    header('Location: ' . appUrl('subscription.php?expired=1'));
+    exit;
+}
+
 $pageTitle = 'Dashboard - HR Leave Assistant';
 ?>
 <!DOCTYPE html>

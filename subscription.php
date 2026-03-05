@@ -16,6 +16,9 @@ $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
 
+// Check if user is coming from expired access
+$isExpired = isset($_GET['expired']) && $_GET['expired'] == '1';
+
 $pageTitle = 'Upgrade - HR Leave Assistant';
 ?>
 <!DOCTYPE html>
@@ -38,6 +41,58 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
     <link rel="icon" type="image/png" href="hrla_logo.png">
     
     <style>
+        /* Expiration Notice Styling */
+        .expiration-notice {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .expiration-notice .notice-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .expiration-notice h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .expiration-notice p {
+            font-size: 1.1rem;
+            margin: 0;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .expiration-notice {
+                padding: 30px 20px;
+            }
+            
+            .expiration-notice .notice-icon {
+                font-size: 2.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .expiration-notice h2 {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .expiration-notice p {
+                font-size: 1rem;
+            }
+        }
+        
         /* Pricing card styling to match detailed pricing page */
         .pricing-grid {
             display: grid;
@@ -144,9 +199,15 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                     <img src="subscription_logo.png" alt="HRLA Subscription" class="nav-logo">
                 </div>
                 <div class="nav-menu">
+                    <?php if (!$isExpired): ?>
                     <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-arrow-left"></i>
                         <span>Back</span>
+                    </a>
+                    <?php endif; ?>
+                    <a href="<?php echo appUrl('settings.php'); ?>" class="btn btn-ghost">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
                     </a>
                     <a href="<?php echo appUrl('logout.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-sign-out-alt"></i>
@@ -157,6 +218,16 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
         </nav>
         
         <div class="subscription-container">
+            <?php if ($isExpired): ?>
+            <div class="expiration-notice">
+                <div class="notice-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <h2>Your Trial Has Expired</h2>
+                <p>Your trial period has ended. To continue using HR Leave Assist, please select a subscription plan below.</p>
+            </div>
+            <?php endif; ?>
+            
             <div class="subscription-header">
                 <h1>Choose Your Plan</h1>
                 <p>Select the perfect plan for your HR leave compliance needs</p>
