@@ -299,43 +299,6 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
             }
         }
     </style>
-            font-size: 0.95rem;
-        }
-        
-        .pricing-best-for {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.4;
-            text-align: left;
-        }
-        
-        .pricing-best-for strong {
-            color: #000;
-        }
-        
-        .pricing-save {
-            color: #3DB20B;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        
-        @media (max-width: 768px) {
-            .pricing-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 0 20px;
-            }
-            
-            .pricing-card.featured {
-                transform: none;
-            }
-        }
-    </style>
 </head>
 <body>
     <div id="subscription" class="page">
