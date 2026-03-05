@@ -41,105 +41,155 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
     <link rel="icon" type="image/png" href="hrla_logo.png">
     
     <style>
+        body {
+            background: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .subscription-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            width: 100%;
+        }
+        
         /* Expiration Notice Styling */
         .expiration-notice {
             background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
             color: white;
-            padding: 40px 30px;
-            border-radius: 12px;
+            padding: 50px 40px;
+            border-radius: 16px;
             text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+            margin-bottom: 50px;
+            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.25);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 50px;
         }
         
         .expiration-notice .notice-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            opacity: 0.9;
+            font-size: 4rem;
+            margin-bottom: 25px;
+            opacity: 0.95;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         .expiration-notice h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
             color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .expiration-notice p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin: 0;
             opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
+            line-height: 1.6;
         }
         
-        @media (max-width: 768px) {
-            .expiration-notice {
-                padding: 30px 20px;
-            }
-            
-            .expiration-notice .notice-icon {
-                font-size: 2.5rem;
-                margin-bottom: 15px;
-            }
-            
-            .expiration-notice h2 {
-                font-size: 1.5rem;
-                margin-bottom: 10px;
-            }
-            
-            .expiration-notice p {
-                font-size: 1rem;
-            }
+        /* Subscription Header */
+        .subscription-header {
+            text-align: center;
+            margin-bottom: 50px;
         }
         
-        /* Pricing card styling to match detailed pricing page */
+        .subscription-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 15px;
+        }
+        
+        .subscription-header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        /* Pricing Grid */
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
+            padding: 0 20px;
         }
         
         .pricing-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 40px 30px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border: 2px solid transparent;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 2px solid #e9ecef;
             position: relative;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
         
         .pricing-card.featured {
             border-color: #0322D8;
-            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(3, 34, 216, 0.15);
         }
         
         .pricing-badge {
             position: absolute;
-            top: -12px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
             background: #0322D8;
             color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .pricing-header h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #111;
             margin-bottom: 15px;
+            margin-top: 10px;
+        }
+        
+        .pricing-description {
+            margin-bottom: 25px;
+            min-height: 60px;
         }
         
         .pricing-description p {
             color: #666;
             font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        .pricing-features {
+            flex-grow: 1;
             margin-bottom: 25px;
         }
         
@@ -147,12 +197,108 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
             list-style: none;
             padding: 0;
             text-align: left;
-            margin-bottom: 25px;
+            margin: 0;
         }
         
         .pricing-features li {
-            padding: 8px 0;
+            padding: 10px 0;
             color: #333;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .pricing-best-for {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .pricing-best-for strong {
+            color: #111;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .btn-block {
+            width: 100%;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #0322D8;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1800AD;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(3, 34, 216, 0.3);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .subscription-container {
+                padding: 30px 15px;
+            }
+            
+            .expiration-notice {
+                padding: 35px 25px;
+                margin-bottom: 40px;
+            }
+            
+            .expiration-notice .notice-icon {
+                font-size: 3rem;
+                margin-bottom: 20px;
+            }
+            
+            .expiration-notice h2 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+            
+            .expiration-notice p {
+                font-size: 1rem;
+            }
+            
+            .subscription-header h1 {
+                font-size: 2rem;
+            }
+            
+            .subscription-header p {
+                font-size: 1rem;
+            }
+            
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 0 10px;
+            }
+            
+            .pricing-card {
+                padding: 30px 20px;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+            
+            .pricing-card:hover {
+                transform: none;
+            }
+        }
+    </style>
             font-size: 0.95rem;
         }
         
