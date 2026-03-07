@@ -570,13 +570,28 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
         }
 
         function payWithPayPal() {
-            const returnUrl = encodeURIComponent(window.location.origin + '/leave_assistant/payment-callback.php?method=paypal&status=success&amount=' + selectedAmount + '&plan=' + selectedPlan + '&transaction_id=PAYPAL_' + Date.now());
-            const cancelUrl = encodeURIComponent(window.location.origin + '/leave_assistant/payment-callback.php?method=paypal&status=cancelled');
+            if (!selectedPlan || selectedAmount === 0) {
+                alert('Please select a plan first');
+                return;
+            }
             
-            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=talk2char@gmail.com&amount=${selectedAmount}&currency_code=USD&item_name=HR Leave Assistant - ${selectedPlan} subscription&return=${returnUrl}&cancel_return=${cancelUrl}`;
+            // Use dynamic base URL instead of hardcoded path
+            const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+            const returnUrl = encodeURIComponent(baseUrl + '/payment-callback.php?method=paypal&status=success&amount=' + selectedAmount + '&plan=' + selectedPlan + '&transaction_id=PAYPAL_' + Date.now());
+            const cancelUrl = encodeURIComponent(baseUrl + '/payment-callback.php?method=paypal&status=cancelled');
+            
+            // Use PayPal's payment link with proper encoding
+            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=talk2char@gmail.com&amount=${selectedAmount}&currency_code=USD&item_name=HR%20Leave%20Assistant%20-%20${selectedPlan}%20subscription&return=${returnUrl}&cancel_return=${cancelUrl}&no_shipping=1&no_note=1`;
+            
+            console.log('PayPal URL:', paypalUrl); // Debug log
             
             // Open payment in new window
-            paymentWindow = window.open(paypalUrl, 'PayPal Payment', 'width=800,height=600,scrollbars=yes');
+            paymentWindow = window.open(paypalUrl, 'PayPal Payment', 'width=800,height=600,scrollbars=yes,resizable=yes');
+            
+            if (!paymentWindow) {
+                alert('Please allow popups for this site to process payment');
+                return;
+            }
             
             // Show processing overlay
             closePaymentModal();
