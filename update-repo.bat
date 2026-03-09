@@ -108,9 +108,29 @@ echo.
 echo Your local files have been synced to GitHub.
 echo The repository now matches your local folder.
 echo.
-echo IMPORTANT: Pull this on your server with:
+echo ========================================
+echo  DEPLOY TO LIVE SERVER
+echo ========================================
+echo.
+echo Option 1 - Use cPanel Git Version Control:
+echo   1. Go to cPanel Git Version Control
+echo   2. Click "Manage" on your repository
+echo   3. Click "Pull or Deploy" tab
+echo   4. Click "Update from Remote"
+echo   5. Then click "Deploy HEAD Commit"
+echo.
+echo Option 2 - Use Deployment Script (RECOMMENDED):
+echo   Visit: https://yoursite.com/deploy-to-live.php?key=hrla_deploy_2026_secure
+echo   (Replace 'yoursite.com' with your actual domain)
+echo.
+echo Option 3 - Manual SSH:
+echo   ssh into your server and run:
+echo   cd /home/hrledkhw/repositories/hrla-app
 echo   git fetch --all
 echo   git reset --hard origin/main
-echo   (or origin/master depending on branch)
+echo   git clean -fd
+echo.
+echo IMPORTANT: Clear browser cache after deployment!
+echo Press Ctrl+F5 to hard refresh and see changes.
 echo.
 pause
