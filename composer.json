@@ -1,0 +1,19 @@
+{
+    "name": "hrleaveassist/leave-assistant",
+    "description": "HR Leave Assistant - Employee Leave Management System",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "includes/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}

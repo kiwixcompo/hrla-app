@@ -435,22 +435,85 @@ If you did not request this password reset, please ignore this email or contact 
      */
     private function sendEmail($to, $subject, $htmlContent, $textContent) {
         try {
-            // Use PHPMailer if available, otherwise fall back to mail()
+            // Try SMTP first if PHPMailer is available
             if (class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
                 return $this->sendEmailSMTP($to, $subject, $htmlContent, $textContent);
-            } else {
-                return $this->sendEmailNative($to, $subject, $htmlContent, $textContent);
             }
+            
+            // Fall back to native mail()
+            return $this->sendEmailNative($to, $subject, $htmlContent, $textContent);
+            
         } catch (Exception $e) {
             logMessage("Email sending failed: " . $e->getMessage(), 'error', [
                 'to' => $to,
-                'subject' => $subject
+                'subject' => $subject,
+                'trace' => $e->getTraceAsString()
             ]);
             
             // Log email to console for development
             $this->logEmailToConsole($to, $subject, $textContent);
             
             return false;
+        }
+    }
+    
+    /**
+     * Send email using SMTP with PHPMailer
+     */
+    private function sendEmailSMTP($to, $subject, $htmlContent, $textContent) {
+        require_once __DIR__ . '/../vendor/autoload.php';
+        
+        $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+        
+        try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host = config('email.host');
+            $mail->SMTPAuth = true;
+            $mail->Username = config('email.username');
+            $mail->Password = config('email.password');
+            $mail->SMTPSecure = config('email.encryption');
+            $mail->Port = config('email.port');
+            
+            // Disable SSL verification for development (remove in production if you have valid SSL)
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+            
+            // Recipients
+            $mail->setFrom($this->fromEmail, $this->fromName);
+            $mail->addAddress($to);
+            $mail->addReplyTo($this->replyTo, $this->fromName);
+            
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body = $htmlContent;
+            $mail->AltBody = $textContent;
+            
+            $mail->send();
+            
+            logMessage("Email sent successfully via SMTP", 'info', [
+                'to' => $to,
+                'subject' => $subject,
+                'method' => 'phpmailer_smtp'
+            ]);
+            
+            return true;
+            
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
+            logMessage("PHPMailer SMTP error: " . $mail->ErrorInfo, 'error', [
+                'to' => $to,
+                'subject' => $subject,
+                'smtp_host' => config('email.host'),
+                'smtp_port' => config('email.port')
+            ]);
+            
+            throw new Exception("SMTP Error: {$mail->ErrorInfo}");
         }
     }
     
