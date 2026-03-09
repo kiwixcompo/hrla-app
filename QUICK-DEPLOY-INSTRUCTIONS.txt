@@ -1,0 +1,128 @@
+========================================
+HRLA QUICK DEPLOYMENT INSTRUCTIONS
+========================================
+
+PROBLEM: Your website shows directory listing instead of the homepage.
+SOLUTION: Follow these steps to deploy your files correctly.
+
+========================================
+METHOD 1: Using cPanel File Manager (EASIEST)
+========================================
+
+Step 1: Push your local changes to GitHub
+   - Run update-repo.bat on your local machine
+   - Type "yes" and press Enter
+
+Step 2: Upload simple-deploy.php
+   - Log into cPanel
+   - Go to File Manager
+   - Navigate to public_html folder
+   - Click "Upload" button
+   - Upload the file: simple-deploy.php
+
+Step 3: Run the deployment script
+   - Visit in your browser:
+     https://www.hrleaveassist.com/simple-deploy.php?pass=deploy2026
+   
+   - You should see files being copied
+   - Wait for "DEPLOYMENT COMPLETE!" message
+
+Step 4: Verify
+   - Visit https://www.hrleaveassist.com/
+   - You should see your homepage (not directory listing)
+   - Press Ctrl+F5 to clear cache
+
+========================================
+METHOD 2: Using cPanel Git Version Control
+========================================
+
+Step 1: Push changes to GitHub
+   - Run update-repo.bat on local machine
+
+Step 2: In cPanel Git Version Control
+   - Click "Manage" on your repository
+   - Click "Pull or Deploy" tab
+   - Click "Update from Remote"
+   - Click "Deploy HEAD Commit"
+
+Step 3: The .cpanel.yml file will automatically:
+   - Copy all files from repository to public_html
+   - This happens automatically when you click Deploy
+
+Step 4: Verify
+   - Visit https://www.hrleaveassist.com/
+   - Press Ctrl+F5 to clear cache
+
+========================================
+METHOD 3: Manual File Copy (If above fail)
+========================================
+
+Step 1: In cPanel File Manager
+   - Navigate to: /home/hrledkhw/repositories/hrla-app
+   - Select all files (Ctrl+A)
+   - Click "Copy"
+   - Navigate to: /home/hrledkhw/public_html
+   - Click "Paste"
+   - Choose "Overwrite" when prompted
+
+Step 2: Verify
+   - Visit https://www.hrleaveassist.com/
+   - Press Ctrl+F5
+
+========================================
+TROUBLESHOOTING
+========================================
+
+Issue: Still seeing directory listing
+Solution: 
+   - Make sure index.php exists in public_html
+   - Check file permissions (should be 644)
+   - Check .htaccess file exists
+
+Issue: 404 errors
+Solution:
+   - Verify all files are in public_html (not in a subfolder)
+   - Check that paths in config/app.php are correct
+
+Issue: White page / PHP errors
+Solution:
+   - Check error_log file in public_html
+   - Verify PHP version is 7.4 or higher
+   - Check database connection in config/local.php
+
+========================================
+IMPORTANT FILES THAT MUST BE IN public_html:
+========================================
+
+✓ index.php (homepage)
+✓ login.php
+✓ register.php  
+✓ dashboard.php
+✓ .htaccess
+✓ styles.css
+✓ admin/ folder
+✓ api/ folder
+✓ assets/ folder
+✓ config/ folder
+✓ includes/ folder
+
+========================================
+AFTER SUCCESSFUL DEPLOYMENT:
+========================================
+
+1. Delete simple-deploy.php for security
+2. Clear browser cache (Ctrl+F5)
+3. Test all pages work correctly
+4. Check that title shows: "HRLA - HR Leave Assist | HR Leave Response Generator"
+
+========================================
+NEED HELP?
+========================================
+
+If deployment still fails:
+1. Check the error_log file in public_html
+2. Verify repository path: /home/hrledkhw/repositories/hrla-app
+3. Verify web root path: /home/hrledkhw/public_html
+4. Contact hosting support to verify Git is enabled
+
+========================================

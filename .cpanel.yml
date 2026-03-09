@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/hrledkhw/public_html/
+    - export DEPLOYPATH=/home/hrledkhw/public_html
     - /bin/cp -R * $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH 2>/dev/null || true
-    - /bin/cp .cpanel.yml $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp -R .htaccess $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp -R .gitignore $DEPLOYPATH 2>/dev/null || true
