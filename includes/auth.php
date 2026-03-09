@@ -117,6 +117,7 @@ class Auth {
             $pending = $this->db->fetch($sql, [$email]);
             
             if (!$pending) {
+                logMessage("Resend verification failed: No pending verification found", 'error', ['email' => $email]);
                 return ['success' => false, 'error' => 'No pending verification found for this email address.'];
             }
             
@@ -126,6 +127,7 @@ class Auth {
             
             if ($timeSinceLastSent < 120) {
                 $waitTime = 120 - $timeSinceLastSent;
+                logMessage("Resend verification rate limited", 'warning', ['email' => $email, 'wait_time' => $waitTime]);
                 return ['success' => false, 'error' => "Please wait {$waitTime} seconds before requesting another verification email."];
             }
             
@@ -135,29 +137,57 @@ class Auth {
                 $accessCodeData = $this->validateAccessCode($pending['access_code']);
             }
             
+            logMessage("Attempting to resend verification email", 'info', [
+                'email' => $email,
+                'first_name' => $pending['first_name'],
+                'has_access_code' => !!$accessCodeData
+            ]);
+            
             // Send verification email
-            $this->sendVerificationEmail(
+            $emailSent = $this->sendVerificationEmail(
                 $pending['email'],
                 $pending['first_name'],
                 $pending['verification_token'],
                 $accessCodeData
             );
             
+            if (!$emailSent) {
+                logMessage("Resend verification email failed to send", 'error', [
+                    'email' => $email,
+                    'smtp_host' => SMTP_HOST,
+                    'smtp_port' => SMTP_PORT,
+                    'smtp_username' => SMTP_USERNAME
+                ]);
+                return ['success' => false, 'error' => 'Failed to send verification email. Please contact support at ' . APP_SUPPORT_EMAIL];
+            }
+            
             // Update created_at to track last sent time
             $this->db->query("UPDATE pending_verifications SET created_at = NOW() WHERE id = ?", [$pending['id']]);
             
-            logMessage("Verification email resent", 'info', [
+            logMessage("Verification email resent successfully", 'info', [
                 'email' => $email
             ]);
             
-            return [
+            $response = [
                 'success' => true,
-                'message' => 'Verification email has been resent. Please check your inbox.'
+                'message' => 'Verification email has been resent. Please check your inbox and spam folder.'
             ];
             
+            // In development mode, include the verification link
+            if (!config('app.is_production')) {
+                $verificationLink = appUrl("verify.php?token=" . urlencode($pending['verification_token']));
+                $response['verification_link'] = $verificationLink;
+                $response['message'] = 'Development Mode: Email system not configured. Use the verification link below.';
+            }
+            
+            return $response;
+            
         } catch (Exception $e) {
-            logMessage("Resend verification failed: " . $e->getMessage(), 'error', ['email' => $email]);
-            return ['success' => false, 'error' => 'Failed to resend verification email. Please try again.'];
+            logMessage("Resend verification exception: " . $e->getMessage(), 'error', [
+                'email' => $email,
+                'trace' => $e->getTraceAsString()
+            ]);
+            return ['success' => false, 'error' => 'Failed to resend verification email. Please try again or contact support at ' . APP_SUPPORT_EMAIL];
         }
     }
     
@@ -638,7 +668,7 @@ class Auth {
         $verificationLink = appUrl("verify.php?token=$token");
         
         $emailTemplate = new EmailTemplates();
-        $emailTemplate->sendVerificationEmail($email, $firstName, $verificationLink, $accessCodeData);
+        return $emailTemplate->sendVerificationEmail($email, $firstName, $verificationLink, $accessCodeData);
     }
 }
 

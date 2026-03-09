@@ -298,7 +298,20 @@ $pageTitle = 'Register - HR Leave Assistant';
                             resendMessage.style.color = '#065f46';
                             resendMessage.style.padding = '0.75rem';
                             resendMessage.style.borderRadius = '0.375rem';
-                            resendMessage.innerHTML = '<i class="fas fa-check-circle"></i> ' + result.message;
+                            resendMessage.style.borderLeft = '4px solid #10b981';
+                            
+                            let messageHtml = '<i class="fas fa-check-circle"></i> ' + result.message;
+                            
+                            // Show verification link in development mode
+                            if (result.verification_link) {
+                                messageHtml += '<div style="margin-top: 1rem; padding: 1rem; background: #fff; border-radius: 0.375rem; border: 1px solid #10b981;">';
+                                messageHtml += '<strong style="color: #065f46;">Development Mode - Verification Link:</strong><br>';
+                                messageHtml += '<a href="' + result.verification_link + '" style="color: #0322D8; word-break: break-all; font-size: 0.875rem;">' + result.verification_link + '</a>';
+                                messageHtml += '<div style="margin-top: 0.5rem; font-size: 0.875rem; color: #666;">Click the link above to verify your account</div>';
+                                messageHtml += '</div>';
+                            }
+                            
+                            resendMessage.innerHTML = messageHtml;
                             resendBtn.innerHTML = '<i class="fas fa-check"></i> Email Sent!';
                             
                             setTimeout(() => {
@@ -311,16 +324,19 @@ $pageTitle = 'Register - HR Leave Assistant';
                             resendMessage.style.color = '#991b1b';
                             resendMessage.style.padding = '0.75rem';
                             resendMessage.style.borderRadius = '0.375rem';
+                            resendMessage.style.borderLeft = '4px solid #dc2626';
                             resendMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + result.error;
                             resendBtn.disabled = false;
                             resendBtn.innerHTML = '<i class="fas fa-envelope"></i> Resend Verification Email';
                         }
                     } catch (error) {
+                        console.error('Resend verification error:', error);
                         resendMessage.style.display = 'block';
                         resendMessage.style.background = '#fee2e2';
                         resendMessage.style.color = '#991b1b';
                         resendMessage.style.padding = '0.75rem';
                         resendMessage.style.borderRadius = '0.375rem';
+                        resendMessage.style.borderLeft = '4px solid #dc2626';
                         resendMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to send email. Please try again.';
                         resendBtn.disabled = false;
                         resendBtn.innerHTML = '<i class="fas fa-envelope"></i> Resend Verification Email';
