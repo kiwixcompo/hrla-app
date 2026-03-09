@@ -73,7 +73,10 @@ $folders = [
 foreach ($files as $file) {
     if (file_exists("$repoPath/$file")) {
         copy("$repoPath/$file", "$webRoot/$file");
+        chmod("$webRoot/$file", 0644); // Set proper permissions
         echo "✓ Copied $file\n";
+    } else {
+        echo "⚠ File not found: $file\n";
     }
 }
 
@@ -85,8 +88,21 @@ foreach ($folders as $folder) {
     }
 }
 
+// Set proper permissions on directories
+echo "\nSetting directory permissions...\n";
+chmod("$webRoot/admin", 0755);
+chmod("$webRoot/api", 0755);
+chmod("$webRoot/assets", 0755);
+chmod("$webRoot/config", 0755);
+chmod("$webRoot/includes", 0755);
+echo "✓ Permissions set\n";
+
 echo "\n" . str_repeat("=", 50) . "\n";
 echo "✓ DEPLOYMENT COMPLETE!\n";
-echo "\nClear your browser cache (Ctrl+F5) to see changes.\n";
+echo "\nIMPORTANT NEXT STEPS:\n";
+echo "1. Visit https://www.hrleaveassist.com/ to verify it works\n";
+echo "2. Clear your browser cache (Ctrl+F5) if needed\n";
+echo "3. Check that .htaccess file exists in public_html\n";
+echo "4. If still showing directory listing, contact hosting support\n";
 echo "</pre>";
 ?>
