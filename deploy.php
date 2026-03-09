@@ -298,6 +298,7 @@ function copyDirectoryOptimized($source, $destination, $is_manual = false) {
             if (in_array($filename, ['deploy.php', 'deploy.log']) || 
                 strpos($target, '/backups/') !== false ||
                 strpos($target, '/.git/') !== false ||
+                strpos($target, '/temp_') !== false ||
                 strpos($target, '/node_modules/') !== false) {
                 continue;
             }
