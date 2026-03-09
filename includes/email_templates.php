@@ -481,23 +481,36 @@ If you did not request this password reset, please ignore this email or contact 
         
         $headerString = implode("\r\n", $headers);
         
+        // Log email attempt
+        logMessage("Attempting to send email via native mail()", 'info', [
+            'to' => $to,
+            'from' => $this->fromEmail,
+            'subject' => $subject
+        ]);
+        
         $sent = mail($to, $subject, $htmlContent, $headerString);
         
         if ($sent) {
-            logMessage("Email sent successfully", 'info', [
+            logMessage("Email sent successfully via native mail()", 'info', [
                 'to' => $to,
                 'subject' => $subject,
                 'method' => 'native_mail'
             ]);
+            return true;
         } else {
-            logMessage("Email sending failed", 'error', [
+            $error = error_get_last();
+            logMessage("Email sending failed via native mail()", 'error', [
                 'to' => $to,
                 'subject' => $subject,
-                'method' => 'native_mail'
+                'method' => 'native_mail',
+                'error' => $error ? $error['message'] : 'Unknown error'
             ]);
             
             // Log to console for debugging
             $this->logEmailToConsole($to, $subject, $textContent);
+            return false;
+        }
+    }
         }
         
         return $sent;
