@@ -16,10 +16,11 @@ if ($providedKey !== DEPLOY_SECRET_KEY) {
     die('Access Denied: Invalid deployment key');
 }
 
-// Configuration
-$repoPath = __DIR__; // Current directory
+// Configuration - UPDATE THESE PATHS FOR YOUR SERVER
+$repoPath = '/home/hrledkhw/repositories/hrla-app'; // Git repository location
+$webRoot = '/home/hrledkhw/public_html'; // Live website location
 $gitBranch = 'main'; // or 'master' depending on your branch name
-$logFile = __DIR__ . '/deployment.log';
+$logFile = $webRoot . '/deployment.log';
 
 // Function to log messages
 function logMessage($message) {
@@ -85,9 +86,26 @@ function logMessage($message) {
 
 <?php
 
+// Verify repository path exists
+if (!is_dir($repoPath)) {
+    logMessage("<span class='error'>✗ ERROR: Repository path does not exist: $repoPath</span>");
+    logMessage("Please update the \$repoPath variable in this script");
+    exit(1);
+}
+
+// Verify web root exists
+if (!is_dir($webRoot)) {
+    logMessage("<span class='error'>✗ ERROR: Web root path does not exist: $webRoot</span>");
+    logMessage("Please update the \$webRoot variable in this script");
+    exit(1);
+}
+
+logMessage("✓ Repository path: $repoPath");
+logMessage("✓ Web root path: $webRoot");
+
 // Change to repository directory
 chdir($repoPath);
-logMessage("✓ Changed to repository directory: $repoPath");
+logMessage("✓ Changed to repository directory");
 
 // Check if git is available
 exec('git --version 2>&1', $output, $returnCode);
@@ -97,6 +115,17 @@ if ($returnCode !== 0) {
     exit(1);
 }
 logMessage("✓ Git is available: " . implode(' ', $output));
+$output = [];
+
+// Verify this is a git repository
+exec('git rev-parse --git-dir 2>&1', $output, $returnCode);
+if ($returnCode !== 0) {
+    logMessage("<span class='error'>✗ ERROR: $repoPath is not a git repository</span>");
+    logMessage("<pre>" . implode("\n", $output) . "</pre>");
+    exit(1);
+}
+logMessage("✓ Confirmed git repository");
+$output = [];
 
 // Fetch latest changes from remote
 logMessage("Fetching latest changes from GitHub...");
@@ -107,10 +136,12 @@ if ($returnCode !== 0) {
     exit(1);
 }
 logMessage("✓ Successfully fetched from remote");
+$output = [];
 
 // Show current commit
 exec('git rev-parse HEAD 2>&1', $currentCommit);
-logMessage("Current commit: " . substr($currentCommit[0], 0, 8));
+$currentCommitShort = substr($currentCommit[0], 0, 8);
+logMessage("Current commit: $currentCommitShort");
 
 // Reset to match remote exactly (this will overwrite local changes)
 logMessage("Resetting to match remote repository...");
@@ -121,15 +152,45 @@ if ($returnCode !== 0) {
     exit(1);
 }
 logMessage("✓ Successfully reset to origin/$gitBranch");
+$output = [];
 
 // Show new commit
 exec('git rev-parse HEAD 2>&1', $newCommit);
-logMessage("New commit: " . substr($newCommit[0], 0, 8));
+$newCommitShort = substr($newCommit[0], 0, 8);
+logMessage("New commit: $newCommitShort");
 
 // Clean up any untracked files
 logMessage("Cleaning up untracked files...");
 exec('git clean -fd 2>&1', $output, $returnCode);
 logMessage("✓ Cleanup complete");
+$output = [];
+
+// Copy files from repository to web root (if they're different locations)
+if ($repoPath !== $webRoot) {
+    logMessage("Syncing files from repository to web root...");
+    
+    // Use rsync if available, otherwise use cp
+    exec('which rsync 2>&1', $output, $returnCode);
+    if ($returnCode === 0) {
+        // rsync is available
+        $rsyncCmd = "rsync -av --delete --exclude='.git' --exclude='deployment.log' --exclude='data/' --exclude='logs/' '$repoPath/' '$webRoot/' 2>&1";
+        exec($rsyncCmd, $output, $returnCode);
+        if ($returnCode === 0) {
+            logMessage("✓ Files synced using rsync");
+        } else {
+            logMessage("<span class='error'>✗ rsync failed, trying cp...</span>");
+            exec("cp -rf $repoPath/* $webRoot/ 2>&1", $output, $returnCode);
+            logMessage("✓ Files copied using cp");
+        }
+    } else {
+        // Use cp
+        exec("cp -rf $repoPath/* $webRoot/ 2>&1", $output, $returnCode);
+        logMessage("✓ Files copied using cp");
+    }
+    $output = [];
+} else {
+    logMessage("<span class='warning'>Repository and web root are the same - no file sync needed</span>");
+}
 
 // Show what changed
 logMessage("Getting list of changed files...");
@@ -156,8 +217,10 @@ logMessage("<span class='success'>========================================</span
 logMessage("<span class='success'>✓ DEPLOYMENT SUCCESSFUL!</span>");
 logMessage("<span class='success'>========================================</span>");
 logMessage("Your live site has been updated to match GitHub");
+logMessage("Repository: $repoPath");
+logMessage("Web Root: $webRoot");
 logMessage("Branch: $gitBranch");
-logMessage("Commit: " . substr($newCommit[0], 0, 8));
+logMessage("Commit: $newCommitShort");
 logMessage("");
 logMessage("<strong>IMPORTANT: Clear your browser cache to see changes!</strong>");
 logMessage("Press Ctrl+F5 or Cmd+Shift+R to hard refresh");
@@ -167,6 +230,11 @@ logMessage("Press Ctrl+F5 or Cmd+Shift+R to hard refresh");
     <p style="margin-top: 30px; color: #ffaa00;">
         <strong>Security Note:</strong> For production use, delete this file after deployment 
         or move it outside the web root.
+    </p>
+    
+    <p style="margin-top: 10px;">
+        <a href="/" style="color: #00ff00;">← Back to Home</a> | 
+        <a href="deployment.log" style="color: #00ff00;" target="_blank">View Full Log</a>
     </p>
 </body>
 </html>
