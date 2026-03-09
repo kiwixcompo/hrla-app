@@ -83,64 +83,6 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             font-size: 1.1rem;
             color: #333;
         }
-        
-        /* Logo Dropdown Menu */
-        .logo-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .logo-dropdown-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-        
-        .logo-dropdown-toggle:hover {
-            background: #f3f4f6;
-        }
-        
-        .logo-dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            min-width: 200px;
-            margin-top: 8px;
-            z-index: 1000;
-        }
-        
-        .logo-dropdown-menu.show {
-            display: block;
-        }
-        
-        .logo-dropdown-menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 16px;
-            color: #333;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        
-        .logo-dropdown-menu a:hover {
-            background: #f3f4f6;
-        }
-        
-        .logo-dropdown-menu a i {
-            width: 20px;
-            text-align: center;
-            color: #0322D8;
-        }
 
         /* --- STANDARD PAGE SCROLL LAYOUT --- */
         html, body {
@@ -282,23 +224,8 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                     <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-arrow-left"></i>
                     </a>
-                    <div class="logo-dropdown">
-                        <div class="logo-dropdown-toggle" onclick="toggleLogoDropdown()">
-                            <img src="federal_logo.png" alt="Federal Leave Assistant" class="nav-logo-large">
-                            <span class="nav-title">Federal Leave Assistant</span>
-                            <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: #666;"></i>
-                        </div>
-                        <div class="logo-dropdown-menu" id="logoDropdownMenu">
-                            <a href="<?php echo appUrl('dashboard.php'); ?>">
-                                <i class="fas fa-home"></i>
-                                <span>Dashboard</span>
-                            </a>
-                            <a href="<?php echo appUrl('logout.php'); ?>">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Logout</span>
-                            </a>
-                        </div>
-                    </div>
+                    <img src="federal_logo.png" alt="Federal Leave Assistant" class="nav-logo-large">
+                    <span class="nav-title">Federal Leave Assistant</span>
                 </div>
                 <div class="nav-menu">
                     <a href="<?php echo appUrl('settings.php'); ?>" class="btn btn-ghost">
@@ -456,24 +383,6 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             } finally {
                 federalFollowupSubmit.disabled = false;
                 federalFollowupSubmit.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Follow Up';
-            }
-        });
-    </script>
-    
-    <script>
-        // Logo dropdown functionality
-        function toggleLogoDropdown() {
-            const menu = document.getElementById('logoDropdownMenu');
-            menu.classList.toggle('show');
-        }
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.querySelector('.logo-dropdown');
-            const menu = document.getElementById('logoDropdownMenu');
-            
-            if (dropdown && !dropdown.contains(event.target)) {
-                menu.classList.remove('show');
             }
         });
     </script>

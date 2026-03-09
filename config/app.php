@@ -4,42 +4,6 @@
  * HR Leave Assistant - PHP/MySQL Version
  */
 
-// Load .env file if it exists
-function loadEnv($path) {
-    if (!file_exists($path)) {
-        return;
-    }
-    
-    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        // Skip comments
-        if (strpos(trim($line), '#') === 0) {
-            continue;
-        }
-        
-        // Parse KEY=VALUE
-        if (strpos($line, '=') !== false) {
-            list($key, $value) = explode('=', $line, 2);
-            $key = trim($key);
-            $value = trim($value);
-            
-            // Remove quotes if present
-            if (preg_match('/^(["\'])(.*)\\1$/', $value, $matches)) {
-                $value = $matches[2];
-            }
-            
-            // Set environment variable
-            if (!array_key_exists($key, $_ENV)) {
-                $_ENV[$key] = $value;
-                putenv("$key=$value");
-            }
-        }
-    }
-}
-
-// Load .env file from root directory
-loadEnv(__DIR__ . '/../.env');
-
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -60,7 +24,7 @@ if ($isProduction) {
 define('APP_NAME', 'HR Leave Assistant');
 define('APP_VERSION', '2.0.0');
 define('APP_URL', $isProduction ? 'https://www.hrleaveassist.com' : 'http://localhost/leave_assistant');
-define('APP_EMAIL', 'noreply@hrleaveassist.com');
+define('APP_EMAIL', 'askhrla@hrleaveassist.com');
 define('APP_SUPPORT_EMAIL', 'askhrla@hrleaveassist.com');
 
 // Security settings
@@ -87,7 +51,7 @@ define('OPENAI_TEMPERATURE', 0.3);
 // Email settings
 define('SMTP_HOST', $_ENV['SMTP_HOST'] ?? 'mail.hrleaveassist.com');
 define('SMTP_PORT', $_ENV['SMTP_PORT'] ?? 587);
-define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? 'noreply@hrleaveassist.com');
+define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? 'askhrla@hrleaveassist.com');
 
 // Load local config if it exists (not in git)
 if (file_exists(__DIR__ . '/local.php')) {
