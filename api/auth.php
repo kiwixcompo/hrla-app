@@ -36,6 +36,10 @@ try {
             handleVerifyResetToken($auth);
             break;
             
+        case 'resend_verification':
+            handleResendVerification($auth);
+            break;
+            
         default:
             throw new Exception('Invalid action');
     }
@@ -181,5 +185,40 @@ function handleVerifyResetToken($auth) {
             'error' => 'Unable to verify token'
         ]);
     }
+}
+
+/**
+ * Handle resend verification request
+ */
+function handleResendVerification($auth) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        throw new Exception('Method not allowed');
+    }
+    
+    // Validate CSRF token
+    if (!validateCSRFToken($_POST['csrf_token'] ?? '')) {
+        throw new Exception('Invalid CSRF token');
+    }
+    
+    $email = trim($_POST['email'] ?? '');
+    
+    if (empty($email)) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Email address is required'
+        ]);
+        return;
+    }
+    
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Please enter a valid email address'
+        ]);
+        return;
+    }
+    
+    $result = $auth->resendVerification($email);
+    echo json_encode($result);
 }
 ?>

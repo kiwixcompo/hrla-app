@@ -30,7 +30,7 @@ class Auth {
             
             // Check pending verifications
             if ($this->hasPendingVerification($email)) {
-                return ['success' => false, 'error' => 'This email address already has a pending verification. Please check your email or try resending the verification.'];
+                return ['success' => false, 'error' => 'This email address already has a pending verification. Please check your email or try resending the verification.', 'pending_email' => $email];
             }
             
             // Validate access code if provided
@@ -104,6 +104,60 @@ class Auth {
         } catch (Exception $e) {
             logMessage("Registration failed: " . $e->getMessage(), 'error', ['email' => $email]);
             return ['success' => false, 'error' => 'Registration failed. Please try again.'];
+        }
+    }
+    
+    /**
+     * Resend verification email
+     */
+    public function resendVerification($email) {
+        try {
+            // Get pending verification
+            $sql = "SELECT * FROM pending_verifications WHERE email = ? AND expires_at > NOW()";
+            $pending = $this->db->fetch($sql, [$email]);
+            
+            if (!$pending) {
+                return ['success' => false, 'error' => 'No pending verification found for this email address.'];
+            }
+            
+            // Check if recently sent (rate limiting - 2 minutes)
+            $lastSent = strtotime($pending['created_at']);
+            $timeSinceLastSent = time() - $lastSent;
+            
+            if ($timeSinceLastSent < 120) {
+                $waitTime = 120 - $timeSinceLastSent;
+                return ['success' => false, 'error' => "Please wait {$waitTime} seconds before requesting another verification email."];
+            }
+            
+            // Get access code data if used
+            $accessCodeData = null;
+            if ($pending['access_code']) {
+                $accessCodeData = $this->validateAccessCode($pending['access_code']);
+            }
+            
+            // Send verification email
+            $this->sendVerificationEmail(
+                $pending['email'],
+                $pending['first_name'],
+                $pending['verification_token'],
+                $accessCodeData
+            );
+            
+            // Update created_at to track last sent time
+            $this->db->query("UPDATE pending_verifications SET created_at = NOW() WHERE id = ?", [$pending['id']]);
+            
+            logMessage("Verification email resent", 'info', [
+                'email' => $email
+            ]);
+            
+            return [
+                'success' => true,
+                'message' => 'Verification email has been resent. Please check your inbox.'
+            ];
+            
+        } catch (Exception $e) {
+            logMessage("Resend verification failed: " . $e->getMessage(), 'error', ['email' => $email]);
+            return ['success' => false, 'error' => 'Failed to resend verification email. Please try again.'];
         }
     }
     

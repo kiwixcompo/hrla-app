@@ -511,10 +511,6 @@ If you did not request this password reset, please ignore this email or contact 
             return false;
         }
     }
-        }
-        
-        return $sent;
-    }
     
     /**
      * Log email to console for development

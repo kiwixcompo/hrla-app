@@ -18,6 +18,7 @@ $error = '';
 $success = '';
 $showVerificationMessage = false;
 $registeredEmail = '';
+$pendingEmail = '';
 
 // Handle registration form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -49,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $success = $result['message'];
             } else {
                 $error = $result['error'];
+                if (isset($result['pending_email'])) {
+                    $pendingEmail = $result['pending_email'];
+                }
             }
         }
     }
@@ -157,6 +161,14 @@ $pageTitle = 'Register - HR Leave Assistant';
                         <div class="alert alert-error" style="background: #fee2e2; color: #991b1b; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border-left: 4px solid #dc2626;">
                             <span class="alert-icon">❌</span>
                             <?php echo htmlspecialchars($error); ?>
+                            <?php if ($pendingEmail): ?>
+                                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #fca5a5;">
+                                    <button type="button" id="resendVerificationBtn" class="btn btn-primary" style="width: 100%; background: #0322D8;">
+                                        <i class="fas fa-envelope"></i> Resend Verification Email
+                                    </button>
+                                    <div id="resendMessage" style="margin-top: 0.5rem; display: none;"></div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                     
@@ -251,5 +263,72 @@ $pageTitle = 'Register - HR Leave Assistant';
     <?php endif; ?>
     
     <script src="assets/js/mobile-menu.js"></script>
+    
+    <?php if ($pendingEmail): ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resendBtn = document.getElementById('resendVerificationBtn');
+            const resendMessage = document.getElementById('resendMessage');
+            const pendingEmail = <?php echo json_encode($pendingEmail); ?>;
+            
+            if (resendBtn) {
+                resendBtn.addEventListener('click', async function() {
+                    resendBtn.disabled = true;
+                    resendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                    resendMessage.style.display = 'none';
+                    
+                    try {
+                        const response = await fetch('api/auth.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: new URLSearchParams({
+                                action: 'resend_verification',
+                                email: pendingEmail,
+                                csrf_token: '<?php echo generateCSRFToken(); ?>'
+                            })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            resendMessage.style.display = 'block';
+                            resendMessage.style.background = '#d1fae5';
+                            resendMessage.style.color = '#065f46';
+                            resendMessage.style.padding = '0.75rem';
+                            resendMessage.style.borderRadius = '0.375rem';
+                            resendMessage.innerHTML = '<i class="fas fa-check-circle"></i> ' + result.message;
+                            resendBtn.innerHTML = '<i class="fas fa-check"></i> Email Sent!';
+                            
+                            setTimeout(() => {
+                                resendBtn.disabled = false;
+                                resendBtn.innerHTML = '<i class="fas fa-envelope"></i> Resend Verification Email';
+                            }, 5000);
+                        } else {
+                            resendMessage.style.display = 'block';
+                            resendMessage.style.background = '#fee2e2';
+                            resendMessage.style.color = '#991b1b';
+                            resendMessage.style.padding = '0.75rem';
+                            resendMessage.style.borderRadius = '0.375rem';
+                            resendMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + result.error;
+                            resendBtn.disabled = false;
+                            resendBtn.innerHTML = '<i class="fas fa-envelope"></i> Resend Verification Email';
+                        }
+                    } catch (error) {
+                        resendMessage.style.display = 'block';
+                        resendMessage.style.background = '#fee2e2';
+                        resendMessage.style.color = '#991b1b';
+                        resendMessage.style.padding = '0.75rem';
+                        resendMessage.style.borderRadius = '0.375rem';
+                        resendMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to send email. Please try again.';
+                        resendBtn.disabled = false;
+                        resendBtn.innerHTML = '<i class="fas fa-envelope"></i> Resend Verification Email';
+                    }
+                });
+            }
+        });
+    </script>
+    <?php endif; ?>
 </body>
 </html>
