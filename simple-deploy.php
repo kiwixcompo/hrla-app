@@ -37,6 +37,7 @@ echo $output . "\n";
 echo "\nCopying files to web root...\n";
 $files = [
     'index.php',
+    'index.html',
     'login.php',
     'register.php',
     'dashboard.php',
@@ -57,7 +58,9 @@ $files = [
     'fmla-faqs.php',
     'styles.css',
     'mobile-responsive.css',
-    '.htaccess'
+    '.htaccess',
+    'fix-now.php',
+    'check-deployment.php'
 ];
 
 $folders = [

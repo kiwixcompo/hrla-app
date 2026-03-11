@@ -8,7 +8,11 @@ DirectoryIndex index.php index.html
 <IfModule mod_php7.c>
     php_flag display_errors Off
     php_flag log_errors On
-    php_value error_log /home/hrledkhw/public_html/error_log
+</IfModule>
+
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
 </IfModule>
 
 # Prevent directory listing
@@ -40,11 +44,10 @@ Options -Indexes
 
 # Protect sensitive files
 <FilesMatch "^(\.htaccess|\.htpasswd|\.env|composer\.json|composer\.lock|package\.json|\.git)">
-    Order allow,deny
-    Deny from all
+    Require all denied
 </FilesMatch>
 
-# Protect config and data directories
+# Protect config, data, logs and includes directories
 <IfModule mod_rewrite.c>
     RewriteRule ^config/ - [F,L]
     RewriteRule ^data/ - [F,L]
@@ -75,6 +78,5 @@ AddDefaultCharset UTF-8
 
 # Prevent access to backup files
 <FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)$">
-    Order allow,deny
-    Deny from all
+    Require all denied
 </FilesMatch>

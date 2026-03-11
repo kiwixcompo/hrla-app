@@ -13,12 +13,30 @@ if (session_status() === PHP_SESSION_NONE) {
 $isProduction = ($_SERVER['HTTP_HOST'] ?? '') !== 'localhost';
 
 if ($isProduction) {
-    error_reporting(0);
+    error_reporting(E_ALL);
     ini_set('display_errors', 0);
+    ini_set('log_errors', 1);
 } else {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+    ini_set('log_errors', 1);
 }
+
+// Application paths (define before loading error handler)
+define('ROOT_PATH', dirname(__DIR__));
+define('CONFIG_PATH', ROOT_PATH . '/config');
+define('INCLUDES_PATH', ROOT_PATH . '/includes');
+define('TEMPLATES_PATH', ROOT_PATH . '/templates');
+define('ASSETS_PATH', ROOT_PATH . '/assets');
+define('LOGS_PATH', ROOT_PATH . '/logs');
+
+// Create logs directory if it doesn't exist
+if (!is_dir(LOGS_PATH)) {
+    @mkdir(LOGS_PATH, 0755, true);
+}
+
+// Load error handler (after ROOT_PATH is defined)
+require_once __DIR__ . '/../includes/error_handler.php';
 
 // Application constants
 define('APP_NAME', 'HR Leave Assistant');
@@ -73,19 +91,6 @@ define('EMAIL_RATE_LIMIT', 5); // emails per hour per user
 define('USERS_PER_PAGE', 25);
 define('CONVERSATIONS_PER_PAGE', 50);
 define('LOGS_PER_PAGE', 100);
-
-// Application paths
-define('ROOT_PATH', dirname(__DIR__));
-define('CONFIG_PATH', ROOT_PATH . '/config');
-define('INCLUDES_PATH', ROOT_PATH . '/includes');
-define('TEMPLATES_PATH', ROOT_PATH . '/templates');
-define('ASSETS_PATH', ROOT_PATH . '/assets');
-define('LOGS_PATH', ROOT_PATH . '/logs');
-
-// Create logs directory if it doesn't exist
-if (!is_dir(LOGS_PATH)) {
-    mkdir(LOGS_PATH, 0755, true);
-}
 
 // Timezone
 date_default_timezone_set('UTC');

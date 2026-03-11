@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0;url=index.php">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRLA - HR Leave Assist</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f2f4fe 0%, #ffffff 100%);
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .hr { color: #0322D8; }
+        .la { color: #3DB20B; }
+        .message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0322D8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .link {
+            display: inline-block;
+            background: #0322D8;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .link:hover {
+            background: #1800AD;
+        }
+    </style>
+    <script>
+        // Redirect after 1 second if meta refresh doesn't work
+        setTimeout(function() {
+            window.location.href = 'index.php';
+        }, 1000);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <span class="hr">HR</span><span class="la">LA</span>
+        </div>
+        <div class="spinner"></div>
+        <div class="message">Loading HR Leave Assist...</div>
+        <p style="color: #999; font-size: 0.9rem;">If not redirected automatically,</p>
+        <a href="index.php" class="link">Click Here</a>
+    </div>
+</body>
+</html>
