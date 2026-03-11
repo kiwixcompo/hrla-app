@@ -1,0 +1,134 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  SERVER DEPLOYMENT - QUICK FIX CHECKLIST                                 ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+PROBLEM: Directory listing shown instead of application
+CAUSE: .htaccess file has wrong permissions (Permission denied error)
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ QUICK FIX - METHOD 1 (Easiest)                                           │
+└───────────────────────────────────────────────────────────────────────────┘
+
+1. Visit: https://www.hrleaveassist.com/server-check.php
+   → This will show you what's wrong
+
+2. Visit: https://www.hrleaveassist.com/fix-permissions.php
+   → This will automatically fix permissions
+
+3. Visit: https://www.hrleaveassist.com/
+   → Your site should now load!
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ MANUAL FIX - METHOD 2 (If scripts don't work)                            │
+└───────────────────────────────────────────────────────────────────────────┘
+
+Via cPanel File Manager:
+
+1. Log into cPanel
+2. Open File Manager
+3. Navigate to public_html
+4. Find .htaccess file
+5. Right-click → Change Permissions
+6. Set to: 644
+   ☑ Owner: Read + Write
+   ☑ Group: Read
+   ☑ Public: Read
+7. Click "Change Permissions"
+
+Also fix these directories:
+- logs/ → Set to 777 (needs to be writable)
+- data/ → Set to 777 (needs to be writable)
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ MANUAL FIX - METHOD 3 (Via SSH)                                          │
+└───────────────────────────────────────────────────────────────────────────┘
+
+If you have SSH access:
+
+cd /home/hrledkhw/public_html
+chmod 644 .htaccess
+chmod 777 logs data
+chmod 644 config/.htaccess data/.htaccess logs/.htaccess includes/.htaccess
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ VERIFY THE FIX                                                            │
+└───────────────────────────────────────────────────────────────────────────┘
+
+After fixing permissions:
+
+✓ Visit: https://www.hrleaveassist.com/
+  → Should show your homepage (NOT directory listing)
+
+✓ Visit: https://www.hrleaveassist.com/login.php
+  → Should show login page
+
+✓ Visit: https://www.hrleaveassist.com/register.php
+  → Should show registration page
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ TROUBLESHOOTING                                                           │
+└───────────────────────────────────────────────────────────────────────────┘
+
+Still seeing directory listing?
+
+1. Check if index.php exists in public_html
+2. Check if .htaccess is readable (permissions 644)
+3. Clear browser cache (Ctrl+F5)
+4. Contact hosting support with this error:
+   "Failed to open .htaccess: Permission denied"
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ AFTER DEPLOYMENT                                                          │
+└───────────────────────────────────────────────────────────────────────────┘
+
+Once everything works:
+
+1. ✓ Test all pages thoroughly
+2. ✓ Check error log: view-error-log.php
+3. ✓ Change password in view-error-log.php
+4. ✓ Delete test files:
+   - server-check.php
+   - fix-permissions.php
+   - test-basic.php
+   - test-error-logging.php
+   - diagnose-local.php (or keep for debugging)
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ PERMISSION REFERENCE                                                      │
+└───────────────────────────────────────────────────────────────────────────┘
+
+Files (should be 644):
+  .htaccess
+  index.php
+  *.php files
+  config/.htaccess
+  data/.htaccess
+  logs/.htaccess
+  includes/.htaccess
+
+Directories (should be 755):
+  config/
+  includes/
+  assets/
+  api/
+  admin/
+
+Writable Directories (should be 777):
+  logs/
+  data/
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  START HERE: https://www.hrleaveassist.com/server-check.php              ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
