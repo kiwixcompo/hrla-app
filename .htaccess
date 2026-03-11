@@ -1,19 +1,7 @@
 # HR Leave Assist - Apache Configuration
-# Enable PHP processing and set index file
 
 # Set default index file
 DirectoryIndex index.php index.html
-
-# Enable PHP processing
-<IfModule mod_php7.c>
-    php_flag display_errors Off
-    php_flag log_errors On
-</IfModule>
-
-<IfModule mod_php.c>
-    php_flag display_errors Off
-    php_flag log_errors On
-</IfModule>
 
 # Prevent directory listing
 Options -Indexes
@@ -23,15 +11,10 @@ Options -Indexes
     RewriteEngine On
     RewriteBase /
     
-    # Force HTTPS (if SSL is available)
+    # Force HTTPS for production domain only
     RewriteCond %{HTTPS} off
     RewriteCond %{HTTP_HOST} ^(www\.)?hrleaveassist\.com$ [NC]
     RewriteRule ^(.*)$ https://www.hrleaveassist.com/$1 [R=301,L]
-    
-    # Remove trailing slashes
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [R=301,L]
 </IfModule>
 
 # Security headers
@@ -43,17 +26,14 @@ Options -Indexes
 </IfModule>
 
 # Protect sensitive files
-<FilesMatch "^(\.htaccess|\.htpasswd|\.env|composer\.json|composer\.lock|package\.json|\.git)">
+<FilesMatch "^(\.htaccess|\.htpasswd|\.env|composer\.json|composer\.lock|package\.json|\.git)$">
     Require all denied
 </FilesMatch>
 
-# Protect config, data, logs and includes directories
-<IfModule mod_rewrite.c>
-    RewriteRule ^config/ - [F,L]
-    RewriteRule ^data/ - [F,L]
-    RewriteRule ^logs/ - [F,L]
-    RewriteRule ^includes/ - [F,L]
-</IfModule>
+# Prevent access to backup files
+<FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)$">
+    Require all denied
+</FilesMatch>
 
 # Cache static assets
 <IfModule mod_expires.c>
@@ -76,7 +56,13 @@ Options -Indexes
 # Set UTF-8 encoding
 AddDefaultCharset UTF-8
 
-# Prevent access to backup files
-<FilesMatch "\.(bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)$">
-    Require all denied
-</FilesMatch>
+# PHP settings
+<IfModule mod_php7.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>

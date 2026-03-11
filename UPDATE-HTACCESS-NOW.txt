@@ -1,0 +1,115 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  URGENT: UPDATE .htaccess FILE ON SERVER                                 ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+PROBLEM: 404 errors on all pages
+CAUSE: .htaccess RewriteRules are too aggressive and blocking all requests
+
+SOLUTION: Replace .htaccess with simplified version
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ METHOD 1: Deploy via Git/cPanel (Recommended)                            │
+└───────────────────────────────────────────────────────────────────────────┘
+
+1. Commit the updated .htaccess file locally
+2. Push to your repository
+3. Deploy via cPanel Git Version Control
+4. The new .htaccess will be deployed automatically
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ METHOD 2: Manual Upload via cPanel File Manager                          │
+└───────────────────────────────────────────────────────────────────────────┘
+
+1. Log into cPanel
+2. Open File Manager
+3. Navigate to public_html
+4. Find .htaccess file
+5. Right-click → Edit
+6. Replace ALL content with the new simplified version
+7. Save the file
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ METHOD 3: Upload via FTP                                                  │
+└───────────────────────────────────────────────────────────────────────────┘
+
+1. Open your FTP client (FileZilla, etc.)
+2. Connect to your server
+3. Navigate to public_html
+4. Upload the new .htaccess file (overwrite existing)
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ WHAT CHANGED IN .htaccess                                                 │
+└───────────────────────────────────────────────────────────────────────────┘
+
+REMOVED (these were causing 404 errors):
+  ✗ RewriteRule ^config/ - [F,L]
+  ✗ RewriteRule ^data/ - [F,L]
+  ✗ RewriteRule ^logs/ - [F,L]
+  ✗ RewriteRule ^includes/ - [F,L]
+  ✗ Trailing slash removal rule
+
+KEPT (these are safe):
+  ✓ DirectoryIndex index.php
+  ✓ Options -Indexes
+  ✓ HTTPS redirect (for production domain only)
+  ✓ Security headers
+  ✓ File protection rules
+  ✓ Caching rules
+
+PROTECTION NOW HANDLED BY:
+  ✓ config/.htaccess
+  ✓ data/.htaccess
+  ✓ logs/.htaccess
+  ✓ includes/.htaccess
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ TEST AFTER UPDATE                                                         │
+└───────────────────────────────────────────────────────────────────────────┘
+
+1. Visit: https://www.hrleaveassist.com/test.php
+   → Should show: "PHP is working! Server time: ..."
+
+2. Visit: https://www.hrleaveassist.com/
+   → Should show your homepage
+
+3. Visit: https://www.hrleaveassist.com/login.php
+   → Should show login page
+
+4. Visit: https://www.hrleaveassist.com/config/
+   → Should show: Forbidden (403) - This is correct!
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ IF STILL NOT WORKING                                                      │
+└───────────────────────────────────────────────────────────────────────────┘
+
+1. Clear browser cache (Ctrl+F5)
+2. Check .htaccess permissions are 644
+3. Verify .htaccess was actually updated (check file modification time)
+4. Check server error log for new errors
+5. Try accessing test.php first to isolate the issue
+
+
+┌───────────────────────────────────────────────────────────────────────────┐
+│ QUICK VERIFICATION                                                        │
+└───────────────────────────────────────────────────────────────────────────┘
+
+The new .htaccess file should:
+- Be about 50 lines long (much shorter than before)
+- NOT contain "RewriteRule ^config/" or similar blocking rules
+- Start with "# HR Leave Assist - Apache Configuration"
+- Have "DirectoryIndex index.php index.html" near the top
+
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║  ACTION REQUIRED: Update .htaccess on server NOW                          ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
