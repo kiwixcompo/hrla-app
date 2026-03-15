@@ -45,9 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $auth->register($email, $password, $firstName, $lastName, $accessCode);
             
             if ($result['success']) {
-                $showVerificationMessage = true;
-                $registeredEmail = $email;
-                $success = $result['message'];
+                redirect(appUrl('verify.php?email=' . urlencode($email)));
             } else {
                 $error = $result['error'];
                 if (isset($result['pending_email'])) {

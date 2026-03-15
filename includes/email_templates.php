@@ -20,11 +20,11 @@ class EmailTemplates {
     /**
      * Send verification email
      */
-    public function sendVerificationEmail($email, $firstName, $verificationLink, $accessCodeData = null) {
+    public function sendVerificationEmail($email, $firstName, $verificationLink, $accessCodeData = null, $code = null) {
         $subject = '✅ Verify your HR Leave Assistant account - Start your access';
         
-        $htmlContent = $this->getVerificationEmailHTML($firstName, $verificationLink, $accessCodeData);
-        $textContent = $this->getVerificationEmailText($firstName, $verificationLink, $accessCodeData);
+        $htmlContent = $this->getVerificationEmailHTML($firstName, $verificationLink, $accessCodeData, $code);
+        $textContent = $this->getVerificationEmailText($firstName, $verificationLink, $accessCodeData, $code);
         
         return $this->sendEmail($email, $subject, $htmlContent, $textContent);
     }
@@ -79,7 +79,7 @@ class EmailTemplates {
     
     // HTML Email Templates
     
-    private function getVerificationEmailHTML($firstName, $verificationLink, $accessCodeData) {
+    private function getVerificationEmailHTML($firstName, $verificationLink, $accessCodeData, $code = null) {
         $currentYear = date('Y');
         $accessCodeSection = '';
         
@@ -196,6 +196,16 @@ class EmailTemplates {
                         <a href='$verificationLink' class='button' style='color: white;'>Verify Email Address</a>
                     </div>
                     
+                    " . ($code ? "
+                    <div style='text-align: center; margin: 30px 0;'>
+                        <p style='margin: 0 0 10px 0; font-size: 15px;'><strong>Or enter this 6-digit code on the verification page:</strong></p>
+                        <div style='display: inline-block; background: #f0f4ff; border: 2px solid #0023F5; border-radius: 10px; padding: 20px 30px;'>
+                            <span style='font-size: 42px; font-weight: 900; letter-spacing: 12px; color: #0023F5; font-family: monospace;'>$code</span>
+                        </div>
+                        <p style='margin: 10px 0 0 0; font-size: 13px; color: #666;'>This code expires in 24 hours</p>
+                    </div>
+                    " : "") . "
+                    
                     <p><strong>Alternative verification method:</strong></p>
                     <p>If the button above doesn't work, copy and paste this link into your web browser:</p>
                     <div class='verification-code'>$verificationLink</div>
@@ -218,7 +228,7 @@ class EmailTemplates {
         </html>";
     }
     
-    private function getVerificationEmailText($firstName, $verificationLink, $accessCodeData) {
+    private function getVerificationEmailText($firstName, $verificationLink, $accessCodeData, $code = null) {
         $currentYear = date('Y');
         $accessCodeText = '';
         
@@ -228,6 +238,8 @@ class EmailTemplates {
             $accessCodeText = "Free Trial: Your account includes a 24-hour free trial to explore all features.";
         }
         
+        $codeSection = $code ? "\nYOUR VERIFICATION CODE: $code\n(Enter this code on the verification page, or use the link below)\n" : '';
+        
         return "
 HR Leave Assistant - Account Verification Required
 
@@ -236,7 +248,7 @@ Hello $firstName,
 Thank you for creating your HR Leave Assistant account. To ensure the security of your account and complete your registration, please verify your email address.
 
 $accessCodeText
-
+$codeSection
 VERIFICATION LINK:
 $verificationLink
 

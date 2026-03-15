@@ -40,6 +40,10 @@ try {
             handleResendVerification($auth);
             break;
             
+        case 'verify_code':
+            handleVerifyCode($auth);
+            break;
+            
         default:
             throw new Exception('Invalid action');
     }
@@ -188,10 +192,29 @@ function handleVerifyResetToken($auth) {
 }
 
 /**
+ * Handle 6-digit code verification
+ */
+function handleVerifyCode($auth) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        throw new Exception('Method not allowed');
+    }
+
+    $code  = trim($_POST['code'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+
+    if (empty($code) || !preg_match('/^\d{6}$/', $code)) {
+        echo json_encode(['success' => false, 'error' => 'Please enter a valid 6-digit code.']);
+        return;
+    }
+
+    $result = $auth->verifyEmailByCode($code, $email ?: null);
+    echo json_encode($result);
+}
+
+/**
  * Handle resend verification request
  */
-function handleResendVerification($auth) {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+function handleResendVerification($auth) {    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception('Method not allowed');
     }
     

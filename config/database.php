@@ -282,6 +282,8 @@ class Database {
                     last_name VARCHAR(100) NOT NULL,
                     password_hash VARCHAR(255) NOT NULL,
                     verification_token VARCHAR(255) UNIQUE NOT NULL,
+                    verification_code VARCHAR(10) DEFAULT NULL,
+                    verification_expires DATETIME DEFAULT NULL,
                     access_code VARCHAR(50),
                     trial_expiry TIMESTAMP NULL,
                     access_level VARCHAR(50) DEFAULT 'trial',
@@ -289,6 +291,7 @@ class Database {
                     expires_at TIMESTAMP NOT NULL,
                     INDEX idx_email (email),
                     INDEX idx_verification_token (verification_token),
+                    INDEX idx_verification_code (verification_code),
                     INDEX idx_expires_at (expires_at)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             ",

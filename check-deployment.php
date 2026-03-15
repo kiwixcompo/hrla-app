@@ -1,26 +1,26 @@
 <?php
 /**
- * Deployment Diagnostic Script
- * Check if all files are properly deployed
+ * Deployment Verification Script
+ * Checks if the latest changes were deployed successfully
  */
 
-// Simple password protection
-$password = 'check2026';
-$inputPassword = $_GET['pass'] ?? '';
+// Enable error display
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-if ($inputPassword !== $password) {
-    die('Access Denied. Usage: check-deployment.php?pass=check2026');
-}
-
-echo "<!DOCTYPE html><html><head><title>HRLA Deployment Check</title>";
-echo "<style>body{font-family:monospace;padding:20px;background:#f5f5f5;}";
-echo ".ok{color:green;}.error{color:red;}.warning{color:orange;}";
-echo "table{border-collapse:collapse;background:white;margin:20px 0;}";
-echo "th,td{border:1px solid #ddd;padding:8px;text-align:left;}";
-echo "th{background:#333;color:white;}</style></head><body>";
-
-echo "<h1>HRLA Deployment Diagnostic</h1>";
-echo "<p><strong>Server Time:</strong> " . date('Y-m-d H:i:s') . "</p>";
+header('Content-Type: text/html; charset=utf-8');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRLA Deployment Check</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 4er Time:</strong> " . date('Y-m-d H:i:s') . "</p>";
 echo "<hr>";
 
 // Check PHP version

@@ -42,8 +42,10 @@ class Auth {
                 }
             }
             
-            // Generate verification token
+            // Generate verification token and 6-digit code
             $verificationToken = generateRandomString(64);
+            $verificationCode = sprintf('%06d', mt_rand(100000, 999999));
+            $codeExpires = date('Y-m-d H:i:s', strtotime('+24 hours'));
             
             // Calculate trial expiry
             $trialExpiry = date('Y-m-d H:i:s', time() + TRIAL_DURATION_SECONDS);
@@ -69,8 +71,8 @@ class Auth {
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
             
             // Store in pending verifications
-            $sql = "INSERT INTO pending_verifications (email, first_name, last_name, password_hash, verification_token, access_code, trial_expiry, access_level, expires_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO pending_verifications (email, first_name, last_name, password_hash, verification_token, verification_code, verification_expires, access_code, trial_expiry, access_level, expires_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
             $expiresAt = date('Y-m-d H:i:s', time() + (24 * 60 * 60)); // 24 hours
             
@@ -80,14 +82,16 @@ class Auth {
                 $lastName,
                 $passwordHash,
                 $verificationToken,
+                $verificationCode,
+                $codeExpires,
                 $accessCode,
                 $trialExpiry,
                 $accessLevel,
                 $expiresAt
             ]);
             
-            // Send verification email
-            $this->sendVerificationEmail($email, $firstName, $verificationToken, $accessCodeData);
+            // Send verification email with code
+            $this->sendVerificationEmail($email, $firstName, $verificationToken, $accessCodeData, $verificationCode);
             
             logMessage("User registration initiated", 'info', [
                 'email' => $email,
@@ -137,6 +141,14 @@ class Auth {
                 $accessCodeData = $this->validateAccessCode($pending['access_code']);
             }
             
+            // Generate fresh 6-digit code
+            $verificationCode = sprintf('%06d', mt_rand(100000, 999999));
+            $codeExpires = date('Y-m-d H:i:s', strtotime('+24 hours'));
+            $this->db->query(
+                "UPDATE pending_verifications SET verification_code = ?, verification_expires = ? WHERE id = ?",
+                [$verificationCode, $codeExpires, $pending['id']]
+            );
+            
             logMessage("Attempting to resend verification email", 'info', [
                 'email' => $email,
                 'first_name' => $pending['first_name'],
@@ -148,7 +160,8 @@ class Auth {
                 $pending['email'],
                 $pending['first_name'],
                 $pending['verification_token'],
-                $accessCodeData
+                $accessCodeData,
+                $verificationCode
             );
             
             if (!$emailSent) {
@@ -336,7 +349,61 @@ class Auth {
                 return ['success' => false, 'error' => 'Invalid or expired verification token'];
             }
             
-            // Create verified user
+            return $this->completePendingVerification($pending);
+            
+        } catch (Exception $e) {
+            $this->db->rollback();
+            logMessage("Email verification failed: " . $e->getMessage(), 'error', ['token' => $token]);
+            return ['success' => false, 'error' => 'Verification failed. Please try again.'];
+        }
+    }
+    
+    /**
+     * Verify email using 6-digit code
+     */
+    public function verifyEmailByCode($code, $email = null) {
+        try {
+            $code = trim($code);
+            
+            // Resolve pending record: by session email, posted email, or code lookup
+            $pending = null;
+            
+            if ($email) {
+                $pending = $this->db->fetch(
+                    "SELECT * FROM pending_verifications WHERE email = ? AND verification_code = ? AND expires_at > NOW()",
+                    [$email, $code]
+                );
+            }
+            
+            if (!$pending) {
+                $pending = $this->db->fetch(
+                    "SELECT * FROM pending_verifications WHERE verification_code = ? AND expires_at > NOW()",
+                    [$code]
+                );
+            }
+            
+            if (!$pending) {
+                return ['success' => false, 'error' => 'Invalid or expired verification code. Please check the code and try again.'];
+            }
+            
+            // Check code expiry explicitly
+            if ($pending['verification_expires'] && strtotime($pending['verification_expires']) < time()) {
+                return ['success' => false, 'error' => 'Your verification code has expired. Please request a new one.'];
+            }
+            
+            return $this->completePendingVerification($pending);
+            
+        } catch (Exception $e) {
+            logMessage("Email code verification failed: " . $e->getMessage(), 'error', ['code' => $code]);
+            return ['success' => false, 'error' => 'Verification failed. Please try again.'];
+        }
+    }
+    
+    /**
+     * Shared logic: move pending verification into users table
+     */
+    private function completePendingVerification($pending) {
+        try {
             $this->db->beginTransaction();
             
             $userSql = "INSERT INTO users (email, password_hash, first_name, last_name, email_verified, trial_started, trial_expiry, access_level) 
@@ -351,6 +418,8 @@ class Auth {
                 $pending['access_level']
             ]);
             
+            $userId = $this->db->lastInsertId();
+            
             // Remove from pending
             $this->db->query("DELETE FROM pending_verifications WHERE id = ?", [$pending['id']]);
             
@@ -364,12 +433,13 @@ class Auth {
             return [
                 'success' => true,
                 'message' => 'Email verified successfully. You can now login.',
-                'email' => $pending['email']
+                'email' => $pending['email'],
+                'user_id' => $userId
             ];
             
         } catch (Exception $e) {
             $this->db->rollback();
-            logMessage("Email verification failed: " . $e->getMessage(), 'error', ['token' => $token]);
+            logMessage("Complete pending verification failed: " . $e->getMessage(), 'error');
             return ['success' => false, 'error' => 'Verification failed. Please try again.'];
         }
     }
@@ -662,13 +732,13 @@ class Auth {
         unset($_SESSION[$key], $_SESSION[$key . '_time']);
     }
     
-    private function sendVerificationEmail($email, $firstName, $token, $accessCodeData = null) {
+    private function sendVerificationEmail($email, $firstName, $token, $accessCodeData = null, $code = null) {
         require_once INCLUDES_PATH . '/email_templates.php';
         
         $verificationLink = appUrl("verify.php?token=$token");
         
         $emailTemplate = new EmailTemplates();
-        return $emailTemplate->sendVerificationEmail($email, $firstName, $verificationLink, $accessCodeData);
+        return $emailTemplate->sendVerificationEmail($email, $firstName, $verificationLink, $accessCodeData, $code);
     }
 }
 
