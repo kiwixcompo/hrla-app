@@ -482,6 +482,16 @@ If you did not request this password reset, please ignore this email or contact 
         $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = SMTP_PORT;
 
+        // cPanel shared hosting uses a shared SSL cert that won't match the custom domain.
+        // Disable peer/name verification to allow the connection to succeed.
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer'       => false,
+                'verify_peer_name'  => false,
+                'allow_self_signed' => true,
+            ],
+        ];
+
         $mail->setFrom($this->fromEmail, $this->fromName);
         $mail->addReplyTo($this->replyTo, $this->fromName);
         $mail->addAddress($to);

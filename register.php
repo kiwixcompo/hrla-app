@@ -248,7 +248,7 @@ $pageTitle = 'Register - HR Leave Assistant';
                             <label for="termsAccepted">I agree to the <a href="product-scope.php">Terms of Use</a> and <a href="privacy-policy.php">Privacy Policy</a></label>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                        <button type="submit" class="btn btn-primary btn-block" id="registerSubmitBtn" disabled style="opacity:0.5;cursor:not-allowed;">Create Account</button>
                     </form>
                     
                     <div class="auth-footer">
@@ -261,6 +261,19 @@ $pageTitle = 'Register - HR Leave Assistant';
     <?php endif; ?>
     
     <script src="assets/js/mobile-menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.getElementById('termsAccepted');
+            var btn      = document.getElementById('registerSubmitBtn');
+            if (checkbox && btn) {
+                checkbox.addEventListener('change', function () {
+                    btn.disabled = !this.checked;
+                    btn.style.opacity = this.checked ? '1' : '0.5';
+                    btn.style.cursor  = this.checked ? 'pointer' : 'not-allowed';
+                });
+            }
+        });
+    </script>
     
     <?php if ($pendingEmail): ?>
     <script>
