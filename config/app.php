@@ -67,9 +67,9 @@ define('OPENAI_MAX_TOKENS', 1000);
 define('OPENAI_TEMPERATURE', 0.3);
 
 // Email settings
-define('SMTP_HOST', $_ENV['SMTP_HOST'] ?? 'mail.hrleaveassist.com');
+define('SMTP_HOST', $_ENV['SMTP_HOST'] ?? 'mail.privateemail.com');
 define('SMTP_PORT', $_ENV['SMTP_PORT'] ?? 587);
-define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? 'askhrla@hrleaveassist.com');
+define('SMTP_USERNAME', $_ENV['SMTP_USERNAME'] ?? 'noreply@hrleaveassist.com');
 
 // Load local config if it exists (not in git)
 if (file_exists(__DIR__ . '/local.php')) {
@@ -123,7 +123,7 @@ $config = [
         'password' => SMTP_PASSWORD,
         'encryption' => SMTP_ENCRYPTION,
         'from_name' => APP_NAME,
-        'from_email' => APP_EMAIL
+        'from_email' => 'noreply@hrleaveassist.com'
     ],
     
     'security' => [
