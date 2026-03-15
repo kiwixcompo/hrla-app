@@ -333,6 +333,13 @@ function verifyCSRFToken($token) {
 }
 
 /**
+ * Alias for verifyCSRFToken (backwards compatibility)
+ */
+function validateCSRFToken($token) {
+    return verifyCSRFToken($token);
+}
+
+/**
  * Sanitize input
  */
 function sanitize($input) {

@@ -447,7 +447,12 @@ If you did not request this password reset, please ignore this email or contact 
      */
     private function sendEmail($to, $subject, $htmlContent, $textContent) {
         try {
-            // Use PHPMailer if available, otherwise fall back to mail()
+            // Try PHPMailer via composer autoload first
+            $autoload = __DIR__ . '/../vendor/autoload.php';
+            if (file_exists($autoload)) {
+                require_once $autoload;
+            }
+
             if (class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
                 return $this->sendEmailSMTP($to, $subject, $htmlContent, $textContent);
             } else {
@@ -458,12 +463,38 @@ If you did not request this password reset, please ignore this email or contact 
                 'to' => $to,
                 'subject' => $subject
             ]);
-            
-            // Log email to console for development
             $this->logEmailToConsole($to, $subject, $textContent);
-            
             return false;
         }
+    }
+
+    /**
+     * Send email via SMTP using PHPMailer
+     */
+    private function sendEmailSMTP($to, $subject, $htmlContent, $textContent) {
+        $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host       = SMTP_HOST;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = SMTP_USERNAME;
+        $mail->Password   = SMTP_PASSWORD;
+        $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = SMTP_PORT;
+
+        $mail->setFrom($this->fromEmail, $this->fromName);
+        $mail->addReplyTo($this->replyTo, $this->fromName);
+        $mail->addAddress($to);
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $htmlContent;
+        $mail->AltBody = $textContent;
+
+        $mail->send();
+
+        logMessage("Email sent via SMTP", 'info', ['to' => $to, 'subject' => $subject]);
+        return true;
     }
     
     /**
