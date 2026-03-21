@@ -51,5 +51,21 @@
     "color_primary": "#0322D8",
     "color_secondary": "#3DB20B",
     "color_dark_blue": "#1800AD",
-    "color_red": "#FF0000"
+    "color_red": "#FF0000",
+    "dashboard_welcome_heading": "Welcome back,",
+    "dashboard_welcome_subheading": "Choose a compliance tool to generate professional leave responses",
+    "dashboard_federal_tool_label": "Federal Leave Assistant",
+    "dashboard_federal_disclaimer_heading": "Federal-Specific Limitations",
+    "dashboard_federal_disclaimer_intro": "Focuses employment laws, including but not limited to the Family and Medical Leave Act (FMLA) and the Americans with Disabilities Act (ADA), and to state regulations are not covered within this version. Responses are limited to federal law.",
+    "dashboard_federal_disclaimer_bullet_1": "Does not account for state or local leave laws that may provide additional or different protections",
+    "dashboard_federal_disclaimer_bullet_2": "Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices",
+    "dashboard_federal_disclaimer_bullet_3": "Does not implement and act upon legal advice such as the ADA interactive process or individualized eligibility determinations",
+    "dashboard_federal_disclaimer_footer": "Users are responsible for confirming current federal requirements and seeking legal advice when appropriate.",
+    "dashboard_california_tool_label": "California Leave Assistant",
+    "dashboard_california_disclaimer_heading": "California-Specific Limitations",
+    "dashboard_california_disclaimer_intro": "California employment laws, including but not limited to the California Family Rights Act (CFRA), Pregnancy Disability Leave (PDL), and related state-specific employment and housing Act (FEHA), and related regulations are not covered within this version. Responses are limited to California law.",
+    "dashboard_california_disclaimer_bullet_1": "Does not account for local city/county leave laws, announcement provisions, or other local provisions",
+    "dashboard_california_disclaimer_bullet_2": "Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices",
+    "dashboard_california_disclaimer_bullet_3": "Does not implement required employee obligations such as the interactive process",
+    "dashboard_california_disclaimer_footer": "Users are responsible for confirming current legal requirements and seeking legal advice when appropriate."
 }

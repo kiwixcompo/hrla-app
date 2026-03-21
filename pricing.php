@@ -51,8 +51,14 @@ $pageTitle = 'Pricing - HRLA | HR Leave Assist';
 
         /* --- STYLES COPIED FROM INDEX FOR CONSISTENCY --- */
         .pricing-section {
-            padding: 60px 0 80px;
+            padding: 120px 0 80px;
             background-color: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-section {
+                padding: 100px 0 60px;
+            }
         }
 
         .pricing-page-header {

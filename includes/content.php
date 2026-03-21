@@ -172,6 +172,28 @@ function insertDefaultContent($db) {
         ['color_secondary', '#3DB20B', 'color', 'colors', 'Secondary Green', 'Green color used for accents', 2],
         ['color_dark_blue', '#1800AD', 'color', 'colors', 'Dark Blue', 'Darker blue for hover states', 3],
         ['color_red', '#FF0000', 'color', 'colors', 'Red', 'Red color for CTA section', 4],
+
+        // Dashboard - Welcome
+        ['dashboard_welcome_heading', 'Welcome back,', 'text', 'dashboard', 'Welcome Heading', 'Greeting text before the user\'s first name on the dashboard', 1],
+        ['dashboard_welcome_subheading', 'Choose a compliance tool to generate professional leave responses', 'textarea', 'dashboard', 'Welcome Subheading', 'Subtitle below the welcome heading', 2],
+
+        // Dashboard - Federal Tool
+        ['dashboard_federal_tool_label', 'Federal Leave Assistant', 'text', 'dashboard', 'Federal Tool Button Label', 'Text on the Federal tool button', 3],
+        ['dashboard_federal_disclaimer_heading', 'Federal-Specific Limitations', 'text', 'dashboard', 'Federal Disclaimer Heading', 'Bold heading above the federal disclaimer text', 4],
+        ['dashboard_federal_disclaimer_intro', 'Focuses employment laws, including but not limited to the Family and Medical Leave Act (FMLA) and the Americans with Disabilities Act (ADA), and to state regulations are not covered within this version. Responses are limited to federal law.', 'textarea', 'dashboard', 'Federal Disclaimer Intro', 'Opening sentence of the federal disclaimer', 5],
+        ['dashboard_federal_disclaimer_bullet_1', 'Does not account for state or local leave laws that may provide additional or different protections', 'textarea', 'dashboard', 'Federal Disclaimer Bullet 1', 'First bullet point in the federal HRLA limitations list', 6],
+        ['dashboard_federal_disclaimer_bullet_2', 'Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices', 'textarea', 'dashboard', 'Federal Disclaimer Bullet 2', 'Second bullet point in the federal HRLA limitations list', 7],
+        ['dashboard_federal_disclaimer_bullet_3', 'Does not implement and act upon legal advice such as the ADA interactive process or individualized eligibility determinations', 'textarea', 'dashboard', 'Federal Disclaimer Bullet 3', 'Third bullet point in the federal HRLA limitations list', 8],
+        ['dashboard_federal_disclaimer_footer', 'Users are responsible for confirming current federal requirements and seeking legal advice when appropriate.', 'textarea', 'dashboard', 'Federal Disclaimer Footer', 'Closing sentence of the federal disclaimer', 9],
+
+        // Dashboard - California Tool
+        ['dashboard_california_tool_label', 'California Leave Assistant', 'text', 'dashboard', 'California Tool Button Label', 'Text on the California tool button', 10],
+        ['dashboard_california_disclaimer_heading', 'California-Specific Limitations', 'text', 'dashboard', 'California Disclaimer Heading', 'Bold heading above the California disclaimer text', 11],
+        ['dashboard_california_disclaimer_intro', 'California employment laws, including but not limited to the California Family Rights Act (CFRA), Pregnancy Disability Leave (PDL), and related state-specific employment and housing Act (FEHA), and related regulations are not covered within this version. Responses are limited to California law.', 'textarea', 'dashboard', 'California Disclaimer Intro', 'Opening sentence of the California disclaimer', 12],
+        ['dashboard_california_disclaimer_bullet_1', 'Does not account for local city/county leave laws, announcement provisions, or other local provisions', 'textarea', 'dashboard', 'California Disclaimer Bullet 1', 'First bullet point in the California HRLA limitations list', 13],
+        ['dashboard_california_disclaimer_bullet_2', 'Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices', 'textarea', 'dashboard', 'California Disclaimer Bullet 2', 'Second bullet point in the California HRLA limitations list', 14],
+        ['dashboard_california_disclaimer_bullet_3', 'Does not implement required employee obligations such as the interactive process', 'textarea', 'dashboard', 'California Disclaimer Bullet 3', 'Third bullet point in the California HRLA limitations list', 15],
+        ['dashboard_california_disclaimer_footer', 'Users are responsible for confirming current legal requirements and seeking legal advice when appropriate.', 'textarea', 'dashboard', 'California Disclaimer Footer', 'Closing sentence of the California disclaimer', 16],
     ];
     
     $insertSql = "INSERT IGNORE INTO site_content (content_key, content_value, content_type, category, label, description, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)";

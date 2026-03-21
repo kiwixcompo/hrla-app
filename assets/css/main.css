@@ -730,7 +730,8 @@ a:hover {
         padding: 0 15px;
     }
     
-    .nav-container {
+    /* Only collapse the dashboard navbar, not the landing nav */
+    .navbar .nav-container {
         flex-direction: column;
         gap: 1rem;
         padding: 1rem 0;
@@ -1762,6 +1763,10 @@ a:hover {
 }
 
 @media (max-width: 768px) {
+    .pricing-page {
+        padding: 100px 0 60px;
+    }
+
     .pricing-page-header h1 {
         font-size: 2rem;
     }

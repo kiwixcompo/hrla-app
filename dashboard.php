@@ -6,12 +6,15 @@
 
 require_once 'config/app.php';
 require_once 'includes/auth.php';
+require_once 'includes/content.php';
 
 $auth = getAuth();
 $auth->requireAuth();
 
 $user = $auth->getCurrentUser();
 $hasAccess = $auth->hasAccess();
+
+initContentSystem();
 
 // Calculate trial/subscription status
 $now = time();
@@ -123,6 +126,15 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
         .limitation-text strong {
             color: #333;
         }
+
+        .limitation-text ul {
+            margin: 8px 0 8px 20px;
+            padding: 0;
+        }
+
+        .limitation-text ul li {
+            margin-bottom: 4px;
+        }
         
         /* Responsive design for mobile */
         @media (max-width: 768px) {
@@ -142,10 +154,6 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
                 </div>
                 <div class="nav-menu">
                     <?php if ($user['is_admin']): ?>
-                        <span class="admin-badge">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>Admin</span>
-                        </span>
                         <a href="<?php echo appUrl('admin/index.php'); ?>" class="btn btn-ghost">
                             <i class="fas fa-user-shield"></i>
                             <span>Admin Panel</span>
@@ -159,56 +167,73 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
                             <span>Upgrade</span>
                         </a>
                     <?php endif; ?>
-                    <a href="<?php echo appUrl('settings.php'); ?>" class="btn btn-ghost">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                    <a href="<?php echo appUrl('logout.php'); ?>" id="logoutBtn" class="btn btn-ghost">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
+
+                    <?php
+                        $initials = strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1));
+                    ?>
+                    <div class="user-profile-menu" id="userProfileMenu">
+                        <button class="user-profile-btn" id="userProfileBtn" type="button">
+                            <div class="user-avatar-circle"><?php echo htmlspecialchars($initials); ?></div>
+                            <span class="user-name"><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></span>
+                            <i class="fas fa-chevron-down chevron"></i>
+                        </button>
+                        <div class="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <div class="full-name"><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></div>
+                                <div class="email"><?php echo htmlspecialchars($user['email']); ?></div>
+                            </div>
+                            <a href="<?php echo appUrl('settings.php'); ?>" class="user-dropdown-item">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <a href="<?php echo appUrl('logout.php'); ?>" class="user-dropdown-item logout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
         
         <div class="dashboard-container">
             <div class="dashboard-header">
-                <h1>Welcome back, <span id="userWelcomeName"><?php echo htmlspecialchars($user['first_name']); ?></span></h1>
-                <p>Choose a compliance tool to generate professional leave responses</p>
+                <h1><?php echo htmlspecialchars(getContent('dashboard_welcome_heading', 'Welcome back,')); ?> <span id="userWelcomeName"><?php echo htmlspecialchars($user['first_name']); ?></span></h1>
+                <p><?php echo htmlspecialchars(getContent('dashboard_welcome_subheading', 'Choose a compliance tool to generate professional leave responses')); ?></p>
             </div>
             
             <div class="tools-grid">
                 <div class="tool-section">
                     <a href="<?php echo appUrl('federal.php'); ?>" class="tool-button" id="federalTool">
-                        Federal Leave Assistant
+                        <?php echo htmlspecialchars(getContent('dashboard_federal_tool_label', 'Federal Leave Assistant')); ?>
                     </a>
                     <div class="limitation-text">
-                        <strong>Federal-Specific Limitations</strong><br>
-                        Focuses employment laws, including but not limited to the Family and Medical Leave Act (FMLA) and the Americans with Disabilities Act (ADA), and to state regulations are not covered within this version. Responses are limited to federal law.
+                        <strong><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_heading', 'Federal-Specific Limitations')); ?></strong><br>
+                        <?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_intro', 'Focuses employment laws, including but not limited to the Family and Medical Leave Act (FMLA) and the Americans with Disabilities Act (ADA). Responses are limited to federal law.')); ?>
                         <br><br>
-                        <strong>HRLA:</strong><br>
-                        • Does not account for state or local leave laws that may provide additional or different protections<br>
-                        • Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices<br>
-                        • Does not implement and act upon legal advice such as the ADA interactive process or individualized eligibility determinations<br>
-                        <br>
-                        Users are responsible for confirming current federal requirements and seeking legal advice when appropriate.
+                        <strong>HRLA:</strong>
+                        <ul>
+                            <li><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_bullet_1', 'Does not account for state or local leave laws that may provide additional or different protections')); ?></li>
+                            <li><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_bullet_2', 'Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices')); ?></li>
+                            <li><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_bullet_3', 'Does not implement and act upon legal advice such as the ADA interactive process or individualized eligibility determinations')); ?></li>
+                        </ul>
+                        <?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_footer', 'Users are responsible for confirming current federal requirements and seeking legal advice when appropriate.')); ?>
                     </div>
                 </div>
                 
                 <div class="tool-section">
                     <a href="<?php echo appUrl('california.php'); ?>" class="tool-button" id="californiaTool">
-                        California Leave Assistant
+                        <?php echo htmlspecialchars(getContent('dashboard_california_tool_label', 'California Leave Assistant')); ?>
                     </a>
                     <div class="limitation-text">
-                        <strong>California-Specific Limitations</strong><br>
-                        California employment laws, including but not limited to the California Family Rights Act (CFRA), Pregnancy Disability Leave (PDL), and related state-specific employment and housing Act (FEHA), and related regulations are not covered within this version. Responses are limited to California law.
+                        <strong><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_heading', 'California-Specific Limitations')); ?></strong><br>
+                        <?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_intro', 'California employment laws, including but not limited to the California Family Rights Act (CFRA), Pregnancy Disability Leave (PDL), and related state-specific employment and housing Act (FEHA). Responses are limited to California law.')); ?>
                         <br><br>
-                        <strong>HRLA:</strong><br>
-                        • Does not account for local city/county leave laws, announcement provisions, or other local provisions<br>
-                        • Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices<br>
-                        • Does not implement required employee obligations such as the interactive process<br>
-                        <br>
-                        Users are responsible for confirming current legal requirements and seeking legal advice when appropriate.
+                        <strong>HRLA:</strong>
+                        <ul>
+                            <li><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_bullet_1', 'Does not account for local city/county leave laws, announcement provisions, or other local provisions')); ?></li>
+                            <li><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_bullet_2', 'Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices')); ?></li>
+                            <li><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_bullet_3', 'Does not implement required employee obligations such as the interactive process')); ?></li>
+                        </ul>
+                        <?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_footer', 'Users are responsible for confirming current legal requirements and seeking legal advice when appropriate.')); ?>
                     </div>
                 </div>
             </div>

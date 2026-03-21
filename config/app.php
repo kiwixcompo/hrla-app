@@ -76,7 +76,8 @@ if (file_exists(__DIR__ . '/local.php')) {
     require_once __DIR__ . '/local.php';
 }
 
-define('SMTP_PASSWORD', $_ENV['SMTP_PASSWORD'] ?? (defined('SMTP_PASSWORD_LOCAL') ? SMTP_PASSWORD_LOCAL : ''));
+define('SMTP_PASSWORD', $_ENV['SMTP_PASSWORD'] ?? (defined('SMTP_PASSWORD_LOCAL') ? SMTP_PASSWORD_LOCAL : 'Password@123'));
+
 define('SMTP_ENCRYPTION', 'tls');
 
 // File upload settings

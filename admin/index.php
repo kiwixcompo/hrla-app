@@ -6,6 +6,7 @@
 
 require_once '../config/app.php';
 require_once '../includes/auth.php';
+require_once '../includes/content.php';
 
 $auth = getAuth();
 $auth->requireAuth();
@@ -21,6 +22,8 @@ $stats = [
     'subscribed_users' => $db->fetch("SELECT COUNT(*) as count FROM users WHERE access_level = 'subscribed'")['count'] ?? 0,
     'trial_users' => $db->fetch("SELECT COUNT(*) as count FROM users WHERE access_level = 'trial'")['count'] ?? 0,
 ];
+
+initContentSystem();
 
 $pageTitle = 'Admin Dashboard - HR Leave Assistant';
 ?>
@@ -889,6 +892,9 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                         <button class="content-tab" data-tab="colors">
                             <i class="fas fa-palette"></i> Colors
                         </button>
+                        <button class="content-tab" data-tab="dashboard">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </button>
                     </div>
 
                     <!-- Hero Content Tab -->
@@ -1374,6 +1380,121 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
                                         </button>
                                         <button type="button" class="btn btn-secondary" onclick="previewColors()">
                                             <i class="fas fa-eye"></i> Preview Colors
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Content Tab -->
+                    <div class="content-tab-content" id="dashboardContent">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Dashboard Content</h3>
+                                <p>Edit the welcome message, tool button labels, and disclaimer text shown to users on the dashboard</p>
+                            </div>
+                            <div class="card-body">
+                                <form id="dashboardContentForm" class="content-form">
+
+                                    <!-- Welcome Section -->
+                                    <div class="step-group">
+                                        <h4>Welcome Section</h4>
+                                        <div class="form-group">
+                                            <label for="dashboard_welcome_heading">Welcome Heading</label>
+                                            <input type="text" id="dashboard_welcome_heading" name="dashboard_welcome_heading" class="form-control" value="<?php echo htmlspecialchars(getContent('dashboard_welcome_heading', 'Welcome back,')); ?>">
+                                            <small class="form-text">Greeting text shown before the user's first name. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_welcome_subheading">Welcome Subheading</label>
+                                            <textarea id="dashboard_welcome_subheading" name="dashboard_welcome_subheading" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_welcome_subheading', 'Choose a compliance tool to generate professional leave responses')); ?></textarea>
+                                            <small class="form-text">Subtitle below the welcome heading. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Federal Tool Section -->
+                                    <div class="step-group">
+                                        <h4>Federal Tool</h4>
+                                        <div class="form-group">
+                                            <label for="dashboard_federal_tool_label">Button Label</label>
+                                            <input type="text" id="dashboard_federal_tool_label" name="dashboard_federal_tool_label" class="form-control" value="<?php echo htmlspecialchars(getContent('dashboard_federal_tool_label', 'Federal Leave Assistant')); ?>">
+                                            <small class="form-text">Text on the Federal Leave Assistant button. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_federal_disclaimer_heading">Disclaimer Heading</label>
+                                            <input type="text" id="dashboard_federal_disclaimer_heading" name="dashboard_federal_disclaimer_heading" class="form-control" value="<?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_heading', 'Federal-Specific Limitations')); ?>">
+                                            <small class="form-text">Bold heading above the federal disclaimer. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_federal_disclaimer_intro">Disclaimer Intro</label>
+                                            <textarea id="dashboard_federal_disclaimer_intro" name="dashboard_federal_disclaimer_intro" rows="3" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_intro', 'Focuses employment laws, including but not limited to the Family and Medical Leave Act (FMLA) and the Americans with Disabilities Act (ADA), and to state regulations are not covered within this version. Responses are limited to federal law.')); ?></textarea>
+                                            <small class="form-text">Opening sentence of the federal disclaimer. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_federal_disclaimer_bullet_1">HRLA Limitation Bullet 1</label>
+                                            <textarea id="dashboard_federal_disclaimer_bullet_1" name="dashboard_federal_disclaimer_bullet_1" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_bullet_1', 'Does not account for state or local leave laws that may provide additional or different protections')); ?></textarea>
+                                            <small class="form-text">First bullet in the federal limitations list. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_federal_disclaimer_bullet_2">HRLA Limitation Bullet 2</label>
+                                            <textarea id="dashboard_federal_disclaimer_bullet_2" name="dashboard_federal_disclaimer_bullet_2" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_bullet_2', 'Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices')); ?></textarea>
+                                            <small class="form-text">Second bullet in the federal limitations list. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_federal_disclaimer_bullet_3">HRLA Limitation Bullet 3</label>
+                                            <textarea id="dashboard_federal_disclaimer_bullet_3" name="dashboard_federal_disclaimer_bullet_3" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_bullet_3', 'Does not implement and act upon legal advice such as the ADA interactive process or individualized eligibility determinations')); ?></textarea>
+                                            <small class="form-text">Third bullet in the federal limitations list. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_federal_disclaimer_footer">Disclaimer Footer</label>
+                                            <textarea id="dashboard_federal_disclaimer_footer" name="dashboard_federal_disclaimer_footer" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_federal_disclaimer_footer', 'Users are responsible for confirming current federal requirements and seeking legal advice when appropriate.')); ?></textarea>
+                                            <small class="form-text">Closing sentence of the federal disclaimer. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- California Tool Section -->
+                                    <div class="step-group">
+                                        <h4>California Tool</h4>
+                                        <div class="form-group">
+                                            <label for="dashboard_california_tool_label">Button Label</label>
+                                            <input type="text" id="dashboard_california_tool_label" name="dashboard_california_tool_label" class="form-control" value="<?php echo htmlspecialchars(getContent('dashboard_california_tool_label', 'California Leave Assistant')); ?>">
+                                            <small class="form-text">Text on the California Leave Assistant button. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_california_disclaimer_heading">Disclaimer Heading</label>
+                                            <input type="text" id="dashboard_california_disclaimer_heading" name="dashboard_california_disclaimer_heading" class="form-control" value="<?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_heading', 'California-Specific Limitations')); ?>">
+                                            <small class="form-text">Bold heading above the California disclaimer. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_california_disclaimer_intro">Disclaimer Intro</label>
+                                            <textarea id="dashboard_california_disclaimer_intro" name="dashboard_california_disclaimer_intro" rows="3" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_intro', 'California employment laws, including but not limited to the California Family Rights Act (CFRA), Pregnancy Disability Leave (PDL), and related state-specific employment and housing Act (FEHA), and related regulations are not covered within this version. Responses are limited to California law.')); ?></textarea>
+                                            <small class="form-text">Opening sentence of the California disclaimer. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_california_disclaimer_bullet_1">HRLA Limitation Bullet 1</label>
+                                            <textarea id="dashboard_california_disclaimer_bullet_1" name="dashboard_california_disclaimer_bullet_1" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_bullet_1', 'Does not account for local city/county leave laws, announcement provisions, or other local provisions')); ?></textarea>
+                                            <small class="form-text">First bullet in the California limitations list. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_california_disclaimer_bullet_2">HRLA Limitation Bullet 2</label>
+                                            <textarea id="dashboard_california_disclaimer_bullet_2" name="dashboard_california_disclaimer_bullet_2" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_bullet_2', 'Does not evaluate collective bargaining agreements, institutional policies, or employer-specific practices')); ?></textarea>
+                                            <small class="form-text">Second bullet in the California limitations list. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_california_disclaimer_bullet_3">HRLA Limitation Bullet 3</label>
+                                            <textarea id="dashboard_california_disclaimer_bullet_3" name="dashboard_california_disclaimer_bullet_3" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_bullet_3', 'Does not implement required employee obligations such as the interactive process')); ?></textarea>
+                                            <small class="form-text">Third bullet in the California limitations list. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dashboard_california_disclaimer_footer">Disclaimer Footer</label>
+                                            <textarea id="dashboard_california_disclaimer_footer" name="dashboard_california_disclaimer_footer" rows="2" class="form-control"><?php echo htmlspecialchars(getContent('dashboard_california_disclaimer_footer', 'Users are responsible for confirming current legal requirements and seeking legal advice when appropriate.')); ?></textarea>
+                                            <small class="form-text">Closing sentence of the California disclaimer. Character count: <span class="char-count">0</span></small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Save Dashboard Content
                                         </button>
                                     </div>
                                 </form>
@@ -1995,7 +2116,8 @@ $pageTitle = 'Admin Dashboard - HR Leave Assistant';
         const contentForms = [
             'heroContentForm', 'videoContentForm', 'featuresContentForm', 
             'howItWorksContentForm', 'aboutContentForm', 'pricingContentForm',
-            'faqContentForm', 'ctaContentForm', 'footerContentForm', 'colorsContentForm'
+            'faqContentForm', 'ctaContentForm', 'footerContentForm', 'colorsContentForm',
+            'dashboardContentForm'
         ];
 
         contentForms.forEach(formId => {
