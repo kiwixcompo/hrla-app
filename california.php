@@ -196,6 +196,45 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             .tool-workspace { flex-direction: column; }
             .input-panel, .output-panel { min-height: auto; }
         }
+
+        /* User profile dropdown */
+        .user-profile-menu { position: relative; }
+        .user-profile-btn {
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 12px; background: white;
+            border: 1px solid #e5e7eb; border-radius: 50px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            font-size: 0.9rem; font-weight: 500; color: #374151;
+        }
+        .user-profile-btn:hover { background: #f3f4f6; }
+        .user-avatar-circle {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: #0322D8; color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+        }
+        .user-profile-btn .chevron { font-size: 0.7rem; color: #9ca3af; transition: transform 0.2s; }
+        .user-profile-menu.open .chevron { transform: rotate(180deg); }
+        .user-dropdown {
+            display: none; position: absolute; top: calc(100% + 8px); right: 0;
+            min-width: 210px; background: white; border: 1px solid #e5e7eb;
+            border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            z-index: 9999; overflow: hidden;
+        }
+        .user-profile-menu.open .user-dropdown { display: block; }
+        .user-dropdown-header { padding: 14px 16px; border-bottom: 1px solid #f3f4f6; }
+        .user-dropdown-header .full-name { font-weight: 600; font-size: 0.95rem; color: #111827; }
+        .user-dropdown-header .email { font-size: 0.8rem; color: #6b7280; margin-top: 2px; }
+        .user-dropdown-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 16px; color: #374151; text-decoration: none; font-size: 0.9rem;
+        }
+        .user-dropdown-item:hover { background: #f9fafb; color: #111827; text-decoration: none; }
+        .user-dropdown-item i { width: 16px; color: #6b7280; font-size: 0.85rem; }
+        .user-dropdown-item.logout { border-top: 1px solid #f3f4f6; color: #dc2626; }
+        .user-dropdown-item.logout i { color: #dc2626; }
+        .user-dropdown-item.logout:hover { background: #fef2f2; }
+        @media (max-width: 768px) { .user-profile-btn .user-name { display: none; } }
     </style>
 </head>
 <body>
@@ -209,14 +248,28 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                     <img src="california_logo.png" alt="California Leave Assistant" class="nav-logo-large">
                 </div>
                 <div class="nav-menu">
-                    <a href="<?php echo appUrl('settings.php'); ?>" class="btn btn-ghost">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                    <a href="<?php echo appUrl('logout.php'); ?>" class="btn btn-ghost">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
+                    <?php
+                        $initials = strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1));
+                    ?>
+                    <div class="user-profile-menu" id="userProfileMenu">
+                        <button class="user-profile-btn" id="userProfileBtn" type="button">
+                            <div class="user-avatar-circle"><?php echo htmlspecialchars($initials); ?></div>
+                            <span class="user-name"><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></span>
+                            <i class="fas fa-chevron-down chevron"></i>
+                        </button>
+                        <div class="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <div class="full-name"><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></div>
+                                <div class="email"><?php echo htmlspecialchars($user['email']); ?></div>
+                            </div>
+                            <a href="<?php echo appUrl('settings.php'); ?>" class="user-dropdown-item">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <a href="<?php echo appUrl('logout.php'); ?>" class="user-dropdown-item logout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -366,6 +419,19 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                 californiaFollowupSubmit.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Follow Up';
             }
         });
+
+        // User profile dropdown toggle
+        const profileMenu = document.getElementById('userProfileMenu');
+        const profileBtn = document.getElementById('userProfileBtn');
+        if (profileBtn) {
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileMenu.classList.toggle('open');
+            });
+            document.addEventListener('click', function() {
+                profileMenu.classList.remove('open');
+            });
+        }
     </script>
 </body>
 </html>

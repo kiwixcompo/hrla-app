@@ -1737,10 +1737,12 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+    overflow: visible;
 }
 
 .app-nav .nav-container {
     height: 4rem;
+    overflow: visible;
 }
 
 .nav-title {
