@@ -197,6 +197,24 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             .input-panel, .output-panel { min-height: auto; }
         }
 
+        @media (max-width: 768px) {
+            .nav-logo-large { max-height: 36px; }
+            /* Override global mobile nav-menu hide */
+            .app-nav .nav-menu {
+                position: static !important;
+                transform: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                flex-direction: row !important;
+                background: transparent !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                gap: 8px !important;
+            }
+            .user-profile-btn .user-name { display: none; }
+        }
+
         /* User profile dropdown */
         .user-profile-menu { position: relative; }
         .user-profile-btn {

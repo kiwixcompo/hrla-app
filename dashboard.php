@@ -141,6 +141,22 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
             .tools-grid {
                 flex-direction: column;
             }
+            /* Override global mobile nav-menu hide — keep profile dropdown visible */
+            .app-nav .nav-menu {
+                position: static !important;
+                transform: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                flex-direction: row !important;
+                background: transparent !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                gap: 8px !important;
+            }
+            .user-profile-btn .user-name {
+                display: none;
+            }
         }
 
         /* User profile dropdown — scoped overrides */
