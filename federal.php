@@ -343,7 +343,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                         </div>
                     </div>
                     
-                    <div class="panel-actions">
+                    <div class="panel-actions" id="federalGenerateActions">
                         <button id="federalSubmit" class="btn btn-primary">
                             <i class="fas fa-magic"></i>
                             Generate Response
@@ -355,10 +355,6 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                     <div class="panel-header">
                         <label>HRLA Generated Response:</label>
                         <div class="output-actions">
-                            <button id="federalRegenerate" class="btn btn-secondary" style="display: none;">
-                                <i class="fas fa-redo"></i>
-                                Regenerate
-                            </button>
                             <button id="federalCopy" class="btn btn-secondary">
                                 <i class="fas fa-copy"></i>
                                 Copy
@@ -380,8 +376,8 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         const federalInput = document.getElementById('federalInput');
         const federalOutput = document.getElementById('federalOutput');
         const federalSubmit = document.getElementById('federalSubmit');
+        const federalGenerateActions = document.getElementById('federalGenerateActions');
         const federalCopy = document.getElementById('federalCopy');
-        const federalRegenerate = document.getElementById('federalRegenerate');
         const federalFollowupSection = document.getElementById('federalFollowupSection');
         const federalFollowup = document.getElementById('federalFollowup');
         const federalFollowupSubmit = document.getElementById('federalFollowupSubmit');
@@ -404,7 +400,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
 
                 if (data.success) {
                     federalOutput.innerHTML = data.response;
-                    federalRegenerate.style.display = 'inline-flex';
+                    federalGenerateActions.style.display = 'none';
                     federalFollowupSection.style.display = 'block';
                 } else {
                     federalOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${data.error || 'Failed to generate response'}</p>`;
@@ -425,8 +421,6 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 setTimeout(() => { federalCopy.innerHTML = originalText; }, 2000);
             });
         });
-
-        federalRegenerate.addEventListener('click', function() { federalSubmit.click(); });
 
         federalFollowupSubmit.addEventListener('click', async function() {
             const followup = federalFollowup.value.trim();

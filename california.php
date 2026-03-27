@@ -323,7 +323,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                         </div>
                     </div>
                     
-                    <div class="panel-actions">
+                    <div class="panel-actions" id="californiaGenerateActions">
                         <button id="californiaSubmit" class="btn btn-primary">
                             <i class="fas fa-magic"></i>
                             Generate Response
@@ -335,10 +335,6 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                     <div class="panel-header">
                         <label>HRLA Generated Response:</label>
                         <div class="output-actions">
-                            <button id="californiaRegenerate" class="btn btn-secondary" style="display: none;">
-                                <i class="fas fa-redo"></i>
-                                Regenerate
-                            </button>
                             <button id="californiaCopy" class="btn btn-secondary">
                                 <i class="fas fa-copy"></i>
                                 Copy
@@ -360,8 +356,8 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
         const californiaInput = document.getElementById('californiaInput');
         const californiaOutput = document.getElementById('californiaOutput');
         const californiaSubmit = document.getElementById('californiaSubmit');
+        const californiaGenerateActions = document.getElementById('californiaGenerateActions');
         const californiaCopy = document.getElementById('californiaCopy');
-        const californiaRegenerate = document.getElementById('californiaRegenerate');
         const californiaFollowupSection = document.getElementById('californiaFollowupSection');
         const californiaFollowup = document.getElementById('californiaFollowup');
         const californiaFollowupSubmit = document.getElementById('californiaFollowupSubmit');
@@ -384,7 +380,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
 
                 if (data.success) {
                     californiaOutput.innerHTML = data.response;
-                    californiaRegenerate.style.display = 'inline-flex';
+                    californiaGenerateActions.style.display = 'none';
                     californiaFollowupSection.style.display = 'block';
                 } else {
                     californiaOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${data.error || 'Failed to generate response'}</p>`;
@@ -405,8 +401,6 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                 setTimeout(() => { californiaCopy.innerHTML = originalText; }, 2000);
             });
         });
-
-        californiaRegenerate.addEventListener('click', function() { californiaSubmit.click(); });
 
         californiaFollowupSubmit.addEventListener('click', async function() {
             const followup = californiaFollowup.value.trim();
