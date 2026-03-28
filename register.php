@@ -212,24 +212,34 @@ $pageTitle = 'Register - HR Leave Assistant';
                         
                         <div class="form-group">
                             <label for="password">Password</label>
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                required 
-                                placeholder="Create a password"
-                            >
+                            <div class="password-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    required 
+                                    placeholder="Create a password"
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword('password', this)" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="confirm_password">Confirm password</label>
-                            <input 
-                                type="password" 
-                                id="confirm_password" 
-                                name="confirm_password" 
-                                required 
-                                placeholder="Confirm your password"
-                            >
+                            <div class="password-wrapper">
+                                <input 
+                                    type="password" 
+                                    id="confirm_password" 
+                                    name="confirm_password" 
+                                    required 
+                                    placeholder="Confirm your password"
+                                >
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirm_password', this)" aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -357,5 +367,18 @@ $pageTitle = 'Register - HR Leave Assistant';
         });
     </script>
     <?php endif; ?>
+    <script>
+        function togglePassword(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
 </body>
 </html>

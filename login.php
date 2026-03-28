@@ -190,14 +190,19 @@ $pageTitle = 'Login - HR Leave Assistant';
                     
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            required 
-                            autocomplete="current-password"
-                            placeholder="Enter your password"
-                        >
+                        <div class="password-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                autocomplete="current-password"
+                                placeholder="Enter your password"
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword('password', this)" aria-label="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="form-check" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
@@ -220,5 +225,18 @@ $pageTitle = 'Login - HR Leave Assistant';
     </div>
     
     <script src="assets/js/mobile-menu.js"></script>
+    <script>
+        function togglePassword(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
 </body>
 </html>

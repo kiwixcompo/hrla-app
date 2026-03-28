@@ -4880,3 +4880,32 @@ select:focus {
         min-width: 180px;
     }
 }
+
+/* ===== PASSWORD TOGGLE ===== */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 2.75rem !important;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.password-toggle:hover {
+    color: #374151;
+}
