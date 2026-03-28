@@ -232,6 +232,13 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 gap: 8px !important;
             }
             .user-profile-btn .user-name { display: none; }
+            .tool-container { padding: 0 12px 30px 12px; }
+            .tool-header { padding: 20px 0 16px; }
+            .tool-header h1 { font-size: 1.4rem; }
+            .tool-header p { font-size: 0.95rem; }
+            .input-panel, .output-panel { padding: 16px; width: 100%; box-sizing: border-box; }
+            #federalInput, #federalFollowup { min-height: 80px; font-size: 0.95rem; }
+            .response-output { min-height: 150px; max-height: none; font-size: 0.95rem; }
         }
 
         /* User profile dropdown */
@@ -428,24 +435,54 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
 
             federalFollowupSubmit.disabled = true;
             federalFollowupSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-            federalOutput.innerHTML = '<p style="color: #9ca3af; text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin"></i> Processing follow-up...</p>';
+
+            // Add a loading indicator below the existing response
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'followupLoading';
+            loadingDiv.style.cssText = 'margin-top:16px;padding:12px;background:#f0f4ff;border-radius:8px;color:#6b7280;';
+            loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing follow-up...';
+            federalOutput.appendChild(loadingDiv);
 
             try {
                 const response = await fetch('<?php echo appUrl('api/ai.php'); ?>', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tool_name: 'federal', input_text: federalInput.value + '\n\nFollow-up: ' + followup })
+                    body: JSON.stringify({ tool_name: 'federal', input_text: followup })
                 });
                 const data = await response.json();
 
+                // Remove loading indicator
+                const loader = document.getElementById('followupLoading');
+                if (loader) loader.remove();
+
                 if (data.success) {
-                    federalOutput.innerHTML = data.response;
+                    // Append follow-up answer below existing response
+                    const divider = document.createElement('hr');
+                    divider.style.cssText = 'margin:16px 0;border:none;border-top:1px solid #e5e7eb;';
+                    const followupLabel = document.createElement('p');
+                    followupLabel.style.cssText = 'font-weight:600;color:#0322D8;margin-bottom:8px;font-size:0.9rem;';
+                    followupLabel.textContent = 'Follow-up Answer:';
+                    const followupAnswer = document.createElement('div');
+                    followupAnswer.innerHTML = data.response;
+                    federalOutput.appendChild(divider);
+                    federalOutput.appendChild(followupLabel);
+                    federalOutput.appendChild(followupAnswer);
                     federalFollowup.value = '';
+                    // Scroll output to bottom
+                    federalOutput.scrollTop = federalOutput.scrollHeight;
                 } else {
-                    federalOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${data.error || 'Failed to generate response'}</p>`;
+                    const errDiv = document.createElement('p');
+                    errDiv.style.cssText = 'color:#ef4444;padding:8px 0;';
+                    errDiv.textContent = 'Error: ' + (data.error || 'Failed to process follow-up');
+                    federalOutput.appendChild(errDiv);
                 }
             } catch (error) {
-                federalOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${error.message}</p>`;
+                const loader = document.getElementById('followupLoading');
+                if (loader) loader.remove();
+                const errDiv = document.createElement('p');
+                errDiv.style.cssText = 'color:#ef4444;padding:8px 0;';
+                errDiv.textContent = 'Error: ' + error.message;
+                federalOutput.appendChild(errDiv);
             } finally {
                 federalFollowupSubmit.disabled = false;
                 federalFollowupSubmit.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Follow Up';

@@ -152,9 +152,32 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
                 padding: 0 !important;
                 box-shadow: none !important;
                 border: none !important;
-                gap: 8px !important;
+                gap: 6px !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
             }
             .user-profile-btn .user-name {
+                display: none;
+            }
+            /* Compact trial badge on mobile */
+            .trial-badge {
+                font-size: 0.7rem !important;
+                padding: 4px 8px !important;
+                border-radius: 6px !important;
+                line-height: 1.3 !important;
+                text-align: center !important;
+                white-space: nowrap !important;
+            }
+            /* Compact upgrade button on mobile */
+            .btn-success span {
+                display: none;
+            }
+            .btn-success {
+                padding: 6px 10px !important;
+                font-size: 0.8rem !important;
+            }
+            /* Compact admin panel button on mobile */
+            .btn-ghost span {
                 display: none;
             }
         }
