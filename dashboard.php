@@ -265,7 +265,9 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
         <nav class="app-nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <img src="dashboard_logo.png" alt="HRLA Dashboard" class="nav-logo">
+                    <a href="<?php echo appUrl('dashboard.php'); ?>">
+                        <img src="dashboard_logo.png" alt="HRLA Dashboard" class="nav-logo">
+                    </a>
                 </div>
                 <div class="nav-menu">
                     <?php if ($user['is_admin']): ?>

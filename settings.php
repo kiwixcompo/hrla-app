@@ -37,7 +37,9 @@ $pageTitle = 'Settings - HR Leave Assistant';
         <nav class="app-nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <img src="hrla_logo.png" alt="HRLA" class="nav-logo">
+                    <a href="<?php echo appUrl('dashboard.php'); ?>">
+                        <img src="hrla_logo.png" alt="HRLA" class="nav-logo">
+                    </a>
                     <span class="nav-title">Settings</span>
                 </div>
                 <div class="nav-menu">

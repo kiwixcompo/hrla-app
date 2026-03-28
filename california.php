@@ -270,7 +270,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                     <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-arrow-left"></i>
                     </a>
-                    <img src="california_logo.png" alt="California Leave Assistant" class="nav-logo-large">
+                    <img src="california_logo.png" alt="California Leave Assistant" class="nav-logo-large" style="cursor:pointer;" onclick="location.href='<?php echo appUrl('dashboard.php'); ?>'">
                 </div>
                 <div class="nav-menu">
                     <?php

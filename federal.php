@@ -289,7 +289,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                     <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-arrow-left"></i>
                     </a>
-                    <img src="federal_logo.png" alt="Federal Leave Assistant" class="nav-logo-large">
+                    <img src="federal_logo.png" alt="Federal Leave Assistant" class="nav-logo-large" style="cursor:pointer;" onclick="location.href='<?php echo appUrl('dashboard.php'); ?>'">
                     <span class="nav-title">Federal Leave Assistant</span>
                 </div>
                 <div class="nav-menu">
