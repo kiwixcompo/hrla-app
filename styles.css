@@ -218,6 +218,13 @@ body {
     margin-right: 0.75rem;
 }
 
+.app-nav .nav-logo {
+    height: auto !important;
+    max-height: 60px !important;
+    width: auto !important;
+    margin-right: 0;
+}
+
 .auth-logo {
     height: 4rem;
     margin-bottom: 1.5rem;
@@ -1757,7 +1764,8 @@ body {
 }
 
 .app-nav .nav-container {
-    height: 4rem;
+    height: auto;
+    min-height: 4rem;
     overflow: visible;
 }
 

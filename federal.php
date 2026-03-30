@@ -78,10 +78,11 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         /* Logo matches dashboard */
         .nav-logo {
             max-height: 60px !important;
-            height: auto !important;
             width: auto !important;
-            cursor: pointer;
+            height: auto !important;
         }
+
+        /* Trial/subscription badge */
         .trial-badge {
             background-color: #0322D8;
             color: white;
