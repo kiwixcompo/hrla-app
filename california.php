@@ -18,17 +18,21 @@ $now = time();
 $trialExpiry = $user['trial_expiry'] ? strtotime($user['trial_expiry']) : null;
 $subscriptionExpiry = $user['subscription_expiry'] ? strtotime($user['subscription_expiry']) : null;
 
-$isExpired = true;
+$accessStatus = 'expired';
+$accessExpiry = null;
+
 if ($user['is_admin']) {
-    $isExpired = false;
-} elseif ($subscriptionExpiry && $subscriptionExpiry > $now) {
-    $isExpired = false;
+    $accessStatus = 'admin';
+} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || in_array($user['access_level'], ['subscribed', 'organization'])) {
+    $accessStatus = 'subscribed';
+    $accessExpiry = $subscriptionExpiry;
 } elseif ($trialExpiry && $trialExpiry > $now) {
-    $isExpired = false;
+    $accessStatus = 'trial';
+    $accessExpiry = $trialExpiry;
 }
 
 // Redirect expired users to subscription page
-if ($isExpired) {
+if ($accessStatus === 'expired') {
     header('Location: ' . appUrl('subscription.php?expired=1'));
     exit;
 }
@@ -71,11 +75,23 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             border-color: var(--hrla-dark-blue) !important;
         }
 
-        /* Large Logo Style */
-        .nav-logo-large {
-            max-height: 55px;
-            width: auto;
-            margin-right: 15px;
+        /* Logo matches dashboard */
+        .nav-logo {
+            max-height: 60px !important;
+            width: auto !important;
+            height: auto !important;
+            cursor: pointer;
+        }
+
+        /* Trial badge */
+        .trial-badge {
+            background-color: #0322D8;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         /* --- STANDARD PAGE SCROLL LAYOUT --- */
@@ -198,7 +214,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
         }
 
         @media (max-width: 768px) {
-            .nav-logo-large { max-height: 36px; }
+            .nav-logo { max-height: 36px !important; }
             /* Override global mobile nav-menu hide */
             .app-nav .nav-menu {
                 position: static !important;
@@ -270,9 +286,20 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                     <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-arrow-left"></i>
                     </a>
-                    <img src="california_logo.png" alt="California Leave Assistant" class="nav-logo-large" style="cursor:pointer;" onclick="location.href='<?php echo appUrl('dashboard.php'); ?>'">
+                    <a href="<?php echo appUrl('dashboard.php'); ?>">
+                        <img src="dashboard_logo.png" alt="HRLA" class="nav-logo">
+                    </a>
                 </div>
                 <div class="nav-menu">
+                    <?php if ($accessStatus === 'trial'): ?>
+                        <div id="trialTimer" class="trial-badge" data-expiry="<?php echo $accessExpiry; ?>">
+                            Trial: <span id="timeRemaining">Calculating...</span>
+                        </div>
+                        <a href="<?php echo appUrl('subscription.php'); ?>" class="btn btn-success">
+                            <i class="fas fa-crown"></i>
+                            <span>Upgrade</span>
+                        </a>
+                    <?php endif; ?>
                     <?php
                         $initials = strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1));
                     ?>
@@ -465,6 +492,27 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                 californiaFollowupSubmit.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Follow Up';
             }
         });
+
+        // Countdown timer
+        const timerElement = document.getElementById('trialTimer');
+        if (timerElement) {
+            const expiryTimestamp = parseInt(timerElement.dataset.expiry);
+            function updateTimer() {
+                const now = Math.floor(Date.now() / 1000);
+                const remaining = expiryTimestamp - now;
+                if (remaining <= 0) { document.getElementById('timeRemaining').textContent = 'Expired'; return; }
+                const days = Math.floor(remaining / 86400);
+                const hours = Math.floor((remaining % 86400) / 3600);
+                const minutes = Math.floor((remaining % 3600) / 60);
+                const seconds = remaining % 60;
+                let t = days > 0 ? `${days}d ${hours}h ${minutes}m ${seconds}s` :
+                         hours > 0 ? `${hours}h ${minutes}m ${seconds}s` :
+                         minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+                document.getElementById('timeRemaining').textContent = t;
+            }
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
 
         // User profile dropdown toggle
         const profileMenu = document.getElementById('userProfileMenu');
