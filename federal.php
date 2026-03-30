@@ -75,7 +75,13 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             border-color: var(--hrla-dark-blue) !important;
         }
 
-        /* Trial/subscription badge */
+        /* Logo matches dashboard */
+        .nav-logo {
+            max-height: 60px !important;
+            height: auto !important;
+            width: auto !important;
+            cursor: pointer;
+        }
         .trial-badge {
             background-color: #0322D8;
             color: white;
@@ -317,9 +323,6 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         <nav class="app-nav">
             <div class="nav-container">
                 <div class="nav-brand">
-                    <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
                     <a href="<?php echo appUrl('dashboard.php'); ?>">
                         <img src="dashboard_logo.png" alt="HRLA" class="nav-logo">
                     </a>
@@ -414,11 +417,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                         </div>
                     </div>
                     
-                    <div id="federalOutput" class="response-output">
-                        <p style="color: #9ca3af; text-align: center; padding: 2rem;">
-                            Your AI-generated response will appear here...
-                        </p>
-                    </div>
+                    <div id="federalOutput" class="response-output"></div>
                 </div>
             </div>
         </div>
