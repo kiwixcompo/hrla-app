@@ -73,6 +73,20 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
         .trial-badge {
             background-color: var(--hrla-blue) !important;
             color: white !important;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .subscription-badge {
+            background-color: var(--hrla-green) !important;
+            color: white !important;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
         }
         
         /* Dashboard logo styling */
@@ -160,16 +174,15 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
                 display: none;
             }
             /* Compact trial badge on mobile */
-            .trial-badge {
+            .trial-badge, .subscription-badge {
                 font-size: 0.7rem !important;
-                padding: 4px 8px !important;
-                border-radius: 6px !important;
-                line-height: 1.3 !important;
-                text-align: center !important;
-                white-space: nowrap !important;
+                padding: 3px 6px !important;
+                max-width: 90px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             /* Compact upgrade button on mobile */
-            .btn-success span {
+            .hide-mobile {
                 display: none;
             }
             .btn-success {
@@ -277,12 +290,16 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
                         </a>
                     <?php elseif ($accessStatus === 'trial'): ?>
                         <div id="trialTimer" class="trial-badge" data-expiry="<?php echo $accessExpiry; ?>">
-                            Trial: <span id="timeRemaining">Calculating...</span>
+                            Trial: <span id="timeRemaining">...</span>
                         </div>
                         <a href="<?php echo appUrl('subscription.php'); ?>" class="btn btn-success">
                             <i class="fas fa-crown"></i>
-                            <span>Upgrade</span>
+                            <span class="hide-mobile">Upgrade</span>
                         </a>
+                    <?php elseif ($accessStatus === 'subscribed' && $accessExpiry): ?>
+                        <div id="trialTimer" class="subscription-badge" data-expiry="<?php echo $accessExpiry; ?>">
+                            <span id="timeRemaining">...</span>
+                        </div>
                     <?php endif; ?>
 
                     <?php
@@ -358,7 +375,7 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
     </div>
 
     <script>
-        // Countdown timer with seconds
+        // Countdown timer
         const timerElement = document.getElementById('trialTimer');
         if (timerElement) {
             const expiryTimestamp = parseInt(timerElement.dataset.expiry);
@@ -376,19 +393,18 @@ $pageTitle = 'Dashboard - HR Leave Assistant';
                 const hours = Math.floor((remaining % 86400) / 3600);
                 const minutes = Math.floor((remaining % 3600) / 60);
                 const seconds = remaining % 60;
+                const isMobile = window.innerWidth <= 768;
                 
-                let timeString = '';
+                let t;
                 if (days > 0) {
-                    timeString = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    t = isMobile ? `${days}d ${hours}h` : `${days}d ${hours}h ${minutes}m`;
                 } else if (hours > 0) {
-                    timeString = `${hours}h ${minutes}m ${seconds}s`;
-                } else if (minutes > 0) {
-                    timeString = `${minutes}m ${seconds}s`;
+                    t = isMobile ? `${hours}h ${minutes}m` : `${hours}h ${minutes}m ${seconds}s`;
                 } else {
-                    timeString = `${seconds}s`;
+                    t = `${minutes}m ${seconds}s`;
                 }
                 
-                document.getElementById('timeRemaining').textContent = timeString;
+                document.getElementById('timeRemaining').textContent = t;
             }
             
             updateTimer();

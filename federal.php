@@ -75,15 +75,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             border-color: var(--hrla-dark-blue) !important;
         }
 
-        /* Logo matches dashboard */
-        .nav-logo {
-            max-height: 60px !important;
-            width: auto !important;
-            height: auto !important;
-            cursor: pointer;
-        }
-
-        /* Trial badge */
+        /* Trial/subscription badge */
         .trial-badge {
             background-color: #0322D8;
             color: white;
@@ -93,6 +85,18 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             font-weight: 600;
             white-space: nowrap;
         }
+        .subscription-badge {
+            background-color: #3DB20B;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Tighten app-nav menu gap */
+        .app-nav .nav-menu { gap: 8px !important; }
 
         /* --- STANDARD PAGE SCROLL LAYOUT --- */
         html, body {
@@ -239,9 +243,27 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 padding: 0 !important;
                 box-shadow: none !important;
                 border: none !important;
-                gap: 8px !important;
+                gap: 6px !important;
+                flex-wrap: nowrap !important;
+                align-items: center !important;
+                overflow: hidden !important;
             }
             .user-profile-btn .user-name { display: none; }
+            .hide-mobile { display: none; }
+            .trial-badge, .subscription-badge {
+                font-size: 0.7rem !important;
+                padding: 3px 6px !important;
+                max-width: 90px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .btn-success {
+                padding: 5px 8px !important;
+                font-size: 0.8rem !important;
+            }
+            .nav-container {
+                overflow: hidden;
+            }
             .tool-container { padding: 0 12px 30px 12px; }
             .tool-header { padding: 20px 0 16px; }
             .tool-header h1 { font-size: 1.4rem; }
@@ -306,12 +328,16 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 <div class="nav-menu">
                     <?php if ($accessStatus === 'trial'): ?>
                         <div id="trialTimer" class="trial-badge" data-expiry="<?php echo $accessExpiry; ?>">
-                            Trial: <span id="timeRemaining">Calculating...</span>
+                            Trial: <span id="timeRemaining">...</span>
                         </div>
                         <a href="<?php echo appUrl('subscription.php'); ?>" class="btn btn-success">
                             <i class="fas fa-crown"></i>
-                            <span>Upgrade</span>
+                            <span class="hide-mobile">Upgrade</span>
                         </a>
+                    <?php elseif ($accessStatus === 'subscribed' && $accessExpiry): ?>
+                        <div id="trialTimer" class="subscription-badge" data-expiry="<?php echo $accessExpiry; ?>">
+                            <span id="timeRemaining">...</span>
+                        </div>
                     <?php endif; ?>
                     <?php
                         $initials = strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1));
@@ -521,9 +547,15 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 const hours = Math.floor((remaining % 86400) / 3600);
                 const minutes = Math.floor((remaining % 3600) / 60);
                 const seconds = remaining % 60;
-                let t = days > 0 ? `${days}d ${hours}h ${minutes}m ${seconds}s` :
-                         hours > 0 ? `${hours}h ${minutes}m ${seconds}s` :
-                         minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+                const isMobile = window.innerWidth <= 768;
+                let t;
+                if (days > 0) {
+                    t = isMobile ? `${days}d ${hours}h` : `${days}d ${hours}h ${minutes}m`;
+                } else if (hours > 0) {
+                    t = isMobile ? `${hours}h ${minutes}m` : `${hours}h ${minutes}m ${seconds}s`;
+                } else {
+                    t = `${minutes}m ${seconds}s`;
+                }
                 document.getElementById('timeRemaining').textContent = t;
             }
             updateTimer();
