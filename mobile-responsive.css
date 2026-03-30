@@ -363,15 +363,31 @@
         padding: 1rem;
     }
     
-    .nav-menu {
+    /* Navigation - landing pages only */
+    .landing-nav .nav-menu {
         flex-direction: column;
         width: 100%;
         gap: 0.5rem;
     }
     
-    .nav-menu .btn {
+    .landing-nav .nav-menu .btn {
         width: 100%;
         justify-content: center;
+    }
+
+    /* App nav (authenticated pages) - keep inline on mobile */
+    .app-nav .nav-menu {
+        position: static !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        flex-direction: row !important;
+        background: transparent !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        gap: 6px !important;
+        width: auto !important;
     }
     
     /* Dashboard */

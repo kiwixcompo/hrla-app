@@ -303,6 +303,23 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
             .pricing-card:hover {
                 transform: none;
             }
+
+            /* Keep nav buttons visible on mobile */
+            .app-nav .nav-menu {
+                position: static !important;
+                transform: none !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                flex-direction: row !important;
+                background: transparent !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                gap: 6px !important;
+            }
+            .app-nav .nav-menu .btn-ghost span {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -316,15 +333,9 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
                     </a>
                 </div>
                 <div class="nav-menu">
-                    <?php if (!$isExpired): ?>
                     <a href="<?php echo appUrl('dashboard.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-arrow-left"></i>
                         <span>Back</span>
-                    </a>
-                    <?php endif; ?>
-                    <a href="<?php echo appUrl('settings.php'); ?>" class="btn btn-ghost">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
                     </a>
                     <a href="<?php echo appUrl('logout.php'); ?>" class="btn btn-ghost">
                         <i class="fas fa-sign-out-alt"></i>
@@ -352,32 +363,6 @@ $pageTitle = 'Upgrade - HR Leave Assistant';
             
             <!-- Pricing Cards -->
             <div class="pricing-grid">
-                <!-- Free Trial -->
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>Free Trial — $0</h3>
-                    </div>
-                    <div class="pricing-description">
-                        <p>Evaluate how HR Leave Assist supports your individual HR workflow</p>
-                    </div>
-                    <div class="pricing-features">
-                        <ul>
-                            <li>• Trial access to HR Leave Assist</li>
-                            <li>• Guidance aligned to laws</li>
-                            <li>• AI-assisted draft responses</li>
-                            <li>• Up to 20 questions in trial</li>
-                            <li>• No payment required</li>
-                        </ul>
-                    </div>
-                    <div class="pricing-best-for">
-                        <strong>Best for:</strong><br>
-                        HR professionals who want to test the tool with real-world scenarios.
-                    </div>
-                    <button class="btn btn-primary btn-block" onclick="selectPlan('trial', 0)">
-                        Start Free Trial
-                    </button>
-                </div>
-                
                 <!-- Monthly Plan -->
                 <div class="pricing-card">
                     <div class="pricing-header">

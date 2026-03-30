@@ -27,10 +27,10 @@ $timeRemaining = 0;
 
 if ($user['is_admin']) {
     $accessStatus = 'admin';
-} elseif ($subscriptionExpiry && $subscriptionExpiry > $now) {
+} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || in_array($user['access_level'], ['subscribed', 'organization'])) {
     $accessStatus = 'subscribed';
     $accessExpiry = $subscriptionExpiry;
-    $timeRemaining = $subscriptionExpiry - $now;
+    $timeRemaining = $subscriptionExpiry ? $subscriptionExpiry - $now : 0;
 } elseif ($trialExpiry && $trialExpiry > $now) {
     $accessStatus = 'trial';
     $accessExpiry = $trialExpiry;
