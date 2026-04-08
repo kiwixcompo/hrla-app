@@ -86,7 +86,7 @@ class EmailTemplates {
         if ($accessCodeData) {
             $accessCodeSection = '<p style="background: #e8f5e8; padding: 15px; border-radius: 5px; border-left: 4px solid #4CAF50;"><strong>🎫 Access Code Applied:</strong> Your account will have ' . $accessCodeData['duration'] . ' ' . $accessCodeData['duration_type'] . ' of extended access once verified.</p>';
         } else {
-            $accessCodeSection = '<p style="background: #fff3cd; padding: 15px; border-radius: 5px; border-left: 4px solid #ffc107;"><strong>🆓 Free Trial:</strong> Your account includes a 24-hour free trial to explore all features.</p>';
+            $accessCodeSection = '<p style="background: #fff3cd; padding: 15px; border-radius: 5px; border-left: 4px solid #ffc107;"><strong>🆓 Free Trial:</strong> Your account includes a 3-day free trial to explore all features.</p>';
         }
         
         return "
@@ -235,7 +235,7 @@ class EmailTemplates {
         if ($accessCodeData) {
             $accessCodeText = "Access Code Applied: Your account will have {$accessCodeData['duration']} {$accessCodeData['duration_type']} of extended access once verified.";
         } else {
-            $accessCodeText = "Free Trial: Your account includes a 24-hour free trial to explore all features.";
+            $accessCodeText = "Free Trial: Your account includes a 3-day free trial to explore all features.";
         }
         
         $codeSection = $code ? "\nYOUR VERIFICATION CODE: $code\n(Enter this code on the verification page, or use the link below)\n" : '';

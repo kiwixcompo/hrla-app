@@ -53,7 +53,7 @@ define('MAX_LOGIN_ATTEMPTS', 5);
 define('LOGIN_LOCKOUT_TIME', 15 * 60); // 15 minutes
 
 // Trial settings
-define('TRIAL_DURATION_HOURS', 24);
+define('TRIAL_DURATION_HOURS', 72);
 define('TRIAL_DURATION_SECONDS', TRIAL_DURATION_HOURS * 60 * 60);
 
 // Subscription settings

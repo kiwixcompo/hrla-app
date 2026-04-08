@@ -52,7 +52,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="styles.css?v=1.2">
+    <link rel="stylesheet" href="styles.css?v=<?php echo filemtime(__DIR__ . '/styles.css'); ?>">
     <link rel="icon" type="image/png" href="hrla_logo.png">
 
     <style>
@@ -105,18 +105,27 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         /* Tighten app-nav menu gap */
         .app-nav .nav-menu { gap: 8px !important; }
 
-        /* --- STANDARD PAGE SCROLL LAYOUT --- */
+        /* --- SAFE MOBILE LAYOUT --- */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
         html, body {
-            height: 100%;
             margin: 0;
             background-color: #f3f4f6;
-            /* Default scroll behavior allowed */
+            /* Do NOT set height: 100% — causes Safari viewport clipping */
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            overflow-x: hidden;
         }
 
         .page {
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Allow page to grow */
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
         }
 
         /* Nav */
@@ -128,8 +137,9 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
 
         /* Main Container */
         .tool-container {
-            padding: 0 20px 40px 20px;
-            max-width: 1400px; /* Constrain width for readability */
+            padding: 0 20px 80px 20px; /* extra bottom for iPhone toolbar */
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            max-width: 1400px;
             margin: 0 auto;
             width: 100%;
             flex: 1;
@@ -147,10 +157,10 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         .tool-workspace {
             display: flex;
             gap: 30px;
-            align-items: flex-start; /* Align tops */
+            align-items: flex-start;
         }
 
-        /* PANELS */
+        /* PANELS — no forced min-height so button is always visible */
         .input-panel, .output-panel {
             flex: 1;
             background: #fff;
@@ -160,23 +170,22 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             border: 1px solid #e5e7eb;
             display: flex;
             flex-direction: column;
-            min-height: 500px; /* Ensure they look substantial */
         }
 
         /* --- INPUT STYLES --- */
         .panel-header { margin-bottom: 15px; }
         .panel-header label { font-weight: 700; color: #111; font-size: 1rem; }
 
-        /* Textarea grows automatically but has min-height */
         #federalInput {
             width: 100%;
             padding: 15px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 1rem;
-            min-height: 150px; /* Good starting size */
-            resize: vertical;  /* Allow user to stretch if needed */
+            min-height: 120px;
+            resize: vertical;
             font-family: 'Inter', sans-serif;
+            -webkit-appearance: none;
         }
 
         /* Follow-up Section */
@@ -185,17 +194,18 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             padding-top: 20px;
             border-top: 1px solid #f3f4f6;
         }
-        
+
         #federalFollowup {
             width: 100%;
             padding: 15px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 1rem;
-            min-height: 100px;
+            min-height: 80px;
             resize: vertical;
             font-family: 'Inter', sans-serif;
             margin-top: 10px;
+            -webkit-appearance: none;
         }
 
         .followup-actions, .panel-actions {
@@ -207,7 +217,6 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         .output-actions { float: right; }
         .output-actions .btn { font-size: 0.85rem; padding: 6px 12px; }
 
-        /* Response Box */
         .response-output {
             background-color: #f9fafb;
             border-radius: 8px;
@@ -216,30 +225,21 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             font-size: 1rem;
             line-height: 1.7;
             color: #1f2937;
-            min-height: 300px; /* Ensures box is visible */
-            flex: 1; /* Fills available space in panel */
-            
-            /* Logic: If text is huge, scroll internally. 
-               If page height allows, just grow. */
-            max-height: 800px; 
+            min-height: 120px;
             overflow-y: auto;
         }
 
-        /* Scrollbar Styling */
         .response-output::-webkit-scrollbar { width: 8px; }
         .response-output::-webkit-scrollbar-track { background: #f1f1f1; }
         .response-output::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
 
-        /* Responsive */
         @media (max-width: 992px) {
             .tool-workspace { flex-direction: column; }
-            .input-panel, .output-panel { min-height: auto; }
         }
 
         @media (max-width: 768px) {
             .nav-logo { max-height: 36px !important; }
             .nav-title { display: none; }
-            /* Override global mobile nav-menu hide */
             .app-nav .nav-menu {
                 position: static !important;
                 transform: none !important;
@@ -264,19 +264,18 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
-            .btn-success {
-                padding: 5px 8px !important;
-                font-size: 0.8rem !important;
-            }
+            .btn-success { padding: 5px 8px !important; font-size: 0.8rem !important; }
             .nav-container { overflow: visible; }
             .app-nav { overflow: visible; }
-            .tool-container { padding: 0 12px 30px 12px; }
-            .tool-header { padding: 20px 0 16px; }
+            .tool-container { padding: 0 12px 100px 12px; padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+            .tool-header { padding: 16px 0 12px; }
             .tool-header h1 { font-size: 1.4rem; }
             .tool-header p { font-size: 0.95rem; }
-            .input-panel, .output-panel { padding: 16px; width: 100%; box-sizing: border-box; }
-            #federalInput, #federalFollowup { min-height: 80px; font-size: 0.95rem; }
-            .response-output { min-height: 150px; max-height: none; font-size: 0.95rem; }
+            .input-panel, .output-panel { padding: 16px; width: 100%; }
+            #federalInput, #federalFollowup { min-height: 80px; font-size: 1rem; }
+            .response-output { min-height: 80px; font-size: 0.95rem; }
+            .panel-actions, .followup-actions { text-align: center; }
+            .panel-actions .btn, .followup-actions .btn { width: 100%; padding: 14px; font-size: 1rem; }
         }
 
         /* User profile dropdown */
