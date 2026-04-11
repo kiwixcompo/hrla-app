@@ -153,23 +153,27 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         .tool-header p { color: #6b7280; margin-bottom: 15px; font-size: 1.1rem; }
         .tool-warning { color: var(--hrla-blue); font-size: 0.95rem; font-weight: 600; }
 
-        /* Workspace Grid */
+        /* PANELS — block layout, no flex, so button always renders in flow */
+        .input-panel, .output-panel {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Desktop: side by side */
         .tool-workspace {
             display: flex;
             gap: 30px;
             align-items: flex-start;
         }
 
-        /* PANELS — no forced min-height so button is always visible */
-        .input-panel, .output-panel {
+        .tool-workspace .input-panel,
+        .tool-workspace .output-panel {
             flex: 1;
-            background: #fff;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e5e7eb;
-            display: flex;
-            flex-direction: column;
         }
 
         /* --- INPUT STYLES --- */
@@ -267,15 +271,39 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             .btn-success { padding: 5px 8px !important; font-size: 0.8rem !important; }
             .nav-container { overflow: visible; }
             .app-nav { overflow: visible; }
-            .tool-container { padding: 0 12px 100px 12px; padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+            .tool-container {
+                padding: 0 12px 120px 12px;
+                padding-bottom: calc(120px + env(safe-area-inset-bottom));
+            }
             .tool-header { padding: 16px 0 12px; }
             .tool-header h1 { font-size: 1.4rem; }
             .tool-header p { font-size: 0.95rem; }
-            .input-panel, .output-panel { padding: 16px; width: 100%; }
-            #federalInput, #federalFollowup { min-height: 80px; font-size: 1rem; }
+            .input-panel, .output-panel {
+                padding: 16px;
+                width: 100%;
+                display: block !important; /* force block — no flex clipping */
+                margin-bottom: 16px;
+            }
+            #federalInput, #federalFollowup {
+                min-height: 80px;
+                font-size: 1rem;
+                display: block;
+                width: 100%;
+            }
             .response-output { min-height: 80px; font-size: 0.95rem; }
-            .panel-actions, .followup-actions { text-align: center; }
-            .panel-actions .btn, .followup-actions .btn { width: 100%; padding: 14px; font-size: 1rem; }
+            .panel-actions, .followup-actions {
+                display: block !important;
+                text-align: center;
+                margin-top: 16px;
+                padding-top: 8px;
+            }
+            .panel-actions .btn, .followup-actions .btn {
+                display: block !important;
+                width: 100%;
+                padding: 16px;
+                font-size: 1rem;
+                margin: 0 auto;
+            }
         }
 
         /* User profile dropdown */
