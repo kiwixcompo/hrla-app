@@ -108,15 +108,11 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
         /* --- SAFE MOBILE LAYOUT --- */
         *, *::before, *::after { box-sizing: border-box; }
 
-        html {
-            height: -webkit-fill-available;
-        }
-
         html, body {
             margin: 0;
             background-color: #f3f4f6;
             min-height: 100vh;
-            min-height: -webkit-fill-available;
+            min-height: 100dvh; /* Modern mobile fix - replaced webkit-fill-available */
             overflow-x: hidden;
         }
 
@@ -124,7 +120,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            min-height: -webkit-fill-available;
+            min-height: 100dvh; /* Modern mobile fix */
         }
 
         .app-nav {
@@ -159,6 +155,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             border: 1px solid #e5e7eb;
             width: 100%;
             box-sizing: border-box;
+            flex-shrink: 0; /* Prevents button compression */
         }
 
         /* Desktop: side by side */
