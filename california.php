@@ -112,7 +112,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             margin: 0;
             background-color: #f3f4f6;
             min-height: 100vh;
-            min-height: 100dvh; /* Modern mobile fix - replaced webkit-fill-available */
+            min-height: 100dvh; 
             overflow-x: hidden;
         }
 
@@ -120,7 +120,8 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            min-height: 100dvh; /* Modern mobile fix */
+            min-height: 100dvh;
+            height: auto !important; /* Prevents strict viewport clipping */
         }
 
         .app-nav {
@@ -136,6 +137,8 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             margin: 0 auto;
             width: 100%;
             flex: 1;
+            height: auto !important; /* Overrides styles.css strictly-locked 100vh */
+            min-height: 100% !important; 
         }
 
         .tool-header {
@@ -155,7 +158,8 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             border: 1px solid #e5e7eb;
             width: 100%;
             box-sizing: border-box;
-            flex-shrink: 0; /* Prevents button compression */
+            height: auto !important; /* Prevents content squishing */
+            overflow: visible !important; /* Prevents button from being hidden */
         }
 
         /* Desktop: side by side */
@@ -261,9 +265,15 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             .btn-success { padding: 5px 8px !important; font-size: 0.8rem !important; }
             .nav-container { overflow: visible; }
             .app-nav { overflow: visible; }
+            
             .tool-container {
                 padding: 0 12px 120px 12px;
                 padding-bottom: calc(120px + env(safe-area-inset-bottom));
+                height: auto !important; /* Vital override for mobile scrolling */
+            }
+            .tool-workspace {
+                display: block !important;
+                height: auto !important;
             }
             .tool-header { padding: 16px 0 12px; }
             .tool-header h1 { font-size: 1.4rem; }
@@ -273,6 +283,8 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                 width: 100%;
                 display: block !important;
                 margin-bottom: 16px;
+                height: auto !important; 
+                overflow: visible !important;
             }
             #californiaInput, #californiaFollowup {
                 min-height: 80px;
@@ -464,52 +476,6 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tool_name: 'california', input_text: input })
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    californiaOutput.innerHTML = data.response;
-                    californiaGenerateActions.style.display = 'none';
-                    californiaFollowupSection.style.display = 'block';
-                } else {
-                    californiaOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${data.error || 'Failed to generate response'}</p>`;
-                }
-            } catch (error) {
-                californiaOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${error.message}</p>`;
-            } finally {
-                californiaSubmit.disabled = false;
-                californiaSubmit.innerHTML = '<i class="fas fa-magic"></i> Generate Response';
-            }
-        });
-
-        californiaCopy.addEventListener('click', function() {
-            const text = californiaOutput.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const originalText = californiaCopy.innerHTML;
-                californiaCopy.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => { californiaCopy.innerHTML = originalText; }, 2000);
-            });
-        });
-
-        californiaFollowupSubmit.addEventListener('click', async function() {
-            const followup = californiaFollowup.value.trim();
-            if (!followup) { alert('Please enter a follow-up question.'); return; }
-
-            californiaFollowupSubmit.disabled = true;
-            californiaFollowupSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-
-            // Add a loading indicator below the existing response
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'followupLoading';
-            loadingDiv.style.cssText = 'margin-top:16px;padding:12px;background:#f0f4ff;border-radius:8px;color:#6b7280;';
-            loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing follow-up...';
-            californiaOutput.appendChild(loadingDiv);
-
-            try {
-                const response = await fetch('<?php echo appUrl('api/ai.php'); ?>', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tool_name: 'california', input_text: followup })
                 });
                 const data = await response.json();
 

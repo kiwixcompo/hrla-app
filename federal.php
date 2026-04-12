@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Federal Leave Assistant
  * HR Leave Assistant - PHP/MySQL Version
@@ -112,7 +113,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             margin: 0;
             background-color: #f3f4f6;
             min-height: 100vh;
-            min-height: 100dvh; /* Modern mobile fix - replaced webkit-fill-available */
+            min-height: 100dvh;
             overflow-x: hidden;
         }
 
@@ -120,7 +121,8 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            min-height: 100dvh; /* Modern mobile fix */
+            min-height: 100dvh;
+            height: auto !important; /* Prevents strict viewport clipping */
         }
 
         /* Nav */
@@ -132,12 +134,14 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
 
         /* Main Container */
         .tool-container {
-            padding: 0 20px 80px 20px; /* extra bottom for iPhone toolbar */
+            padding: 0 20px 80px 20px;
             padding-bottom: calc(80px + env(safe-area-inset-bottom));
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
             flex: 1;
+            height: auto !important; /* Overrides styles.css strictly-locked 100vh */
+            min-height: 100% !important; 
         }
 
         .tool-header {
@@ -157,7 +161,8 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             border: 1px solid #e5e7eb;
             width: 100%;
             box-sizing: border-box;
-            flex-shrink: 0; /* Prevents button compression */
+            height: auto !important; /* Prevents content squishing */
+            overflow: visible !important; /* Prevents button from being hidden */
         }
 
         /* Desktop: side by side */
@@ -267,9 +272,15 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             .btn-success { padding: 5px 8px !important; font-size: 0.8rem !important; }
             .nav-container { overflow: visible; }
             .app-nav { overflow: visible; }
+            
             .tool-container {
                 padding: 0 12px 120px 12px;
                 padding-bottom: calc(120px + env(safe-area-inset-bottom));
+                height: auto !important; /* Vital override for mobile scrolling */
+            }
+            .tool-workspace {
+                display: block !important;
+                height: auto !important;
             }
             .tool-header { padding: 16px 0 12px; }
             .tool-header h1 { font-size: 1.4rem; }
@@ -279,6 +290,8 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 width: 100%;
                 display: block !important; /* force block — no flex clipping */
                 margin-bottom: 16px;
+                height: auto !important; 
+                overflow: visible !important;
             }
             #federalInput, #federalFollowup {
                 min-height: 80px;
