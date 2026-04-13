@@ -223,10 +223,10 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         .output-actions .btn { font-size: 0.85rem; padding: 6px 12px; }
 
         .response-output {
-            background-color: #f9fafb;
+            background-color: #fff;
             border-radius: 8px;
-            border: 1px solid #f3f4f6;
-            padding: 20px;
+            border: 1px solid #d1d5db;
+            padding: 15px;
             font-size: 1rem;
             line-height: 1.7;
             color: #1f2937;
@@ -300,6 +300,8 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 width: 100%;
             }
             .response-output { min-height: 80px; font-size: 0.95rem; }
+            /* Hide generate button on mobile once response is shown */
+            #federalGenerateActions[style*="display: none"] { display: none !important; }
             .panel-actions, .followup-actions {
                 display: block !important;
                 text-align: center;
@@ -489,6 +491,7 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                 if (data.success) {
                     federalOutput.innerHTML = data.response;
                     federalGenerateActions.style.display = 'none';
+                    federalGenerateActions.setAttribute('data-responded', '1');
                     federalFollowupSection.style.display = 'block';
                 } else {
                     federalOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${data.error || 'Failed to generate response'}</p>`;
@@ -498,6 +501,10 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             } finally {
                 federalSubmit.disabled = false;
                 federalSubmit.innerHTML = '<i class="fas fa-magic"></i> Generate Response';
+                // Keep hidden if response was already given
+                if (federalGenerateActions.getAttribute('data-responded')) {
+                    federalGenerateActions.style.display = 'none';
+                }
             }
         });
 

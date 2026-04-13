@@ -217,10 +217,10 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
         .output-actions .btn { font-size: 0.85rem; padding: 6px 12px; }
 
         .response-output {
-            background-color: #f9fafb;
+            background-color: #fff;
             border-radius: 8px;
-            border: 1px solid #f3f4f6;
-            padding: 20px;
+            border: 1px solid #d1d5db;
+            padding: 15px;
             font-size: 1rem;
             line-height: 1.7;
             color: #1f2937;
@@ -293,6 +293,8 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                 width: 100%;
             }
             .response-output { min-height: 80px; font-size: 0.95rem; }
+            /* Hide generate button on mobile once response is shown — JS sets display:none, this reinforces it */
+            #californiaGenerateActions[style*="display: none"] { display: none !important; }
             .panel-actions, .followup-actions {
                 display: block !important;
                 text-align: center;
@@ -463,6 +465,7 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
         const californiaFollowup = document.getElementById('californiaFollowup');
         const californiaFollowupSubmit = document.getElementById('californiaFollowupSubmit');
 
+        // Main generate handler
         californiaSubmit.addEventListener('click', async function() {
             const input = californiaInput.value.trim();
             if (!input) { alert('Please enter a question or email to analyze.'); return; }
@@ -476,6 +479,57 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ tool_name: 'california', input_text: input })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    californiaOutput.innerHTML = data.response;
+                    californiaGenerateActions.style.display = 'none';
+                    californiaGenerateActions.setAttribute('data-responded', '1');
+                    californiaFollowupSection.style.display = 'block';
+                } else {
+                    californiaOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${data.error || 'Failed to generate response'}</p>`;
+                }
+            } catch (error) {
+                californiaOutput.innerHTML = `<p style="color: #ef4444; padding: 1rem;">Error: ${error.message}</p>`;
+            } finally {
+                californiaSubmit.disabled = false;
+                californiaSubmit.innerHTML = '<i class="fas fa-magic"></i> Generate Response';
+                if (californiaGenerateActions.getAttribute('data-responded')) {
+                    californiaGenerateActions.style.display = 'none';
+                }
+            }
+        });
+
+        // Copy handler
+        californiaCopy.addEventListener('click', function() {
+            const text = californiaOutput.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = californiaCopy.innerHTML;
+                californiaCopy.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => { californiaCopy.innerHTML = originalText; }, 2000);
+            });
+        });
+
+        // Follow-up handler
+        californiaFollowupSubmit.addEventListener('click', async function() {
+            const followup = californiaFollowup.value.trim();
+            if (!followup) { alert('Please enter a follow-up question.'); return; }
+
+            californiaFollowupSubmit.disabled = true;
+            californiaFollowupSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'followupLoading';
+            loadingDiv.style.cssText = 'margin-top:16px;padding:12px;background:#f0f4ff;border-radius:8px;color:#6b7280;';
+            loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing follow-up...';
+            californiaOutput.appendChild(loadingDiv);
+
+            try {
+                const response = await fetch('<?php echo appUrl('api/ai.php'); ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tool_name: 'california', input_text: followup })
                 });
                 const data = await response.json();
 
