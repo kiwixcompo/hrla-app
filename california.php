@@ -23,7 +23,8 @@ $accessExpiry = null;
 
 if ($user['is_admin']) {
     $accessStatus = 'admin';
-} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || in_array($user['access_level'], ['subscribed', 'organization'])) {
+} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || 
+          (in_array($user['access_level'], ['subscribed', 'organization']) && $subscriptionExpiry && $subscriptionExpiry > $now)) {
     $accessStatus = 'subscribed';
     $accessExpiry = $subscriptionExpiry;
 } elseif ($trialExpiry && $trialExpiry > $now) {
@@ -465,6 +466,9 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
         const californiaFollowup = document.getElementById('californiaFollowup');
         const californiaFollowupSubmit = document.getElementById('californiaFollowupSubmit');
 
+        // Conversation history for follow-up context
+        let californiaConversation = [];
+
         // Main generate handler
         californiaSubmit.addEventListener('click', async function() {
             const input = californiaInput.value.trim();
@@ -484,6 +488,11 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
 
                 if (data.success) {
                     californiaOutput.innerHTML = data.response;
+                    // Store conversation history
+                    californiaConversation = [
+                        { role: 'user', content: input },
+                        { role: 'assistant', content: californiaOutput.innerText }
+                    ];
                     californiaGenerateActions.style.display = 'none';
                     californiaGenerateActions.setAttribute('data-responded', '1');
                     californiaFollowupSection.style.display = 'block';
@@ -525,11 +534,14 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
             loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing follow-up...';
             californiaOutput.appendChild(loadingDiv);
 
+            // Build conversation history including this follow-up
+            const messagesWithFollowup = [...californiaConversation, { role: 'user', content: followup }];
+
             try {
                 const response = await fetch('<?php echo appUrl('api/ai.php'); ?>', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tool_name: 'california', input_text: followup })
+                    body: JSON.stringify({ tool_name: 'california', messages: messagesWithFollowup })
                 });
                 const data = await response.json();
 
@@ -547,6 +559,8 @@ $pageTitle = 'California Leave Assistant - HR Leave Assistant';
                     californiaOutput.appendChild(divider);
                     californiaOutput.appendChild(followupLabel);
                     californiaOutput.appendChild(followupAnswer);
+                    // Update conversation history with this exchange
+                    californiaConversation = [...messagesWithFollowup, { role: 'assistant', content: followupAnswer.innerText }];
                     californiaFollowup.value = '';
                     californiaOutput.scrollTop = californiaOutput.scrollHeight;
                 } else {

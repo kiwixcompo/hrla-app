@@ -59,6 +59,7 @@ try {
     // Validate required fields
     $toolName = $input['tool_name'] ?? '';
     $inputText = trim($input['input_text'] ?? '');
+    $messages = $input['messages'] ?? null; // Optional conversation history for follow-ups
     
     if (!in_array($toolName, ['federal', 'california'])) {
         http_response_code(400);
@@ -66,13 +67,14 @@ try {
         exit;
     }
     
-    if (empty($inputText)) {
+    // Either input_text or messages must be provided
+    if (empty($inputText) && empty($messages)) {
         http_response_code(400);
         echo json_encode(['error' => 'Input text is required']);
         exit;
     }
     
-    if (strlen($inputText) > 10000) {
+    if (!empty($inputText) && strlen($inputText) > 10000) {
         http_response_code(400);
         echo json_encode(['error' => 'Input text is too long (max 10,000 characters)']);
         exit;
@@ -89,7 +91,7 @@ try {
     }
     
     // Generate AI response
-    $aiResponse = generateAIResponse($toolName, $inputText, $apiConfig['openai_key']);
+    $aiResponse = generateAIResponse($toolName, $inputText, $apiConfig['openai_key'], $messages ?? null);
     
     if (!$aiResponse['success']) {
         http_response_code(500);
@@ -125,24 +127,28 @@ try {
 /**
  * Generate AI response using OpenAI API
  */
-function generateAIResponse($toolName, $inputText, $apiKey) {
+function generateAIResponse($toolName, $inputText, $apiKey, $conversationMessages = null) {
     try {
         // Prepare system prompt based on tool
         $systemPrompt = getSystemPrompt($toolName);
         
+        // Build messages array — use conversation history if provided, else single message
+        if (!empty($conversationMessages) && is_array($conversationMessages)) {
+            $messages = array_merge(
+                [['role' => 'system', 'content' => $systemPrompt]],
+                $conversationMessages
+            );
+        } else {
+            $messages = [
+                ['role' => 'system', 'content' => $systemPrompt],
+                ['role' => 'user', 'content' => $inputText]
+            ];
+        }
+        
         // Prepare the request
         $data = [
             'model' => config('api.openai_model'),
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => $systemPrompt
-                ],
-                [
-                    'role' => 'user',
-                    'content' => $inputText
-                ]
-            ],
+            'messages' => $messages,
             'max_tokens' => config('api.openai_max_tokens'),
             'temperature' => config('api.openai_temperature'),
             'top_p' => 1,

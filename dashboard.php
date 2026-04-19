@@ -27,7 +27,8 @@ $timeRemaining = 0;
 
 if ($user['is_admin']) {
     $accessStatus = 'admin';
-} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || in_array($user['access_level'], ['subscribed', 'organization'])) {
+} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || 
+          (in_array($user['access_level'], ['subscribed', 'organization']) && $subscriptionExpiry && $subscriptionExpiry > $now)) {
     $accessStatus = 'subscribed';
     $accessExpiry = $subscriptionExpiry;
     $timeRemaining = $subscriptionExpiry ? $subscriptionExpiry - $now : 0;

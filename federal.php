@@ -24,7 +24,8 @@ $accessExpiry = null;
 
 if ($user['is_admin']) {
     $accessStatus = 'admin';
-} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || in_array($user['access_level'], ['subscribed', 'organization'])) {
+} elseif (($subscriptionExpiry && $subscriptionExpiry > $now) || 
+          (in_array($user['access_level'], ['subscribed', 'organization']) && $subscriptionExpiry && $subscriptionExpiry > $now)) {
     $accessStatus = 'subscribed';
     $accessExpiry = $subscriptionExpiry;
 } elseif ($trialExpiry && $trialExpiry > $now) {
@@ -472,6 +473,9 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
         const federalFollowup = document.getElementById('federalFollowup');
         const federalFollowupSubmit = document.getElementById('federalFollowupSubmit');
 
+        // Conversation history for follow-up context
+        let federalConversation = [];
+
         federalSubmit.addEventListener('click', async function() {
             const input = federalInput.value.trim();
             if (!input) { alert('Please enter a question or email to analyze.'); return; }
@@ -490,6 +494,11 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
 
                 if (data.success) {
                     federalOutput.innerHTML = data.response;
+                    // Store conversation history
+                    federalConversation = [
+                        { role: 'user', content: input },
+                        { role: 'assistant', content: federalOutput.innerText }
+                    ];
                     federalGenerateActions.style.display = 'none';
                     federalGenerateActions.setAttribute('data-responded', '1');
                     federalFollowupSection.style.display = 'block';
@@ -501,7 +510,6 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             } finally {
                 federalSubmit.disabled = false;
                 federalSubmit.innerHTML = '<i class="fas fa-magic"></i> Generate Response';
-                // Keep hidden if response was already given
                 if (federalGenerateActions.getAttribute('data-responded')) {
                     federalGenerateActions.style.display = 'none';
                 }
@@ -524,27 +532,27 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
             federalFollowupSubmit.disabled = true;
             federalFollowupSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-            // Add a loading indicator below the existing response
             const loadingDiv = document.createElement('div');
             loadingDiv.id = 'followupLoading';
             loadingDiv.style.cssText = 'margin-top:16px;padding:12px;background:#f0f4ff;border-radius:8px;color:#6b7280;';
             loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing follow-up...';
             federalOutput.appendChild(loadingDiv);
 
+            // Build conversation history including this follow-up
+            const messagesWithFollowup = [...federalConversation, { role: 'user', content: followup }];
+
             try {
                 const response = await fetch('<?php echo appUrl('api/ai.php'); ?>', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tool_name: 'federal', input_text: followup })
+                    body: JSON.stringify({ tool_name: 'federal', messages: messagesWithFollowup })
                 });
                 const data = await response.json();
 
-                // Remove loading indicator
                 const loader = document.getElementById('followupLoading');
                 if (loader) loader.remove();
 
                 if (data.success) {
-                    // Append follow-up answer below existing response
                     const divider = document.createElement('hr');
                     divider.style.cssText = 'margin:16px 0;border:none;border-top:1px solid #e5e7eb;';
                     const followupLabel = document.createElement('p');
@@ -555,8 +563,9 @@ $pageTitle = 'Federal Leave Assistant - HR Leave Assistant';
                     federalOutput.appendChild(divider);
                     federalOutput.appendChild(followupLabel);
                     federalOutput.appendChild(followupAnswer);
+                    // Update conversation history with this exchange
+                    federalConversation = [...messagesWithFollowup, { role: 'assistant', content: followupAnswer.innerText }];
                     federalFollowup.value = '';
-                    // Scroll output to bottom
                     federalOutput.scrollTop = federalOutput.scrollHeight;
                 } else {
                     const errDiv = document.createElement('p');
